@@ -1,0 +1,56 @@
+\chapter{Notes}
+
+\section{structure}
+\begin{itemize}
+\item 3 x 1h30 : 10/09 et 15/09
+\item 1BE et 1 TL : séquenceur manuel , séquenceur microprogrammé
+\item 2 x 1h30 : procédure, pile, language d'assemblage : 23/09
+\item 1 BE : stack ptr et procédures
+\item 2 x 1h30 : mémoires, interruptions, aller plus vite (pipeline, ...) : 28/09
+\item 1 BE interruption , 1TL ordonnanceur
+\end{itemize}
+
+
+\section{notes}
+
+\begin{itemize}
+\item Carl burch \url{http://www.toves.org/cso/}
+\item sur la stack :  \url{http://duartes.org/gustavo/blog/post/journey-to-the-stack/}
+\item pierre yves rochat : \url{http://www.pyr.ch/dokuwiki/doku.php?id=doc_uc}
+\item ce que doit aborder les cours d'info (notamment l'archi) \url{http://www.acm.org/education/CS2013-final-report.pdf}
+\item design pas à pas d'une archi, simu sous logisim : \url{http://db.grinnell.edu/sigcse/sigcse2013/Program/viewAcceptedProposal.pdf?sessionType=paper&sessionNumber=39}
+\item sur les segments : \url{http://www.pmzone.org/chapter04.html}
+\end{itemize}
+
+un 8086 (1978) avait 29 000 transistors ,5Mhz, 0.33 MIPS ; un P4(2003) : 44 millions de transistors, 4GHz, 5000 MIPS;(L09 de 6.004). Ces deux implémentations utilisent le ISA x86. ISA : contrat entre le software et l'hardware : définition fonctionnelle des opérations et des possibilités de stockage et description précise de la manière dont le software peut invoquer et utiliser ces instructions. C'est un niveau d'abstraction qui décrit ce que le matériel peut réaliser mais pas comment il le réalise. A l'heure actuelle, deux principales ISA : x86 et ARM (Advanced Risk Machine). Il y a une inertie dans les ISA tout simplement parce que beaucoup d'énergie et d'argent à été dépensé dans l'écriture de programmes répondant à ces contrats, pas forcément parce que ce sont les meilleures ISA.\\
+
+Pour le design de l'instruction set, des expériences ont été réalisées pour estimer le nombre .... Hennesssy, Patterson par exemple a calculer le nombre d'ALU, de LOAD, de STORE pour gcc, tex, spice .. Ca motive par exemple la définition d'un ADDC ajout d'une constante versus un LOAD constante dans un registre et ajoute à un autre registre.
+
+
+
+\section{Tests Tikz}
+
+\begin{tikzpicture}
+\node[alu] (alu) {ADDER($n$)};
+\draw (alu.south) -- ++(-90:5mm) node [below] (out) {$S$};
+\draw (alu.20) -- ++(0:5mm) node [right] {$C[0]$};
+\draw (alu.50) -- ++(90:5mm) node [above] {$B[n-1:0]$};
+\draw (alu.130) -- ++(90:5mm) node [above] {$A[n-1:0]$};
+\draw (alu.130) -- ++(90:5mm) node [above] {$A[n-1:0]$};
+\node[left=8mm of out] (carry) {$C[n]$};
+\draw (carry) |- (alu.200);
+\end{tikzpicture}
+
+\section{mise en page}
+
+Pour placer des figures côte à côte :
+
+\begin{figure}
+   \begin{minipage}[c]{.46\linewidth}
+figure shtruc \\\centering a)
+   \end{minipage} \hfill
+   \begin{minipage}[c]{.46\linewidth}
+figure blop\\\centering b)
+   \end{minipage}
+\caption{ a) Machin b) bidule.}
+\end{figure}

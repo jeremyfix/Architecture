@@ -1,0 +1,166 @@
+\pdfminorversion=4
+\documentclass[a4paper]{book}
+
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{graphicx}
+\usepackage[margin=3cm]{geometry}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\usepackage{pdfpages}
+
+\usepackage{array}
+\usepackage{url}
+\usepackage{booktabs}
+
+\usepackage{natbib}
+\usepackage[nottoc,notlot,notlof]{tocbibind}
+
+
+\usepackage[hidelinks]{hyperref}
+%\usepackage[usenames,dvipsnames]{xcolor}
+%% \hypersetup{
+%%     colorlinks,
+%%     linkcolor={blue!70!black},
+%%     citecolor={blue!50!black},
+%%     urlcolor={blue!80!black}
+%% }
+
+\usepackage{framed}
+\usepackage{eurosym}
+\usepackage{color}
+
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+\definecolor{algocoul}{rgb}{0,0,0.75}
+\definecolor{algocom}{rgb}{.75,.25,0}
+\floatname{algorithm}{Algorithme}
+\usepackage{listings}
+
+
+%\usepackage{algorithm}
+%\usepackage{algorithmicx}
+%\floatname{algorithm}{Algorithme}
+%\definecolor{algocoul}{rgb}{0,0,0.75}
+%\definecolor{algocom}{rgb}{.75,.25,0}
+%% \renewcommand{\algorithmiccomment}[1]{{\small \textcolor{algocom}{// #1}}}
+%% \renewcommand{\algorithmicrequire}{\textbf{Préconditions:}}
+%% \renewcommand{\algorithmicensure}{\textbf{Postconditions:}}
+%% %\renewcommand{\algorithmiccomment}[1]{\{#1\}}
+%% \renewcommand{\algorithmicend}{\textbf{fin}}
+%% \renewcommand{\algorithmicif}{\textbf{si}}
+%% \renewcommand{\algorithmicthen}{\textbf{alors}}
+%% \renewcommand{\algorithmicelse}{\textbf{sinon}}
+%% \renewcommand{\algorithmicto}{\textbf{à}}
+%% \renewcommand{\algorithmicelsif}{\algorithmicelse\ \algorithmicif}
+%% \renewcommand{\algorithmicendif}{\algorithmicend\ \algorithmicif}
+%% \renewcommand{\algorithmicfor}{\textbf{pour}}
+%% \renewcommand{\algorithmicforall}{\textbf{pour tout}}
+%% \renewcommand{\algorithmicdo}{\textbf{faire}}
+%% \renewcommand{\algorithmicendfor}{\algorithmicend\ \algorithmicfor}
+%% \renewcommand{\algorithmicwhile}{\textbf{tant que}}
+%% \renewcommand{\algorithmicendwhile}{\algorithmicend\ \algorithmicwhile}
+%% \renewcommand{\algorithmicreturn}{\textbf{retourner}}
+
+\newcommand{\AlgoName}[1]{\textcolor{algocoul}{\tt #1}}
+\newcommand{\Group}[1]{{\left({#1}\right)}}
+\newcommand{\AlgoArgs}[1]{$\Group{#1}$}
+
+\usepackage{tikz}
+\usepackage{tikz-timing}
+\usepackage{tkz-graph} 
+\usetikzlibrary{arrows,shapes.gates.logic.US,shapes.gates.logic.IEC,calc,shapes.geometric,positioning,babel}
+\input{circuitikz_shapes.tex}
+\usepackage[europeanresistors, siunitx]{circuitikz}
+
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+
+\title{Architecture des ordinateurs}
+\author{Jeremy Fix}
+\date{\today}
+
+
+\begin{document}
+
+\input{base_conversion.tex}
+
+
+\frontmatter
+\maketitle
+
+
+\pagebreak
+
+\input{realisation.tex}
+
+\pagebreak
+\tableofcontents
+%\pagebreak
+
+%%%%% Notes
+%%\input{notes.tex}
+
+
+
+%%%%% Introduction
+%% \input{introduction.tex}
+
+
+
+\mainmatter
+
+%%%%% Codage, arithmétique binaire
+\input{codage.tex}
+
+
+%%%%% Elements de circuits logiques
+\input{circuits_logiques.tex}
+
+
+%%%%% Instruction set architecture
+\input{isa.tex}
+
+
+
+%%\chapter{TD1/2 : Séquenceur manuel}
+%%\chapter{TL1 : Séquenceur micro-programmé}
+
+%%%%% Assemblage
+\input{assemblage.tex}
+
+%%%%% Compilateur , ...
+\input{compilation.tex}
+
+
+
+%%\chapter{TD3/4 : pile avec appel de sous-routines.}
+
+
+%%%%% Les mémoires
+\input{memoires.tex}
+
+
+%%%% Les interruptions
+\input{interruptions.tex}
+
+%%%% Bonus
+%\input{supplements.tex}
+
+%%\chapter{TD5/6: les interruptions}
+%%\chapter{TL : programmation assembleur, ordonnanceur}
+
+
+\appendix
+\chapter{Carte de référence}
+\includepdf[pages=-,angle=90]{reference_card.pdf}
+
+
+\backmatter
+%%%% Reference
+\input{references.tex}
+
+
+
+\end{document}

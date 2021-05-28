@@ -1,0 +1,49 @@
+\begin{thebibliography}{8}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ari()]{ArithBinaire}
+Algorithmes d'arithmétique binaire
+  \url{http://www.ecs.umass.edu/ece/koren/arith/simulator/}.
+
+\bibitem[Chr()]{ChrisTernam}
+Online video lectures, mit 6.004, chris ternam
+  \url{https://www.youtube.com/user/Cjtatmitdotedu}.
+
+\bibitem[Fam()]{FamillesLogiques}
+Description des niveaux de tension pour coder des niveaux logiques et acronymes
+  des composants logiques
+  \url{http://www.interfacebus.com/voltage_threshold.html}.
+
+\bibitem[IEE(2008)]{IEEE754}
+{IEEE} {Standard} for {Floating-Point} {Arithmetic}.
+\newblock \emph{IEEE Std 754-2008}, pages 1--70, Aug 2008.
+\newblock \doi{10.1109/IEEESTD.2008.4610935}.
+
+\bibitem[Aho et~al.(2006)Aho, Lam, Sethi, and Ullman]{DragonBook}
+Alfred~V. Aho, Monica~S. Lam, Ravi Sethi, and Jeffrey~D. Ullman.
+\newblock \emph{Compilers: Principles, Techniques, and Tools (2nd Edition) 2nd
+  Edition}.
+\newblock Addison Wesley, 2006.
+
+\bibitem[Alain~Cazes(2003)]{Cazes}
+Joelle~Delacroix Alain~Cazes.
+\newblock \emph{Architecture des machines et des systèmes informatiques,
+  4ième édition}.
+\newblock Dunod, 2003.
+
+\bibitem[Patterson and Hennessy(2007)]{Patterson}
+David Patterson and John Hennessy.
+\newblock \emph{Computer organization and designed : the hardware/software
+  interface, 3rd edition}.
+\newblock Morgan Kaufmann, 2007.
+
+\bibitem[Tanenbaum(2001)]{Tanenbaum}
+Andrew Tanenbaum.
+\newblock \emph{Architecture de l'ordinateur, 4ième édition}.
+\newblock Dunod, 2001.
+
+\end{thebibliography}

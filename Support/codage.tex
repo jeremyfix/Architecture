@@ -1,0 +1,747 @@
+\chapter{Codages et opérations binaires}
+
+%% \section{Notes}
+
+%% \begin{itemize}
+%% \item \textbf{Un mot binaire ne représente pas forcément un nombre donc bien parler de mot binaire}
+%% \item voir \url{http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/} sur comment expliquer la différente entre la représentation et la valeur ainsi que tout les trucs sur les représentations des nombres, normes,etc..
+%% \item voir \url{http://www.groupes.polymtl.ca/circuits-logiques/help/Chapitre07.pdf} cours d'archi justement
+%% \item \url{http://www.groupes.polymtl.ca/circuits-logiques/php/manuel.php}
+%% \end{itemize}
+
+\section{Représentation des entiers naturels}
+
+On va ici s'intéresser à la représentation d'un entier naturel. Quand on parle de représentation, il faut bien distinguer le représentant du représenté, et cette distinction est valable quel que soit le langage utilisé et quel que soit l'objet à représenter. Sur la figure \ref{fig:numeration}, vous trouverez différents symboles pour représenter des nombres, utilisés par les Egyptiens, les Mésopotamiens et les Shadoks.
+
+\begin{figure}[htbp]
+\begin{tabular}{ccc}
+\includegraphics[width=0.25\linewidth]{Figs/Egypte/1527.pdf}&
+\includegraphics[width=0.45\linewidth]{Figs/Mesopotamie/1527.pdf}&
+\includegraphics[width=0.25\linewidth]{Figs/Shadock/dessin.pdf}\\
+a) & b) & c)
+\end{tabular}
+\caption{\label{fig:numeration}a) Les egyptiens utilisaient un système additif. Chaque symbole représente une puissance de 10 et est répété autant de fois que nécessaire avec, en partant de la droite : les unités, les dizaines, les centaines et les milliers. Ici, nous avons la représentation de 1527. b) Les Mésopotamiens utilisaient un système mixte additif et positionnel en base 60 il y a environ 4000 ans. Chaque nombre entre 1 et 59 (le zéro allait bientôt apparaître) possède un symbole (en fait, les nombres 1, .. 9 puis 10, 20, .. 50 possède chacun leur symbole, les autres nombres 11, 12, ...49, 51, 52 .. sont construits à partir des premiers) et c'est sa position qui détermine la puissance de 60 à lui affecter. Ici, nous avons la représentation de $1527 = (20 + 5) * 60^1 + (20 + 7) * 60^0$. Source : \protect\url{https://fr.wikipedia.org/}. c) Le nombre Bu-Zo-Ga-Mu dans le système de numération Shadok, en base 4, soit le nombre $99 = 1.4^3 + 2.4^2 + 0.4 + 3$.}
+\end{figure}
+
+Les Egyptiens par exemple représentaient les nombres en base 10 avec un système additif: un symbole est affecté à chaque puissance de 10 et le nombre représenté est égal à la somme des valeurs des symboles. Comme chaque puissance de dix possède un unique symbole la représentant, la position des symboles n'influence pas la valeur représentée. Les Mésopotamiens utilisaient un système mixte positionnel et additif : un symbole est affecté aux unités et aux dizaines entre 1 et 59, ces symboles sont regroupés par paquet dont la valeur est égale à la somme des valeurs des symboles et chaque groupe de symboles se voit affecté une puissance de 60 croissante de droite à gauche. Sur la figure \ref{fig:numeration}b, il y a deux paquets de symbole; le paquet le plus à droite code 20 + 7, et le paquet le plus à gauche 20 + 5. La valeur représentée est donc décodée en affectant la puissance $60^0$ à 27 et $60^1$ à 25 ce qui nous donne : $60 * 25 + 27 = 1527$. On utilise encore de nos jours différentes bases pour représenter des nombres: la base 10 mais aussi les bases 24 et 60 pour les heures, minutes et secondes ou les angles en degrés et comme on va le voir, les bases 2, 8 et 16 sont très utilisées en informatique. Avant de se focaliser exclusivement sur les représentations en base 2 et 16, je vous propose un petit détour assez général par les représentations positionelles en base $p$ qui va nous permettre d'introduire quelques notions qu'on spécialisera ensuite sur les bases qui nous intéressent.
+
+
+\subsection{Représentation en base p}
+
+On s'intéresse maintenant uniquement aux systèmes positionnel. Dans un système positionnel en base $p \in \mathbb{N}, p \geq 2$, un entier naturel $n$ s'écrit de manière unique sous la forme$(a_{k-1}a_{k-2}\cdots a_{1}a_{0})_p$ avec $\forall i, a_i \in [0, p-1], a_{k-1} \neq 0$. La valeur associée à cette représentation est donnée par :
+\begin{eqnarray*}
+n = \sum_{i=0}^{k-1} a_i p^i
+\end{eqnarray*}
+Par exemple, en base $10$ la représentation $34$ a pour valeur $34$ ($a_1 = 3, a_0 = 4$) puisque~:
+\begin{eqnarray*}
+34 = 3. 10^1 + 4. 10^0
+\end{eqnarray*}
+On a l'habitude de travailler en base $10$ et on ne précise donc jamais la base dans laquelle on travaille mais il faut faire attention au fait que la valeur d'une représentation dépends de sa base. Par exemple si $34$ est interprété en base $16$, sa valeur vaut $3.16^1 + 4.16^0 = 52$. C'est pour cette raison qu'on précisera la base $p$ d'une représentation en notant $34_{10}$ pour la représentation de $34$ en base 10, ou $34_{16}$ pour la représentation de $52$ en base $16$. Quand la base n'est pas spécifiée, c'est qu'on considère la représentation en base $10$.\\
+
+Posons nous maintenant la question du changement de la base d'une représentation. Nous savons déjà passer de la représentation en base $p$ à la représentation en base 10 :
+\begin{eqnarray*}
+n = \sum_{i=0}^{k-1} a_i p^i
+\end{eqnarray*}
+Étant donnée la représentation en base $10$ d'un entier naturel $n$, sa représentation en base $p$ s'obtient quand à elle en appliquant des divisions Euclidiennes successives par $p$. En effet, il suffit de noter que~:
+\begin{eqnarray*}
+n = \sum_{i=0}^{k-1} a_i p^i = a_0 + p.(\sum_{0}^{k-2} a_{i+1} p^{i+1})
+\end{eqnarray*}
+Le reste de la division Euclidienne de $n$ par $p$ est donc $a_0$, le premier chiffre de la représentation de $n$ en base $p$. En répétant l'opération sur le quotient, on obtient tout les chiffres de la représentation de $n$ en base $p$. Par exemple :\\
+
+\begin{tabular}{>{\centering\bfseries}m{2in} >{\centering}m{1in}}
+$1527_{10} = <27><25>_{60}$
+&\baseconversiontable{1527}{60}\\
+\end{tabular}
+
+Je n'ai pas utilisé, dans l'exemple précédent, les symboles mésopotamiens dans la représentation en base 60, et j'ai plutôt regroupé les chiffres de la représentation par des $<.>$.\\
+
+%Évidemment, on aimerait effectuer des opérations sur les nombres. On a tous appris à calculer en base 10, qu'en est-il des opérations en base $b$ ?
+
+
+%% \begin{algorithm}
+%% \renewcommand{\algorithmicrequire}{\textbf{Entrée:} $n \in \mathbb{N}$, $b \in \mathbb{N}, b \geq 2$}
+%% \renewcommand{\algorithmicensure}{\textbf{Sortie:} $}
+%% \caption{Algorithme pour calculer la représentation en base $b$ d'un entier $n$.\label{algo:int_to_b}}
+%% \begin{algorithmic}
+%% \STATE toto
+%% \end{algorithmic}
+%% \end{algorithm}
+
+\subsection{Représentation binaire, p=2}
+
+Lorsque la base $p=2$, on parle de représentation binaire. On utilise alors uniquement les chiffres ou \emph{bits} $0$ et $1$. Par exemple, la représentation binaire du nombre $n = 421$ est~:\\
+\begin{tabular}{>{\centering\bfseries}m{2in} >{\centering}m{1in}}
+$421 = 110100101_2$
+&\baseconversiontable{421}{2}\\
+\end{tabular}
+
+Pour retrouver la valeur représentée, il suffit d'appliquer la formule $\sum_i a_i p^i$. Comme, en binaire, $a_i \in \{0, 1\}$, cela revient à sommer les puissances de deux pour lesquelles $a_i = 1$ :\\
+
+\begin{small}
+\centering\begin{tabular}{c|c|c|c|c|c|c|c|c|c}
+Puissance de 2 & $2^8 = 256$ & $2^7 = 128$ & $2^6 = 64$ & $2^5 = 32$ & $2^4 = 16$ & $2^3= 8$ & $2^2=4$ & $2^1 = 2$ & $2^0 = 1$\\
+\hline
+$421_{10}$  &   1 &  1 & 0 & 1 & 0 &0 &1 &0 &1 
+\end{tabular}
+\end{small}
+
+Et on a bien $421 = 256 + 128 + 32 + 4 + 1$. La représentation binaire est parfois notée avec le préfixe $0b$. On notera alors : $421 = 0b110100101$. Une représentation binaire sur $k$ bits peut représenter les entiers dans $[0, 2^k-1]$. Par exemple, sur $32$ bits, on peut représenter la plage d'entiers $[0, 4.294.967.295]$. Dans la représentation binaire $a_{k-1}\cdots a_0$, le premier bit $a_{k-1}$ est appelé \textbf{bit de poids fort} et le dernier bit $a_0$ est appelé \textbf{bit de poids faible}. Un regroupement de $8$ bits est appelé un octet (\emph{byte} en anglais). Un mot de 32 bits contient donc 4 octets. Un octet ($1$o) peut représenter des entiers naturels dans le domaine $[0, 255]$. On utilise couramment en informatique des multiples de l'octet : le kilooctet ($1$ko = $1024$o = $2^{10}$ o), le megaoctet ($1$Mo = $1024$ko=$2^{20}$o), le gigaoctet ($1$Go = $1024$Mo) et de plus en plus fréquemment le téraoctet ($1$To = $1024$Go). Par exemple, les disques durs grand public atteignent facilement en 2015 une capacité de quelques téraoctets.
+
+\subsection{Représentation hexadécimale, p=16}
+
+Lorsque la base $p=16$, on parle de représentation hexadécimale. Pour n'utiliser qu'un seul symbole par chiffre, on utilise par convention un mélange de chiffres et de lettres $0, 1, \cdots, 9, A, B, \cdots, F$ pour représenter les valeurs $0, 1, ... 9, 10, ... 15$. Par exemple, la représentation hexadécimale de $421$ est~:\\
+
+\begin{tabular}{>{\centering\bfseries}m{2in} >{\centering}m{1in}}
+$421 = 1A5_{16}$
+&\baseconversiontable{421}{16}\\
+\end{tabular}
+
+La représentation hexadécimale est parfois notée avec le préfixe $0\times$. On notera alors $421 = 0\times1A5$.
+
+\subsection{Raccourcis de conversion binaire/hexadécimal}
+
+Comme la base hexadécimale est multiple de la base binaire $16 = 2^4$, on peut très facilement passer d'une représentation binaire à une représentation hexadécimale et vice versa. Il suffit pour cela de grouper les bits par paquets de 4~:
+\begin{eqnarray*}
+421_{10} =  (\overbrace{0001}^{(1}\quad\overbrace{1010}^{A}\quad\overbrace{0101}^{5)_{16}})_2
+\end{eqnarray*}
+Pour la conversion hexadécimale vers binaire, il suffit de mettre bout à bout les représentations binaires de chacun des chiffres de la représentation hexadécimale.
+
+\subsection{Codage Binary Coded Décimal et Codage de Gray}
+
+On verra un peu plus tard que pour certaines utilisations, d'autres codage que ceux présentés jusque maintenant sont très pratiques. Le codage BCD ``Binary Coded Decimal'' est, disons, un système à deux niveaux. Pour construire la représentation BCD du nombre 421, on met simplement bout à bout les représentations binaires sur 4 bits\footnote{Il faut 4 bits pour représenter tous les chiffres de 0 à 9} de chacun des chiffres 4, 2, 1 (d'où le nom décimal codé binaire):
+\begin{eqnarray*}
+421 = \overbrace{0100}^{4} \overbrace{0010}^{2} \overbrace{0001}^{1}
+\end{eqnarray*}
+On verra un peu plus tard que ce codage est particulièrement adapté lorsqu'on souhaite afficher des nombres. Dans une représentation binaire naturelle disons, les chiffres des unités, dizaines, etc.. sont complètement mélangés. Si on veut afficher un entier (sur un afficheur 7 ségments, comme on le verra en TP), il est nécessaire de dissocier les représentations de chacun des chiffres, ce que permet le codage BCD.\\
+
+
+Le codage de Gray a été introduit dans les années 1950. Contrairement au codage binaire introduit précédemment, il n'y qu'un et un seul bit qui change entre la représentation des valeurs $n$ et $n+1$. Vous trouverez ci-dessous une comparaison entre un codage binaire comme introduit précédemment et le code de Gray.
+
+\begin{center}
+\begin{tabular}{c|c|c}
+valeur & représentation binaire & représentation de Gray\\
+\hline
+0  & 000 & 000 \\
+1  & 001 & 001 \\
+2  & 010 & 011 \\
+3  & 011 & 010 \\
+4  & 100 & 110 \\
+5  & 101 & 111 \\
+6  & 110 & 101 \\
+7  & 111 & 100
+\end{tabular}
+\end{center}
+
+
+Il a été introduit notamment pour éviter des états transitoires indésirables lorsqu'on incrémente un nombre\footnote{Avec une représentation binaire, si un circuit incrémenteur n'a pas la même lattence pour modifier les valeurs des bits, on pourrait, en allant de $001_2$=1 à $010_2$=2, passer par la représentation $011_2$=3, ce qui n'est pas le cas avec le codage de Gray puisqu'un seul bit change à chaque étape} et s'avère également très pratique lorsqu'on est amené à simplifier des expressions booléennes avec des tableaux de Karnaugh.
+
+
+\section{Opérations arithmétiques sur les représentations non signées}
+
+L'addition de nombres représentés en base $p$ se fait comme on a l'habitude en base 10. On commence par additionner les chiffres ``les plus à droite'' et on propage l'éventuelle retenue. Par exemple, en binaire, l'addition $4_{10} = 1_{10} + 3_{10} = 001_2 + 011_2 = 100_2$ s'écrit\footnote{En toute rigueur, nous devrions utiliser un symbole différent pour représenter l'addition entre les représentations dans différentes bases puisque ces opérations travaillent sur des éléments provenant d'ensembles différents} :\\
+\begin{center}
+\begin{tabular}{cccc}
+& $0^1$ & $0^1$ & $1$ \\
++&$0$ & $1$ & $1$\\
+\hline
+ &$1$ &$0$ &$0$ 
+\end{tabular}
+\end{center}
+Comme il y a unicité des représentations en base $p$, vous pouvez aussi tout à fait passer par la base $10$ pour faire vos calculs et retourner ensuite en base $p \geq 2$~:
+\begin{eqnarray*}
+(p-1)_p + (p-1)_p = (p-1)_{10} + (p-1)_{10} = p_{10} + (p-2)_{10} = (1<p-2>)_p
+\end{eqnarray*}
+Concentrons nous maintenant sur la base $p=2$ puisque je ne vous cache pas que nous allons essentiellement nous intéresser aux opérations arithmétiques binaires. Commençons par construire la table d'addition de deux bits en dissociant le reste de la retenue (Table \ref{table:addition_2bits}):
+\begin{table}[h!]
+\centering\begin{tabular}{cc}
+\begin{tabular}{cc|cc}
+$a$ & $b$ & Retenue & Reste\\
+\hline
+0 & 0 & 0 & 0\\
+0 & 1 & 0 & 1\\
+1 & 0 & 0 & 1\\
+1 & 1 & 1 & 0
+\end{tabular}&
+\begin{tabular}{ccc|cc}
+$a$ & $b$ & $r$& Retenue & Reste\\
+\hline
+0 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 1\\
+1 & 0 & 0 & 0 & 1\\
+1 & 1 & 0 & 1 & 0\\
+0 & 0 & 1 & 0 & 1\\
+0 & 1 & 1 & 1 & 0\\
+1 & 0 & 1 & 1 & 0\\
+1 & 1 & 1 & 1 & 1
+\end{tabular}
+\end{tabular}
+\caption{\label{table:addition_2bits} Tables d'addition de deux bits avec éventuellement une retenue. Chacun des résultats peut se diviser en une retenue et un reste. Par exemple $1_2 + 1_2 + 1_2$ produit le reste $1_2$ et la retenue $1_2$.}
+\end{table}
+
+Les résultats de ce tableau d'addition peuvent être divisés en deux parties : la retenue et le reste. Par exemple, $0_2 + 0_2$ produit la retenue $0_2$ et le reste $0_2$ alors que $1_2 + 1_2$ produit la retenue $1_2$ et le reste $0_2$. D'ailleurs, de manière générale, notez qu'en base $p\geq 2$, la retenue sera toujours 0 ou 1 puisque $(p-1)_p + (p-1)_p = (1<p-2>)_p$ et $(p-1)_p + (p-1)_p + 1_p = (1<p-1>)_p$; ce qui donne par exemple : $9 + 9 = 18$,$9+9+1=19$; $F_{16} + F_{16} = 1E_{16}$; $F_{16} + F_{16} + 1 = 1F_{16}$; $1_2 + 1_2 = 10_2$ et $1_2 + 1_2 + 1_2 = 11_2$.
+
+Nous pouvons maintenant introduire un algorithme calculant l'addition de deux entiers naturels et travaillant directement sur les représentations binaires de ces entiers. L'algorithme \ref{algo:addition_binaire} n'est rien d'autre que l'addition telle qu'on l'a apprise à l'école, c'est à dire posée.
+
+\begin{algorithm}
+\caption{\AlgoName{Addition de deux entiers naturels représentés en binaire} \label{algo:addition_binaire}}
+\begin{algorithmic}[1]
+%\REQUIRE Deux entiers $a = (a_{n-1}...a_0)_2$, $b=(b_{n-1}...b_0)_2$ codés sur $n$ bits
+%\ENSURE La représentation $(c_n c_{n-1} ... c_0)_2$ sur \textbf{n+1 bits} de $c = a + b$
+\Function{Addition}{$a$, $b$}
+\State $r\gets 0$
+\For{$i=0$ à $n-1$}
+\State $c_i = \text{reste}(a_i + b_i + r)$
+\State $r = \text{retenue}(a_i + b_i + r)$
+\EndFor
+\State $c_n = r$
+\State \Return $(c_n c_{n-1} .. c_ 0)$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+En sommant deux représentations sur $n$ bits, on peut avoir besoin de $n+1$ bits pour représenter le résultat tel que le bit de poids fort soit non nul. Par exemple $11_2 + 01_2 = 100_2$. Dans ce cas, on dira que le résultat est le résultat sur $n$ bits, le $n+1$ ième bit étant appelé la retenue (\emph{carry}). Par exemple le résultat sur $2$ bits de $11_2 + 01_2$ est $00_2$ avec une retenue $r=1$.
+
+L'algorithme d'addition \ref{algo:addition_binaire} est naïf et nécessite de répéter $n$ fois les opérations ``retenue'' et ``reste''. Des algorithmes plus performants, comme l'algorithme de Kogge-Stone permettent de réaliser cette opération en un nombre d'étapes de l'ordre de $K \times \log(n)$ avec $K$ une certaine constante indépendante de $n$.\\
+
+La soustraction peut se poser de la même façon, mais cette fois-ci avec l'emprunt de la retenue si besoin. Je vous représente ci-dessous les différentes étapes pour calculer la soustraction binaire $100_2 - 001_2$ :
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Figs/entiers_soustraction.pdf}
+\end{center}
+Dans la soustraction, $100_2 - 001_2$, la première opération $0_2 - 1_2$ nécessite d'emprunter une retenue qui est propagée jusqu'au premier chiffre non nul (jusqu'aux ``centaines''). L'emprunt d'une retenue aux ``centaines'' annule le chiffre des ``centaines'', fait apparaître un deux aux ``dizaines'' (puisque $2^3 = 2.2^2$) auquel on emprunte également une retenue. On finit par faire la soustraction $2 - 1 = 1$. On fait exactement la même chose en base 10, lorsqu'une centaine vaut 10 dizaines et qu'une dizaine vaut 10 unités :
+\begin{center}
+\includegraphics[width=0.5\linewidth]{Figs/entiers_soustraction_base10.pdf}
+\end{center}
+Comment faire quand la première opérande est plus petite que la deuxième ? Nous allons le voir dans un instant en introduisant des représentations pour les entiers relatifs, dont une particulièrement adaptée pour faire des opérations de soustraction sur les entiers.\\
+
+La multiplication en base $p$ se fait, comme on a appris à l'école, en la posant. En binaire, la multiplication est encore plus simple puisqu'elle repose uniquement sur des décalages et des additions. En effet $11_2 \times 1_2 = 11$, $11_2 \times 10_2 = 110$, ..; Ainsi : $11_2 \times 11_2 = 11_2 \times 1_2 + 11_2 \times 10_2 = 11_2 + 110_2 = 1001_2$ (on retrouve bien $3 \times 3 = 9$). Pour la division, on peut aussi procéder en posant la division en base 2 comme on a appris à la poser en base 10.
+
+
+%% Attention, l'opération peut générer une retenue résiduelle. Par exemple, avec des représentations binaires sur 3 bits, l'addition 5 + 3 = 8 génère une retenue :\\
+%% \begin{center}
+%% \begin{tabular}{cccc}
+%% & 1 & 0 & 1 \\
+%% +&0 & 1 & 1\\
+%% \hline
+%% (1) &0 &0 &0 
+%% \end{tabular}
+%% \end{center}
+
+
+\section{Représentations et opérations avec un nombre fixé de bits}
+
+Jusqu'à maintenant, on ne s'est pas trop soucié du nombre de bits à utiliser pour construire des représentations. Après tout, $10_2 = 2$, $100_2=4$, $1000=8$, ... et on pourrait se dire qu'il suffit d'utiliser un nombre de bits suffisant pour représenter une valeur. Sauf que pour réaliser physiquement un ordinateur, il faut se fixer le nombre de bits qu'on va utiliser. Par exemple, les ordinateurs dits ``32 bits'' et ``64 bits'' utilisent respectivement des représentations des entiers sur 32 et 64 bits. Se fixant un nombre de bits $n$, on ne peut pas représenter plus de $2^n$ valeurs différentes. Le plus petit entier naturel représentable est $0$ et le plus grand entier représentable est $\sum_{i=0}^{n-1} 2^i = 2^n - 1$. Par exemple, sur une machine 32 bits, les entiers naturels sont limités à la plage $[0, 4.294.967.295]$.
+
+\section{Représentation des entiers relatifs}
+
+Le problème de la représentation des entiers négatifs a connu plusieurs réponses au début du développement des ordinateurs. Nous allons notamment voir deux représentations simples (la représentation par offset et la représentation par valeur signée) mais qui ont chacune un inconvénient avant d'introduire la représentation par complément qui s'est imposée. Le problème de la représentation des nombres négatifs consiste à trouver une représentation des entiers relatifs sur $n$ bits qui permettent de réaliser facilement le codage/décodage en base 10 et les opérations arithmétiques.
+
+\subsubsection{Codage par offset}
+
+Le codage par offset (\emph{excess-K}, \emph{offset binary}) est la façon la plus simple de représenter des entiers négatifs et positifs. Il consiste à représenter l'entier le plus négatif par $\overbrace{000\cdots 0}^{k \mbox{ bits}}$ et l'entier le plus positif par $\overbrace{111\cdots 1}^{k\mbox{ bits}}$. Par convention, on représente la plage des entiers $[-2^{k-1}, 2^{k-1}-1]$ (qui contient $2^k$ valeurs). Par exemple, la table ci-dessous donne le codage des entiers par offset pour $k=3$ bits~:
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c|c}
+Entier $n$ & -4 & -3 & -2& -1 & 0 & 1 & 2 & 3\\
+\hline
+Codage par offset & $000_{2K}$ & $001_{2K}$ & $010_{2K}$ & $011_{2K}$ & $100_{2K}$ & $101_{2K}$ & $110_{2K}$ & $111_{2K}$
+\end{tabular}
+\end{center}
+Pour coder un entier relatif $n \in [-2^{k-1}, 2^{k-1}-1]$, on commence par lui ajouter $K=2^{k-1}$ et on calcule la représentation non signée de l'entier positif $n+2^{k-1}$. C'est le fait d'ajouter cette constante $K = 2^{k-1}$ qui donne le nom de codage par offset. Remarquez qu'on pourrait choisir une valeur d'offset différente de $2^{k-1}$ pour déplacer arbitrairement, selon les besoins, la plage des entiers représentés. Pour décoder la valeur en base $10$ d'un nombre codé par offset $a_{k-1}a_{k-2}\cdots a_{1}a_{0}$, il suffit de décoder la valeur comme si nous représentions un entier non signé et de soustraire au résultat l'offset K, en d'autres termes~:
+\begin{eqnarray*}
+ n = \sum_{i=0}^{k-1} a_i 2^i - 2^{k-1}
+\end{eqnarray*}
+En codage par offset, l'entier $n=0$ est toujours représenté par un $1$ sur le bit de poids fort et des zéros sinon : $0 = 1\overbrace{0\cdots 0}^{k-1\mbox{ bits}}$. On remarquera que les entiers strictement négatif ont un bit de poids fort nul alors que les entiers positifs ont un bit de poids fort égal à 1.
+
+L'addition avec des représentations par offset nécessite un circuit différent de l'addition des représentations non signées. En effet, si nous posons l'addition comme nous l'avons fait avec les représentations non signées, on obtient $(-1)_{2K} + (1)_{2K} = (-4)_{2K}$ :
+
+\begin{center}
+\begin{tabular}{ccccc}
+  & 0 & 1 & 0 & $011_{2K} = -2$\\
++ & 1 & 0 & 1 & $101_{2K}= 1$\\
+\cline{0-3}
+  & 1 & 1 & 1 & $111_{2K} = 3$
+\end{tabular}
+\end{center}
+
+La représentation par offset n'a pas que des inconvénients. Elle a au moins un avantage, les opérations de comparaison sont très simples. Pour savoir si un nombre est plus grand qu'un autre, il suffit de comparer les représentations bit à bit de gauche à droite, c'est à dire le même circuit que pour comparer des représentations non signées\footnote{Un peu plus tard, nous introduisons le codage par complément à deux qui nécessite un circuit différent pour comparer les représentations non signées d'une part et les représentations signées d'autre part}. Dés que deux bits diffèrent, on peut dire quel nombre est plus grand que l'autre :
+
+\begin{algorithm}
+\caption{\AlgoName{Comparaison de deux représentations codées par offset} \label{algo:comparaison_offset}}
+\begin{algorithmic}[1]
+\Function{Comparaison}{$a$, $b$}
+
+\State{$i \gets n-1$}
+\While{$a_i == b_i$ et $i \geq 0$}
+\State $i \gets i - 1$
+\EndWhile
+\If{$i < 0$}
+\State \Return $a$ égal à $b$
+\ElsIf{$a_i = 1$}
+\State \Return $a$ plus grand que $b$
+\Else
+\State \Return $a$ plus petit que $b$
+\EndIf
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+%% \begin{algorithm}
+%% \caption{\AlgoName{Comparaison de deux représentations codées par offset} \label{algo:comparaison_offset}}
+%% \begin{algorithmic}[1]
+%% \REQUIRE Deux entiers $a = (a_{n-1}...a_0)_2$, $b=(b_{n-1}...b_0)_2$ codés sur $n$ bits par décalage
+%% \STATE{Initialiser $i = n-1$}
+%% \WHILE{$a_i == b_i$ et $i \geq 0$}
+%% \STATE $i = i - 1$
+%% \ENDWHILE
+%% \IF{$i < 0$}
+%% \RETURN $a$ égal à $b$
+%% \ELSIF{$a_i = 1$}
+%% \RETURN $a$ plus grand que $b$
+%% \ELSE
+%% \RETURN $a$ plus petit que $b$
+%% \ENDIF
+%% \end{algorithmic}
+%% \end{algorithm}
+
+\subsubsection{Codage par valeur signée}
+
+Le codage par valeur signée (\emph{sign-magnitude}) consiste à réserver le bit de poids fort pour coder le signe ($a_{k-1} = 0$ pour les entiers positifs et $a_{k-1}=1$ pour les entiers négatifs) et le reste de la représentation $a_{k-2}\cdots a_0$ pour représenter la valeur absolue de l'entier en représentation non signée. L'entier $n=0$ admet alors deux codages $0\overbrace{0\cdots 0}^{k-1\mbox{ bits}}$ (0 positif) ou $1\overbrace{0\cdots 0}^{k-1\mbox{ bits}}$ (0 négatif). Il reste donc un nombre pair de nombres en excluant 0 et un codage sur $k$ bits code donc la plage $[-2^{k-1}+1, 2^{k-1}-1]$. Par exemple, la table ci-dessous donne la codage des entiers par valeur signée pour $k=3$ bits~:
+
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c|c}
+Entier $n$ & -3 & -2& -1 & 0 & 1 & 2 & 3 \\
+\hline
+Codage par valeur signée & $111_{2s}$ & $110_{2s}$ & $101_{2s}$ & $100_{2s}$\mbox{ ou } $000_{2s}$ & $001_{2s}$ & $010_{2s}$ & $011_{2s}$
+\end{tabular}
+\end{center}
+
+Cette représentation a le désavantage d'avoir deux représentations pour le $0$; Lorsqu'on doit vérifier si un résultat est nul, il faut se comparer à deux représentations possibles. Plus gênant, les opérations arithmétiques nécessitent des circuits différents des opérations arithmétiques sur les représentations non signées. En effet, si on utilise l'addition sur les représentations non signées, le résultat de $1 + (-1)$ est incorrect~:
+\begin{eqnarray*}
+1 + (-1) = (001)_{2s} + (101)_{2s} = (110)_{2s} = -2
+\end{eqnarray*}
+
+
+%% \subsection{Complément réduit et complément vrai}
+
+%% On va introduire deux notions qui vont nous permettre de définir une représentation astucieuse des entiers négatifs qui facilitera les opérations arithmétiques sur les entiers relatifs\footnote{et se faisant les soustractions sur les entiers positifs}. Ces notions sont les notions de complément réduit et de complément. Le \textbf{complément réduit} d'une représentation en base $p$ $(a_{k-1}...a_0)_p$ est simplement la représentation $(b_{k-1}...b_0)_p$ formée des chiffres $a_i$ complémentés à $p-1$:
+%% \begin{eqnarray*}
+%% (b_{k-1}...b_0)_p &=&\overline{(a_{k-1}...a_0)_p}\\
+%% \forall i, b_i &=& p - 1 - a_i
+%% \end{eqnarray*}
+%% Nous noterons $(b_{k-1}...b_0)_p = \overline{(a_{k-1}...a_0)_p}$. Par exemple, le complément réduit en base 2 de la représentation $010_2$ est $101_2$ : $\overline{010_2} = 101_2$. Remarquez qu'avec une représentation binaire, il suffit de changer les 0 en 1 et les 1 en 0. \\
+
+%% Lorsqu'un nombre et son complémentaire réduit sont additionnés, on obtient toujours le nombre $(<p-1><p-1>...)_p$. Par exemple $010_2 + \overline{010_2} = 101_2 + 010_2 = 111_2$.\\
+
+
+%% Nous avons ici utilisé une représentation sur 3 bits, mais nous aurions très bien pu considérer une représentation sur 4 bits ($0010_2$ dont le complément réduit est $1101_2$), sur 5 bits ($00010_2$ dont le complément réduit est $11101_2$), etc...\\
+
+%% Le \textbf{complément} d'une représentation en base $p$ $(a_{k-1}...a_0)_p$ est calculé à partir du complément réduit auquel on ajoute $1$. On notera alors $\overline{(a_{k-1}...a_0)_p}^+ = \overline{(a_{k-1}...a_0)_p} + 1$:
+%% \begin{eqnarray*}
+%% \overline{(a_{k-1}...a_0)_p}^+ &=& \overline{(a_{k-1}...a_0)_p} + 1\\
+%% (b_{k-1}...b_0)_p &=&\overline{(a_{k-1}...a_0)_p}\\
+%% \forall i, b_i &=& p - 1 - a_i
+%% \end{eqnarray*}
+
+%% \textbf{Pourquoi le complément se comporte comme le négatif du nombre ?}
+%% Voir \url{http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Data/twoscomp.html} pour différentes vues sur le complément à deux qui permet d'expliquer : 1) pourquoi additionner soustraire marche comme additionner des non signés avec la deuxième opérande complémenté, 2) pour complémenter est une involution (fof = id) , ..
+
+%% voir peut être aussi \url{http://igoro.com/archive/why-computers-represent-signed-integers-using-twos-complement/}
+
+\subsection{Complément réduit et complément vrai}
+
+Les deux représentations introduites précédemment (par offset et par valeur signée) ont chacune l'inconvénient de nécessiter des circuits spécialisés (différents de ceux impliqués pour les opérations sur les représentations non signées) pour les opérations arithmétiques. Posons nous donc la question de la représentation des entiers négatifs de la manière suivante : soit une représentation $a_{k-1} ... a_0$ d'un entier $a$ , quelle doit être la représentation $b_{k-1}...b_0$ de la valeur $-a$ de telle sorte que l'addition posée donne $\overbrace{0000}^{k\mbox{ bits}}$ ?\\
+
+\begin{center}
+\begin{tabular}{ccccc}
+  & $a_{k-1}$ & $a_{k-2}$ & $\cdots$ & $a_0$\\
++ & $b_{k-1}$ & $b_{k-2}$ & $\cdots$ & $b_0$ \\
+\hline
+  & 0        &  0       &  0       & 0
+\end{tabular}
+\end{center}
+
+Si on prends $b_i = 1-a_i$ et qu'on ajoute $1$ au résultat , alors :
+\begin{center}
+\begin{tabular}{ccccc}
+  & $a_{k-1}$ & $a_{k-2}$ & $\cdots$ & $a_0$\\
++ & $1-a_{k-1}$ & $1-a_{k-2}$ & $\cdots$ & $1-a_0$ \\
+\hline
+  & 1        &  1       &  1       & 1\\
++ & 0        & 0        & 0        & 1\\
+\hline
+(1)& 0     & 0          &0          &0
+\end{tabular}
+\end{center}
+On appelle \textbf{complément à un} de la représentation $a_{k-1}....a_0$, la représentation $(1-a_{k-1})..(1-a_0)$. Le codage par complément à un sur k bits d'un nombre négatif s'obtient en inversant tout les bits (remplacer les 0 par des 1 et les 1 par des 0) de la représentation non signée de sa valeur absolue sur k-1 bits. Par exemple, avec k=3 bits :
+\begin{eqnarray*}
+3 = 011_2 ; -3 = 100_2
+\end{eqnarray*}
+On appelle \textbf{complément à deux} de la représentation $a_{k-1}....a_0$, la représentation $(1-a_{k-1})..(1-a_0) + 1$. Le codage par complément à deux s'obtient simplement en inversant tout les bits (pour construire le complément à un) et à ajouter $1$ au résultat. La table ci-dessous donne le codage des entiers par complément pour $k=3$ bits:
+
+\begin{center}
+\begin{tabular}{c|c|c|c|c|c|c|c|c|c}
+Entier $n$ & -4 & -3 & -2& -1 & 0 & 1 & 2 & 3 \\
+\hline
+Codage par complément à un & - & 100 & 101 & 110 & 111 ou 000 & 001 & 010 & 011\\
+\hline
+Codage par complément à deux & 100 & 101 & 110 & 111 & 000 & 001 & 010 & 011
+\end{tabular}
+\end{center}
+
+Notez que pour la représentation de ``0'', on part de ``000'', on calcule son complément à 1, soit ``111'' auquel on ajoute 1 en gardant le résultat sur 3 bits et donc en ignorant la retenue. Quelques exemples supplémentaires :
+\begin{eqnarray*}
+42 = 0010\quad1010 \stackrel{\mbox{complément à un}}{\Rightarrow} 1101\quad0101  \stackrel{\mbox{+1}}{\Rightarrow} 1101\quad0110 = -42\\
+-42 = 1101\quad0110\stackrel{\mbox{complément à un}}{\Rightarrow} 0010\quad1001  \stackrel{\mbox{+1}}{\Rightarrow} 0010\quad1010 = 42
+\end{eqnarray*}
+
+Le ``complément à un'' donne deux représentations du $0$ et permet de représenter la plage des entiers $[-2^{k-1}+1, 2^{k-1}-1]$. La représentation par complément à deux ne donne qu'une représentation du $0$ et permet de représenter les entiers $[-2^{k-1}, 2^{k-1}-1]$. Le bit de poids fort d'un nombre négatif est à 1, le bit de poids fort d'un nombre positif est à 0.\\
+
+On retiendra les étapes de conversion suivante. Pour convertir un entier $n \in [-2^{k-1}, 2^{k-1}-1]$ dans sa représentation en complément à deux :
+\begin{itemize}
+\item Si $n \geq 0$, on calcule sa représentation non signée
+\item Si $n < 0$, on calcule la représentation non signée de $-n$, on inverse tout les bits et on ajoute 1
+\end{itemize}
+Pour calculer la valeur décimale d'une représentation par complément $a_{k-1}....a_0$ :
+\begin{itemize}
+\item si $a_{k-1} = 0$, le nombre est positif et sa valeur est $\sum_{i=0}^{k-2} a_i 2^i$,
+\item si $a_{k-1} = 1$, le nombre est négatif. Sa valeur absolue est calculée en complémentant la représentation $(1-a_{k-2})..(1-a_0) + 1$ et en calculant sa valeur.
+\end{itemize}
+On peut aussi directement calculer la valeur décimale d'une représentation par complément à deux grâce à la formule : $(a_{k-1}....a_0)_2 = -a_{k-1}2^{k-1} + \sum_{i=0}^{k-2} a_i 2^i$.
+
+
+%% Le complément à deux d'un nombre $a = 0a_{k-2}\cdots a_0$ se calcule par~:
+%% \begin{eqnarray*}
+%% \overbrace{2^{k-1} + \sum_{i=0}^{k-2} (1-a_i)2^i}^{\mbox{complément à un}} + 1 &=& 1 + 2^{k-1} + \sum_{i=0}^{k-2} (1-a_i) 2^i\\
+%% &=& 2 + \sum_{i=0}^{k-2} 2^i + \sum_{i=0}^{k-2} (1-a_i) 2^i\\
+%% &=& 2 + \sum_{i=0}^{k-2} (2 - a_i) 2^i
+%% \end{eqnarray*}
+
+
+\section{Opérations arithmétiques sur les représentations signées}
+
+
+\subsection{Additions/Soustractions}
+% voir \url{https://en.wikipedia.org/wiki/Method_of_complements} sur comment faire des opérations avec les trois représentations sign-magnitude, one complement, two complement
+
+Nous considérons ici uniquement la représentation par complément à deux, car, comme nous l'avons esquissé précédemment, cette représentation facilite les opérations arithmétiques. L'addition en complément à deux se réalise de la même façon que l'addition sur les représentations non signées :
+
+\begin{tabular}{ccc|cc}
+$a$ & $b$ & $r$& Retenue & Reste\\
+\hline
+0 & 0 & 0 & 0 & 0\\
+0 & 1 & 0 & 0 & 1\\
+1 & 0 & 0 & 0 & 1\\
+1 & 1 & 0 & 1 & 0\\
+0 & 0 & 1 & 0 & 1\\
+0 & 1 & 1 & 1 & 0\\
+1 & 0 & 1 & 1 & 0\\
+1 & 1 & 1 & 1 & 1
+\end{tabular}
+
+\begin{algorithm}
+\caption{\AlgoName{Addition de deux entiers relatifs représentés en complément à deux} \label{algo:addition_binaire_2complement}}
+\begin{algorithmic}[1]
+\Function{Addition}{$a$, $b$}
+
+\Require Deux entiers $a = (a_{n-1}...a_0)_2$, $b=(b_{n-1}...b_0)_2$ codés sur $n$ bits
+\Ensure La représentation $(c_{n-1} ... c_0)_2$ sur \textbf{n bits} de $c = a + b$
+\State{$r \gets 0$}
+\For{$i=0$ à $n-1$}
+\State $c_i \gets \text{reste}(a_i + b_i + r)$
+\State $r \gets \text{retenue}(a_i + b_i + r)$
+\EndFor
+%\State \todo{et la retenue et l'overflow ?}
+\State \Return $(c_n c_{n-1} .. c_ 0)$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+
+
+%% \begin{algorithm}
+%% \caption{\AlgoName{Addition de deux entiers relatifs représentés en complément à deux} \label{algo:addition_binaire_2complement}}
+%% \begin{algorithmic}[1]
+%% \REQUIRE Deux entiers $a = (a_{n-1}...a_0)_2$, $b=(b_{n-1}...b_0)_2$ codés sur $n$ bits
+%% \ENSURE La représentation $(c_{n-1} ... c_0)_2$ sur \textbf{n bits} de $c = a + b$
+%% \STATE{Initialiser $r = 0$}
+%% \FOR{$i=0$ \TO $n-1$}
+%% \STATE $r = \text{retenue}(a_i + b_i + r)$
+%% \STATE $c_i = \text{reste}(a_i + b_i + r)$
+%% \ENDFOR
+%% \STATE \todo{et la retenue et l'overflow ?}
+%% \RETURN $(c_n c_{n-1} .. c_ 0)$
+%% \end{algorithmic}
+%% \end{algorithm}
+
+Par exemple, pour réaliser l'opération $3 + (-2)$ sur $k=3$ bits, on commencera par construire les représentations par complément à deux de $3$ et $-2$ :
+\begin{itemize}
+\item[] $3 = (011)_2$
+\item[] $2 = (010)_2 \Rightarrow (-2) = (110)_2$
+\end{itemize}
+et on posera l'addition :
+
+\begin{tabular}{cccc}
+& 0 & 1 & 1\\
++& 1 & 1 & 0 \\
+\hline
+(1) & 0 & 0 & 1
+\end{tabular}
+
+La valeur décimale de la représentation en complément à deux $001$ est : $-0\times 2^3 + 1 = 1$. Calculons maintenant $2 + (-3)$ :
+\begin{itemize}
+\item[] $3 = (011)_2 \Rightarrow (-3) = (101)_2$
+\item[] $2 = (010)_2$
+\end{itemize}
+et on pose l'addition :
+
+\begin{tabular}{cccc}
+& 1 & 0 & 1\\
++& 0 & 1 & 0 \\
+\hline
+(0) & 1 & 1 & 1
+\end{tabular}
+
+La valeur décimale de la représentation en complément à deux $111$ est : $-1\times 2^3 + 1 + 2 + 4 = -1$. On trouve également la valeur décimale en complémentant $\overline{111_2} + 001_2= 001_2 = 1$ et en retournant l'opposé.
+
+Utilisant un nombre fixé de bits pour représenter les valeurs, certaines opérations peuvent conduire à des résultats faux. Lorsque le résultat d'une opération arithmétique est plus petit que le plus entier représentable ou plus grand que le plus grand entier représentable, on peut avoir un dépassement de capacité (\textbf{overflow}). Le dépassement de capacité apparaît lorsque l'addtion de deux nombres positifs conduit à la représentation d'un nombre négatif ou lorsque l'addition de deux nombres négatifs conduit à la représentation d'un nombre positif; il ne peut jamais apparaître lors de l'addition d'un nombre positif et d'un nombre négatif. Par exemple, si on additionne $3 + 3$ sur $k=3$ bits, un dépassement de capacité se produit :
+
+\begin{tabular}{cccc}
+& 0 & 1 & 1\\
++& 0 & 1 & 1 \\
+\hline
+(0) & 1 & 1 & 0
+\end{tabular}
+
+En effet $110_2$ est la représentation en complément à deux du nombre négatif $-6 \neq 3 + 3$. Le problème apparaît aussi en additionnant des nombres négatifs, $(-3) + (-3)$ sur $k=3$ bits. Les représentations en complément à deux de $-3$ étant $101_2$, l'addition donne:
+
+\begin{tabular}{cccc}
+& 1& 0 & 1\\
++& 1 & 0 & 1 \\
+\hline
+(1) & 0 & 1 & 0
+\end{tabular}
+
+La représentation $010_2$ a pour valeur $2 \neq -6$ en complément à deux. Dans le cas précédent, il y a overflow et génération d'une retenue mais il n'y a pas équivalence entre les deux. L'exemple ci-dessous conduit à la génération d'une retenue sans pour autant qu'il y ait dépassement de capacité.
+\begin{tabular}{ccccc}
+    & 0 & 1 & 1 & $3_2$\\
++   & 1 & 1 & 0 & $(-2)_2$\\
+\hline
+(1) & 0 & 0 & 1 & $1_2$
+\end{tabular}
+
+Une règle que je ne détaillerais pas est qu'il y a dépassement de capacité si et seulement si la retenue entrante lors du calcul du bit le plus à gauche (le bit de signe) est différente de la retenue sortante. Nous ne détaillerons pas plus le débordement de capacité mais c'est un aspect à prendre en compte lorsqu'on réalise des circuits réalisant ces opérations arithmétiques.
+
+%\subsection{Mutliplication/Division}
+
+
+%\subsection{Généralisation de la méthode des complément en base $p$}
+
+
+
+\section{Représentation des nombres réels : virgule fixe et virgule flottante}
+
+\subsection{Représentation par virgule fixe (\emph{fixed-point})}
+
+On va maintenant rapidement présenter des représentations de nombres réels en introduisant la représentation à virgule fixe et la représentation à virgule flottante. Pour comprendre la représentation par virgule fixe, commençons par regarder un exemple en décimal. Le nombre décimal $26.5$ peut se décomposer, en étendant ce que nous avons fait lorsque nous avons introduit la représentations des entiers naturels, de la manière suivante :
+\begin{eqnarray*}
+26.5 = 2 \times 10^1 + 6 \times 10^0 + 5 \times 10^{-1}
+\end{eqnarray*}
+Si on utilise maintenant une représentation binaire, on peut affecter à chacune des positions une puissance de $2$ : $2^2, 2^1, 2^0, 2^{-1}, 2^{-2}, ...$. Le seul problème est de savoir o{\`u} placer la virgule lorsqu'on voit la représentation $110101$. Si la virgule se trouve à la fin du mot, alors $110101_2 = 2^0 + 2^2 + 2^4 + 2^5 = 53$. Si la virgule se trouve juste avant la fin du mot, disons $11010.1$, alors : $11010.1 = 2^{-1} + 2^1 + 2^3 + 2^4 = 26.5$. Il n'y a pas d'autre choix que de se fixer une convention en précisant le nombre de bits $n_e$ utilisés pour représenter la partie entière et le nombre de bits $n_f$ utilisés pour représenter la partie fractionaire. Une représentation à virgule fixe avec $n_e$ bits pour la partie entière et $n_f$ bits pour la partie fractionaire sera notée $Q<n_e>.<n_f>$. Par exemple, $Q2.14$ utilise $2$ bit pour la partie entière et $14$ bits pour la partie fractionnaire avec une représentation sur $16$ bits en tout.
+
+Pour construire la représentation à virgule fixe du nombre réel $26.5$, on isolera la partie entière $26$ et la partie fractionnaire $.5$ La partie entière s'écrit $26 = 16 + 8 + 2 = (11010)_2$ et la partie fractionnaire $0.5 = 2^{-1}$. Avec une représentation à virgule fixe $Q7.1$, le réel $26.5$ s'écrit $00110101$. On peut remarquer que certaines opérations s'effectuent très simplement avec une représentation par virgule fixe. Par exemple, multiplier par 2 la représentation $00110101$ revient à décaler la représentation à gauche et à construire sur $8$ bits la représentation $01101010$ dont la valeur\footnote{la formule pour calculer la valeur s'applique ici parce que la valeur en positive. Si des nombres négatifs sont représentés, comme décrit un peu plus loin, il faudra faire attention au bit de signe}, dans une représentation $Q7.1$ est :
+\begin{eqnarray*}
+\sum_{i=0}^{k-1} a_i 2^{i-n_f} &=& 0\times 2^{-1} + 1 \times 2^0 + 0 \times 2^1 + 1 \times 2^2 + 0 \times 2^3 + 1 \times 2^4 + 1 \times 2^5 + 0 \times 2^6\\
+ &=& 1 + 4 + 16 + 32 = 53
+\end{eqnarray*}
+
+Remarquez que pour calculer la valeur décimale d'une représentation $Q<n_e><n_f>$, il suffit d'interpréter la représentation comme une représentation d'un entier naturel et de multiplier la valeur décimale trouvée par $2^{-n_f}$ puisque :
+\begin{eqnarray*}
+\sum_{i=0}^{k-1} a_i 2^{i-n_f} = 2^{-n_f} \sum_{i=0}^{k-1} a_i 2^{i}
+\end{eqnarray*}
+Et on retrouve à droite de l'équation le terme $\sum_{i=0}^{k-1} a_i 2^{i}$ pour calculer la valeur décimale d'un \textbf{entier naturel}.
+
+Comme pour la représentation des entiers négatifs utilisait le complément à deux, la représentation des nombres négatifs en virgule fixe utilise également le complément à deux. Par exemple, en notation à virgule fixe $Q4.2$, le réel $3.5$ s'écrit : $3.5 = 2^1 + 2^0 + 2^{-1} = 001110_2$. Son complément à deux est $-3.5 = 110010_2$. On peut alors calculer $5.25 - 3.5$ :
+
+\begin{tabular}{cccccccr}
+& 0 & 1 & 0 & 1 & 0 & 1 & (5.25)\\
++ & 1 & 1 & 0 & 0 & 1 & 0 & (-3.5)\\
+\hline
+(1) & 0& 0& 0& 1 & 1 & 1 & (1.75)
+\end{tabular}
+
+Et dans le sens inverse, en notant que $-5.25 = 101011_2$:
+
+\begin{tabular}{cccccccr}
+& 1 & 0 & 1 & 0 & 1 & 1 & (-5.25)\\
++ & 0 & 0 & 1 & 1 & 1 & 0 & (3.5)\\
+\hline
+(0) & 1& 1& 1& 0 & 0 & 1 & (-1.75)
+\end{tabular}
+
+Comme le bit de poids fort de $111001_2$ est égal à un, le nombre est négatif, son opposé est représenté par le complément à deux de $\overline{111001_2} + 1_2 = 000111_2$ dont la valeur avec la représentation Q4.2 est bien $1\times 2^0 + 1 \times 2^{-1} + 1 \times 2^{-2} = 1.75$. Pour calculer directement la valeur décimale $a$ d'une représentation signée à virgule fixe $a_{k-1}...a_0$ dans un système $Q<n_e><n_f>$, il faut utiliser une formule similaire au calcul de la valeur d'un entier d'une représentation en complément à deux :
+\begin{eqnarray*}
+a_{10} = 2^{-n_f} (-a_{k-1} 2^{k-1} + \sum_{i=0}^{k-2} a_i 2^i), k = n_e + n_f
+\end{eqnarray*}
+La valeur signée de $111001_2$ est $-7$, donc la valeur de $111001_2$ dans le système $Q4.2$ est $2^{-2} \times (-7) = -1.75$.
+
+Pour finir, remarquez que les opérations arithmétiques sur les représentations à virgule fixe sont identiques aux opérations arithmétiques sur les entiers, contrairement aux opérations arithmétiques sur les représentations à virgule flottante que nous allons voir dans un instant. Cela conduit parfois à préférer cette représentation dans des applications de traitement du signal.
+
+
+\subsection{Représentation par virgule flottante (\emph{floating-point})}
+
+Dans les années 1980-1990, le standard IEEE-754 a été introduit pour représenter les nombres réels avec une représentation dite à virgule flottante. Une version mise à jour a été proposée en 2008 \citep{IEEE754}. Le standard a été mis au point pour apporter un certain nombre de garanties quand aux erreurs introduites par le fait qu'on travaille en précision finie. Ce standard permet également de représenter l'ensemble étendu des réels auquel est ajouté des nombres spéciaux qNan et sNan : $S = \mathbb{R} \cup \{-\infty, \infty\} \cup \{\mbox{sNan}, \mbox{qNan}\}$. Les ``nombres'' sNan et qNan permettent de gérer des exceptions en représentant les résultats d'opérations telles que 0/0, $\infty/\infty$, $\sqrt{x}, x < 0$, ... .
+
+La représentation par virgule flottante est basée sur la notation scientifique des nombres. La notation scientifique d'un nombre décimal est de la forme :
+\begin{eqnarray*}
+\mbox{En base 10} : x = \pm m \times 10^{e}, m \in [0, 10[, e \in \mathbb{Z} 
+\end{eqnarray*}
+Dans cette notation, $m$ est appelé la mantisse, et $e$ l'exposant. Il existe des valeurs pour lesquelles plusieurs représentations sont possibles dans cette notation. Par exemple, $1245 = 1.245 \times 10^3 = 0.1245 \times 10^4 = 0.01245 \times 10^5$. Dans le standard IEEE, les représentations $0.1245 \times 10^4$, $0.01245 \times 10^5$, ..., i.e. telles que $m \in [0, 1[$, sont appelées \textbf{les représentations dénormalisées} de la valeur $1245$. La représentation $1.245 \times 10^3$, i.e. telle que $m \in [1, 10[$, est appelée \textbf{la représentation normalisée} de la valeur $1245$. La chose importante à noter ici est qu'\textbf{il peut exister plusieurs représentations dénormalisées mais une unique représentation normalisée}\footnote{Cela veut notamment dire que pour comparer deux nombres en virgule flottante, il faudra s'assurer de normaliser les représentations et ne pas faire une comparaison bit à bit naïvement}. Un nombre fixé de bits étant utilisé pour représenter la mantisse ($m=1.245$, $m=0.1245$, $m=0.01245$), la représentation normalisée est celle qui utilise au mieux l'espace de représentation puisque les représentations dénormalisées occupent de l'espace inutilement pour représenter les $0$ en tête du nombre. Néanmoins, ces représentations dénormalisées permettent d'accroître le domaine représentable puisque $e$ est borné. Prenons un exemple, si l'exposant $e \in [-128, 127]$ et supposons qu'on s'autorise $3$ chiffres pour représenter la mantisse. Si nous considérons uniquement des représentations normalisées, le plus petit nombre positif non nul représentable est $1.00 \times 10^{-128}$. En autorisant des représentations dénormalisées, le plus petit nombre positif non nul représentable est $0.01 \times 10^{-128}$.
+
+
+En généralisant à n'importe quelle base $p$, la notation scientifique s'écrit :
+\begin{eqnarray*}
+\mbox{En base p} : x = \pm m \times p^{e}, m \in [0, p[, e \in \mathbb{Z} 
+\end{eqnarray*}
+et en binaire, on a la propriété intéressante que la mantisse est toujours comprise dans l'intervalle $[0, 2[$, i.e. le bit de poids fort de la mantisse est $0$ ou $1$ :
+\begin{eqnarray*}
+\mbox{En base 2} : x = \pm m \times 2^{e}, m \in [0, 2[, e \in \mathbb{Z} 
+\end{eqnarray*}
+
+Pour représenter un nombre réel sous la forme d'une séquence de bits, il faut représenter :
+\begin{itemize}
+\item le signe : 1 bit suffit
+\item la mantisse sur $n_m$ bits
+\item l'exposant sur $n_e$ bits
+\end{itemize}
+pour un total de $k = 1 + n_m + n_e$ bits. Le standard IEEE-754 introduit plusieurs standards $binary-k$ en précisant la taille des mots pour représenter la mantisse et l'exposant, en voici quelques un~:
+\begin{itemize}
+\item binary-16 : $k=16$ bits, 1 bit de signe, $n_e = 5$ bits pour l'exposant, $n_m=10$ bits pour la mantisse
+\item binary-32 : $k=32$ bits, 1 bit de signe, $n_e = 8$ bits pour l'exposant, $n_m=23$ bits pour la mantisse
+\item binary-64 : $k=64$ bits, 1 bit de signe, $n_e = 11$ bits pour l'exposant, $n_m=52$ bits pour la mantisse
+\end{itemize}
+Schématiquement, une représentation à virgule flottante se présente comme ci-dessous :
+
+\begin{center}\begin{tabular}{|c|c|c|}
+\hline
+signe S (1 bit)& exposant E ($n_e$ bits)& mantisse M ($n_m$ bits)\\
+\hline
+\end{tabular}
+\end{center}
+La valeur $v$ de cette représentation s'obtient alors comme suit :
+\begin{itemize}
+\item Si $E = 11\cdots 1_2 = 2^{n_e} - 1$ et $M = 00\cdots 0_2 = 0$, alors $v = (-1)^S \infty$,
+\item Si $E= 11\cdots 1_2 = 2^{n_e} - 1$ et $M \neq 0$, alors $v \in \{\mbox{qNan}, \mbox{sNan}\}$,
+\item Si $E = 00\cdots 0_2 = 0$ et $M = 00\cdots 0_2 = 0$, alors $v = (-1)^S 0$, i.e. ($\pm 0$),
+\item Si $E = 00\cdots 0_2 = 0$ et $M \neq 0$, alors nous avons une représentation dénormalisée et 
+$$v = (-1)^S . 2^{1-K} M . 2^{-m_n}$$ avec $K = 2^{n_e-1}-1$,
+\item Si $E \in [1, 2^{n_e} - 2]$, alors nous avons une représentation normalisée et 
+$$v = (-1)^S . 2^{E - K} (1 + M . 2^{-m_n})$$
+avec $K = 2^{n_e-1}-1$
+\end{itemize}
+
+\subsection{Exemple de la représentation en virgule flottante binary-16}
+
+Dans cette partie, on se propose de regarder un peu plus en détails les valeurs représentées par un standard particulier, le standard binary-16, pour le codage des réels en virgule flottante. On donne dans la table ci-dessous quelques examples de représentations binaires binary-16 ainsi que la valeur représentée. Pour rappel, dans le standard binary-16, on utilise une représentation sur 16 bits avec $1$ bit de signe, $n_e=5$ bits pour l'exposant, $n_m=10$ bits pour la mantisse. Pour le codage de l'exposant, l'excès est $K = 15$. L'exposant peut donc prendre des valeurs dans $[-14, 15]$
+
+\begin{center}\begin{table}[htbp]
+\begin{tabular}{ccc|c|c}
+\multicolumn{3}{c}{Représentation binary-16} & Valeur représentée & Note\\
+Signe & Exposant & Mantisse & & \\
+\hline\hline
+0&00000&0$\cdots$0 & +0 & \\
+1&00000&0$\cdots$0 & -0 & \\
+s&00000&0$\cdots$01 & $(-1)^s 2^{-14} 1.2^{-10} = (-1)^s 2^{-24}$ & Plus petit réél dénormalisé\\
+s&00000&0$\cdots$10 & $(-1)^s 2^{-14} 2.2^{-10} = (-1)^s 2^{-23}$ & Second plus petit réel\\
+s&00000&1$\cdots$11 & $(-1)^s (2^{-14} - 2^{-24})$ & Plus grand réel dénormalisé\\
+s&00001&0$\cdots$00 & $(-1)^s 2^{1-15} = (-1)^s 2^{-14}$ & Plus petit réel normalisé \\
+s&11110&1$\cdots$11 & $(-1)^s 2^{15} (2 - 2^{-10})$& Plus grand réel normalisé \\
+s&11111&0$\cdots$00 & $(-1)^s \infty$ & \\
+x&11111& M, $M \neq 0$ & NaN (sNan ou qNan) & Exception, e.g 0/0, ..
+\end{tabular}
+\caption{Quelques exemples de représentation binaire du standard binary-16 de la norme IEEE-754 et de la valeur représentée. Dans les représentations binaires, le chiffre "x" indique 0 ou 1 indifféremment, i.e. signifie que la valeur de ce chiffre n'est pas pris en compte.}
+\end{table}
+\end{center}
+
+Pour donner un ordre de grandeur en base 10~: $2^{-24} \approx 6.10^{-8}$, $2^{15} (2-2^{-10}) = 65504$.
+%% A priori on utilise le excess K pour la représentation de l'exposant.
+
+%% On a vu jusqu'à maintenant comment représenter des nombres entiers naturels et relatifs. On aimerait aussi pouvoir représenter en binaire des nombres réels. 
+%% \begin{itemize}
+%% \item artihmétique à virgule fixe : von Neumann dans les années 1950
+%% \item arithmétique à virgule flotante : introduite par Zuse dans les années 1940, 1950
+%% \item a priori on ne maitrise pas bien les arrondis avec les floating points contrairement au fixed point. Certains logiciels utilisent plutôt le fixed point pour cette raison
+%% \item \url{http://www.cs.umd.edu/class/sum2003/cmsc311/Notes/Data/float.html} : présente la norme IEEE-754 ; aussi une raison de l'exposant en excess -K : il dit que les comparaisons sont plus simples que si on utilisait du complément à deux. mais donc j'imagine aussi que ça ne gène pas pour d'autres opérations sur les exposants... en gros comment gères t'on les opérations sur ces floatants ?
+%% \end{itemize}
+
+
+
+
+\section{Représentation des caractères}
+
+En informatique, une information est codée exclusivement par des séquences de 0 et 1. On a vu précédemment comment coder des entiers et des réels en binaire mais on a également besoin de trouver un moyen de coder du texte (caractères '0', '1', 'A', 'é'; ponctuation ! , ? espace, .. ; symboles spéciaux comme \euro, \$, @) comme une séquence de 0 et 1. Pour coder/décoder des caractères, il faut se mettre d'accord sur le nombre de bits utilisés pour représenter un caractère (pour pouvoir ségmenter une longue séquence de 0 et de 1 en caractères) et sur une table associant un mot binaire à un caractère. Dans les années 1980-1990, il y avait plusieurs normes pour coder les caractères qui sont apparues à travers le monde: l'ASCII aux Etat-unis, le KOI8-R en Russie, ... Ces normes proposaient d'encoder les caractères sur 7 ou 8 bits mais le fait que les normes soient nées indépendemment les unes des autres rendait les systèmes difficilement interopérables et très spécifiques (en Russe, il faut pouvoir représenter l'alphabet cyrillique). Par exemple, l'ASCII (American Standard Code for Information Interchange) développé aux Etat-Unis, utilise 7 bits (128 valeurs possibles) pour coder des caractères dont les codes apparaissent sur la table suivante\footnote{La table ASCII est produite par Victor Eijkhout}. 
+
+\input{ascii.tex}
+
+Vous l'aurez remarqué, il nous manque nos caractères accentués; en effet, les américains n'utilisent pas de caractères accentués; et bien sûr bien d'autres caractères manquent pour satisfaire toutes les langues. Il y a eu donc une flopée de normes dont notamment les normes ISO-8859-x, avec x variant de 1 à 16, chacune encodant des caractères d'une langue différente, sur 8 bits. Par exemple, la norme ISO 8859-1 couvre les caractères de la plupart des langues européennes, la norme ISO 8859-5 couvre l'alphabet cyrillique, ... Les normes ISO étendent la norme ASCII en utilisant les mêmes 128 premiers caractères. Comme la norme ISO propose un encodage sur 8 bits, il y a 128 caractères supplémentaires à utiliser. En pratique ces 128 caractères supplémentaires ne sont pas tous utilisés mais en tout cas, en fonction de la norme considérée, ils ne représentent pas la même valeur; Quelques caractères des différentes normes ISO-8859-x sont représentés sur la figure \ref{fig:iso8859}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=0.5\columnwidth]{Figs/iso8859.png}
+\end{center}
+\caption{\label{fig:iso8859}Extrait des normes ISO-8859-x disponibles. Source: \protect\url{https://fr.wikipedia.org/wiki/ISO_8859}.}
+\end{figure}
+
+Plus récemment, un nouveau format, issu du standard Unicode et de la norme ISO 10646, commence à s'imposer : le format UTF-8. Ce format code tout les caractères possibles en utilisant un nombre variable de mots de 8 bits (le format UTF-8 accepte jusqu'à 4 octets). 
+
+
+\section{Un exemple}
+
+Pour terminer cette partie, j'aimerais revenir sur la différence entre une valeur et son représentant. Si on considère la séquence binaire ci-dessous (représentée en hexadécimal pour rester compact):
+\begin{center}
+$(626F6E6A6F757221)_{16}$
+\end{center}
+elle peut représenter plusieurs valeurs :
+\begin{itemize}
+\item la chaîne de caractères ``bonjour!'' si je considère que la séquence représente des caractères codés en ASCII
+\item la valeur 7 093 009 341 547 377 185 si je considère que la séquence représente un entier codé sur 64 bits
+\item l'image \includegraphics[width=0.3\linewidth]{Figs/code_img.pdf} si je considère que chaque bloc de 8 bits code le niveau de gris d'un pixel considéré comme noir pour 0 et blanc pour 255,
+\item ....
+\end{itemize}
+
+%% import numpy as np
+%% import matplotlib.pyplot as plt
+%% z = np.array([int(ord(c)) for c in 'bonjour!'])
+%% z = z.reshape((1,8))
+%% plt.figure(facecolor='white')
+%% plt.imshow(z, interpolation='None', cmap='gray')
+%% plt.axis('off')
+%% plt.savefig("code_img.pdf",bbox_inches='tight')
+%% plt.show()
+
+
+%% \section{Codage minimal et codage robuste}
+
+%% \subsection{Codage minimal}
+
+%% Jusqu'à maintenant, nous avons imposé aux représentations d'avoir une taille fixe et nous verrons plus tard que cela facilite la réalisation matérielle d'une machine manipulant ces représentations. Mais, si la question était posée sous la forme ``quel codage utiliser pour représenter un message avec le plus petit nombre de bits ?'', la réponse serait un peu différente de ce que nous avons présenté précédemment. Une réponse est fournie dans le cadre de la théorie de l'information introduite par Shannon dans les années 1940-1950. Ce serait bien trop ambitieux pour ce cours que de présenter ce sujet. 
+
+%% La figure \ref{fig:distribution_francais} représente la distribution des lettres dans un corpus d'un peu plus d'un million de documents en Français. On y voit clairement que la lettre ``e'' est sur-représentée. L'idée derrière un codage de taille variable est d'utiliser une séquence binaire de taille $n_c$ pour représenter le caractère ``c'' de telle sorte que $n_c$ décroit quand la fréquence d'apparition $f_c$ du caractère ``c'' augmente.
+
+%% \begin{figure}
+%% \includegraphics[width=0.75\linewidth]{Figs/frequence_lettres_francais.svg}
+%% \caption{\label{fig:distribution_francais}Distribution des lettres calculés à partir d'un corpus de plus d'un million de lettres.}
+%% \end{figure}
+
+%% On pourra par exemple utiliser un codage de la forme :
+%% \begin{tabular}{cc}
+%% Caractère & Représentation \\
+%% e & 0\\
+%% s & 10\\
+%% a & 110\\
+%% i & 1110\\
+%% ... & ...
+%% \end{tabular}
+
+%% \subsection{Codage robuste}
+
+%% Supposons maintenant que le critère pour trouver un codage pour un message soit sa robustesse .... 

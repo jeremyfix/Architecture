@@ -1,0 +1,1132 @@
+<?xml version="1.0"?>
+<!DOCTYPE ipe SYSTEM "ipe.dtd">
+<ipe version="70107" creator="Ipe 7.1.10">
+<info created="D:20150822125759" modified="D:20170803191822"/>
+<ipestyle name="basic">
+<symbol name="arrow/arc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/farc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/ptarc(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fptarc(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="mark/circle(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</symbol>
+<symbol name="mark/disk(sx)" transformations="translations">
+<path fill="sym-stroke">
+0.6 0 0 0.6 0 0 e
+</path>
+</symbol>
+<symbol name="mark/fdisk(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+0.5 0 0 0.5 0 0 e
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+0.6 0 0 0.6 0 0 e
+0.4 0 0 0.4 0 0 e
+</path>
+</group>
+</symbol>
+<symbol name="mark/box(sx)" transformations="translations">
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</symbol>
+<symbol name="mark/square(sx)" transformations="translations">
+<path fill="sym-stroke">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+</path>
+</symbol>
+<symbol name="mark/fsquare(sfx)" transformations="translations">
+<group>
+<path fill="sym-fill">
+-0.5 -0.5 m
+0.5 -0.5 l
+0.5 0.5 l
+-0.5 0.5 l
+h
+</path>
+<path fill="sym-stroke" fillrule="eofill">
+-0.6 -0.6 m
+0.6 -0.6 l
+0.6 0.6 l
+-0.6 0.6 l
+h
+-0.4 -0.4 m
+0.4 -0.4 l
+0.4 0.4 l
+-0.4 0.4 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="mark/cross(sx)" transformations="translations">
+<group>
+<path fill="sym-stroke">
+-0.43 -0.57 m
+0.57 0.43 l
+0.43 0.57 l
+-0.57 -0.43 l
+h
+</path>
+<path fill="sym-stroke">
+-0.43 0.57 m
+0.57 -0.43 l
+0.43 -0.57 l
+-0.57 0.43 l
+h
+</path>
+</group>
+</symbol>
+<symbol name="arrow/fnormal(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/pointed(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/fpointed(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-0.8 0 l
+-1 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/linear(spx)">
+<path stroke="sym-stroke" pen="sym-pen">
+-1 0.333 m
+0 0 l
+-1 -0.333 l
+</path>
+</symbol>
+<symbol name="arrow/fdouble(spx)">
+<path stroke="sym-stroke" fill="white" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<symbol name="arrow/double(spx)">
+<path stroke="sym-stroke" fill="sym-stroke" pen="sym-pen">
+0 0 m
+-1 0.333 l
+-1 -0.333 l
+h
+-1 0 m
+-2 0.333 l
+-2 -0.333 l
+h
+</path>
+</symbol>
+<pen name="heavier" value="0.8"/>
+<pen name="fat" value="1.2"/>
+<pen name="ultrafat" value="2"/>
+<symbolsize name="large" value="5"/>
+<symbolsize name="small" value="2"/>
+<symbolsize name="tiny" value="1.1"/>
+<arrowsize name="large" value="10"/>
+<arrowsize name="small" value="5"/>
+<arrowsize name="tiny" value="3"/>
+<color name="red" value="1 0 0"/>
+<color name="green" value="0 1 0"/>
+<color name="blue" value="0 0 1"/>
+<color name="yellow" value="1 1 0"/>
+<color name="orange" value="1 0.647 0"/>
+<color name="gold" value="1 0.843 0"/>
+<color name="purple" value="0.627 0.125 0.941"/>
+<color name="gray" value="0.745"/>
+<color name="brown" value="0.647 0.165 0.165"/>
+<color name="navy" value="0 0 0.502"/>
+<color name="pink" value="1 0.753 0.796"/>
+<color name="seagreen" value="0.18 0.545 0.341"/>
+<color name="turquoise" value="0.251 0.878 0.816"/>
+<color name="violet" value="0.933 0.51 0.933"/>
+<color name="darkblue" value="0 0 0.545"/>
+<color name="darkcyan" value="0 0.545 0.545"/>
+<color name="darkgray" value="0.663"/>
+<color name="darkgreen" value="0 0.392 0"/>
+<color name="darkmagenta" value="0.545 0 0.545"/>
+<color name="darkorange" value="1 0.549 0"/>
+<color name="darkred" value="0.545 0 0"/>
+<color name="lightblue" value="0.678 0.847 0.902"/>
+<color name="lightcyan" value="0.878 1 1"/>
+<color name="lightgray" value="0.827"/>
+<color name="lightgreen" value="0.565 0.933 0.565"/>
+<color name="lightyellow" value="1 1 0.878"/>
+<dashstyle name="dashed" value="[4] 0"/>
+<dashstyle name="dotted" value="[1 3] 0"/>
+<dashstyle name="dash dotted" value="[4 2 1 2] 0"/>
+<dashstyle name="dash dot dotted" value="[4 2 1 2 1 2] 0"/>
+<textsize name="large" value="\large"/>
+<textsize name="small" value="\small"/>
+<textsize name="tiny" value="\tiny"/>
+<textsize name="Large" value="\Large"/>
+<textsize name="LARGE" value="\LARGE"/>
+<textsize name="huge" value="\huge"/>
+<textsize name="Huge" value="\Huge"/>
+<textsize name="footnote" value="\footnotesize"/>
+<textstyle name="center" begin="\begin{center}" end="\end{center}"/>
+<textstyle name="itemize" begin="\begin{itemize}" end="\end{itemize}"/>
+<textstyle name="item" begin="\begin{itemize}\item{}" end="\end{itemize}"/>
+<gridsize name="4 pts" value="4"/>
+<gridsize name="8 pts (~3 mm)" value="8"/>
+<gridsize name="16 pts (~6 mm)" value="16"/>
+<gridsize name="32 pts (~12 mm)" value="32"/>
+<gridsize name="10 pts (~3.5 mm)" value="10"/>
+<gridsize name="20 pts (~7 mm)" value="20"/>
+<gridsize name="14 pts (~5 mm)" value="14"/>
+<gridsize name="28 pts (~10 mm)" value="28"/>
+<gridsize name="56 pts (~20 mm)" value="56"/>
+<anglesize name="90 deg" value="90"/>
+<anglesize name="60 deg" value="60"/>
+<anglesize name="45 deg" value="45"/>
+<anglesize name="30 deg" value="30"/>
+<anglesize name="22.5 deg" value="22.5"/>
+<tiling name="falling" angle="-60" step="4" width="1"/>
+<tiling name="rising" angle="30" step="4" width="1"/>
+</ipestyle>
+<ipestyle name="bigpaper">
+<layout paper="10000 6000" origin="0 0" frame="10000 6000"/>
+<titlestyle pos="10 10" size="LARGE" color="title"  valign="baseline"/>
+</ipestyle>
+<page>
+<layer name="alpha"/>
+<view layers="alpha" active="alpha"/>
+<path layer="alpha" matrix="1 0 0 1 476 -8" stroke="black">
+416 704 m
+448 704 l
+464 672 l
+480 704 l
+512 704 l
+480 640 l
+448 640 l
+416 704 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<path matrix="1 0 0 1 256 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<path matrix="1 0 0 1 184 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<path matrix="1 0 0 1 -48 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 400 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 400 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 256 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 256 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 -32 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 -32 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 200 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 200 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 272 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 272 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 344 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 344 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 104 -8" stroke="black">
+116 704 m
+116 648 l
+0 648 l
+0 704 l
+h
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+384 728 m
+384 736 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+240 728 m
+240 736 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+312 728 m
+312 768 l
+</path>
+<path matrix="1 0 0 1 1.83435 -0.14205" stroke="black">
+236 760 m
+972 760 l
+972 696 l
+</path>
+<path stroke="black">
+908 696 m
+908 728 l
+256 728 l
+</path>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="240 736" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="384 736" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="312 768" size="normal" stroke="black"/>
+<path matrix="1 0 0 1 207.88 -7.99638" stroke="black">
+736 640 m
+736 576 l
+164 576 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+184 624 m
+184 576 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+256 624 m
+256 576 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+328 624 m
+328 576 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+328 640 m
+328 672 l
+336 672 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+376 672 m
+384 672 l
+384 712 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+304 672 m
+312 672 l
+312 712 l
+</path>
+<path matrix="1 0 0 1 328 -8" stroke="black">
+232 672 m
+240 672 l
+240 712 l
+</path>
+<path matrix="1 0 0 1 104 -8" stroke="black">
+224 672 m
+232 672 l
+232 712 l
+148 712 l
+</path>
+<path matrix="1 0 0 1 168 -8" stroke="black">
+112 640 m
+112 672 l
+120 672 l
+</path>
+<path matrix="1 0 0 1 168 -8" stroke="black">
+112 624 m
+112 576 l
+</path>
+<path matrix="1 0 0 1 -84 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 -84 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 -84 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 -84 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 156 -8" stroke="black">
+72 640 m
+72 656 l
+64 656 l
+</path>
+<path matrix="1 0 0 1 156 -8" stroke="black">
+64 696 m
+72 696 l
+72 712 l
+</path>
+<path matrix="1 0 0 1 156 -8" stroke="black">
+72 728 m
+72 768 l
+80 768 l
+</path>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="256 576" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="328 576" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 328 -8" name="mark/disk(sx)" pos="184 576" size="normal" stroke="black"/>
+<use matrix="1 0 0 1 168 -8" name="mark/disk(sx)" pos="112 576" size="normal" stroke="black"/>
+<path stroke="black">
+372 568 m
+228 568 l
+228 616 l
+</path>
+<text matrix="1 0 0 1 156 -8" transformations="translations" pos="80 632" stroke="black" type="label" width="35.7" height="6.808" depth="0" valign="baseline">SetMem</text>
+<text matrix="1 0 0 1 168 -8" transformations="translations" pos="128 632" stroke="black" type="label" width="45.385" height="6.808" depth="0" valign="baseline">SetRADM</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="200 632" stroke="black" type="label" width="21.309" height="6.808" depth="0" valign="baseline">SetA</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="272 632" stroke="black" type="label" width="20.894" height="6.808" depth="0" valign="baseline">SetB</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="344 632" stroke="black" type="label" width="27.812" height="6.808" depth="0" valign="baseline">SetPC</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="256 720" stroke="black" type="label" width="29.75" height="6.918" depth="0" valign="baseline">ReadA</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="328 720" stroke="black" type="label" width="29.334" height="6.918" depth="0" valign="baseline">ReadB</text>
+<text matrix="1 0 0 1 328 -8" transformations="translations" pos="392 720" stroke="black" type="label" width="36.253" height="6.918" depth="0" valign="baseline">ReadPC</text>
+<text matrix="1 0 0 1 476 -8" transformations="translations" pos="432 696" stroke="black" type="label" width="7.472" height="6.808" depth="0" valign="baseline">A</text>
+<text matrix="1 0 0 1 476 -8" transformations="translations" pos="496 696" stroke="black" type="label" width="7.057" height="6.808" depth="0" valign="baseline">B</text>
+<text matrix="1 0 0 1 476 -8" transformations="translations" pos="464 648" stroke="black" type="label" width="5.535" height="6.808" depth="0" valign="baseline">S</text>
+<text matrix="1 0 0 1 356 -24" transformations="translations" pos="528 672" stroke="black" type="label" width="21.171" height="6.808" depth="0" valign="baseline">UAL</text>
+<path matrix="1 0 0 1 476 -8" stroke="black">
+432 672 m
+416 672 l
+416 664 l
+</path>
+<text matrix="1 0 0 1 140 -8" transformations="translations" pos="64 696" stroke="black" type="label" width="11.758" height="6.133" depth="0.99" valign="baseline" size="small">$D_o$</text>
+<text matrix="1 0 0 1 140 -8" transformations="translations" pos="64 656" stroke="black" type="label" width="10.761" height="6.133" depth="0.99" valign="baseline" size="small">$D_i$</text>
+<text matrix="1 0 0 1 140 -12" transformations="translations" pos="64 680" stroke="black" type="label" width="15.634" height="6.227" depth="0" valign="baseline" size="small">Adr</text>
+<path matrix="1 0 0 1 140 -8" stroke="black">
+112 712 m
+112 676 l
+80 676 l
+</path>
+<text matrix="1 0 0 1 156 -8" transformations="translations" pos="112 776" stroke="black" type="label" width="26.899" height="6.808" depth="0" valign="baseline">Bus B</text>
+<text matrix="1 0 0 1 140 -8" transformations="translations" pos="128 744" stroke="black" type="label" width="27.314" height="6.808" depth="0" valign="baseline">Bus A</text>
+<text matrix="1 0 0 1 440 -12" transformations="translations" pos="472 584" stroke="black" type="label" width="25.377" height="6.808" depth="0" valign="baseline">Bus S</text>
+<text matrix="1 0 0 1 116 -8" transformations="translations" pos="176 696" stroke="black" type="label" width="29.178" height="6.127" depth="0" valign="baseline" size="small">RADM</text>
+<text matrix="1 0 0 1 280 -8" transformations="translations" pos="256 696" stroke="black" type="label" width="6.91" height="6.127" depth="0" valign="baseline" size="small">A</text>
+<text matrix="1 0 0 1 280 -8" transformations="translations" pos="332 696" stroke="black" type="label" width="6.527" height="6.127" depth="0" valign="baseline" size="small">B</text>
+<text matrix="1 0 0 1 280 -8" transformations="translations" pos="400 696" stroke="black" type="label" width="12.926" height="6.127" depth="0" valign="baseline" size="small">PC</text>
+<path matrix="1 0 0 1 280 -8" stroke="black">
+232 640 m
+232 672 l
+240 672 l
+</path>
+<path matrix="1 0 0 1 280 -8" stroke="black">
+304 640 m
+304 672 l
+312 672 l
+</path>
+<text matrix="1 0 0 1 116 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0000</text>
+<text matrix="1 0 0 1 348 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0000</text>
+<text matrix="1 0 0 1 420 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0000</text>
+<text matrix="1 0 0 1 492 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0000</text>
+<text matrix="1 0 0 1 156 80" transformations="translations" pos="80 632" stroke="black" type="label" width="44.14" height="6.918" depth="0" valign="baseline">ReadMem</text>
+<text matrix="1 0 0 1 88 -12" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x1000</text>
+<text matrix="1 0 0 1 160 -12" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0001</text>
+<text matrix="1 0 0 1 136 -24" transformations="translations" pos="20 696" stroke="black" type="label" width="22.008" height="3.386" depth="0" valign="baseline" size="tiny">0x000A</text>
+<path matrix="1 0 0 1 108 -8" stroke="black">
+96 704 m
+96 648 l
+</path>
+<text matrix="1 0 0 1 160 -24" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0000</text>
+<text matrix="1 0 0 1 88 -36" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0000</text>
+<text matrix="1 0 0 1 112 -36" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0000</text>
+<text matrix="1 0 0 1 136 -36" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0000</text>
+<text matrix="1 0 0 1 160 -36" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0000</text>
+<path matrix="1 0 0 1 104 -8" stroke="black">
+4 688 m
+24 688 l
+</path>
+<path matrix="1 0 0 1 424 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<text matrix="1 0 0 1 136 -12" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x2000</text>
+<text matrix="1 0 0 1 112 -12" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x0010</text>
+<text matrix="1 0 0 1 112 -24" transformations="translations" pos="20 696" stroke="black" type="label" width="20.168" height="3.21" depth="0" valign="baseline" size="tiny">0x1c00</text>
+<text matrix="1 0 0 1 88 -24" transformations="translations" pos="20 696" stroke="black" type="label" width="20.514" height="3.21" depth="0" valign="baseline" size="tiny">0x3000</text>
+<path matrix="1 0 0 1 384 284" stroke="black">
+192 640 m
+192 560 l
+256 560 l
+256 640 l
+h
+</path>
+<text matrix="1 0 0 1 396 276" transformations="translations" pos="192 656" stroke="black" type="label" width="39.186" height="6.808" depth="0" valign="baseline">MicroPC</text>
+<path matrix="1 0 0 1 384 284" stroke="black">
+256 600 m
+336 600 l
+</path>
+<path matrix="1 0 0 1 384 284" stroke="black">
+288 600 m
+288 688 l
+240 688 l
+</path>
+<path matrix="1 0 0 1 400 284" stroke="black">
+192 704 m
+192 672 l
+224 672 l
+224 704 l
+h
+</path>
+<text matrix="1 0 0 1 404 280" transformations="translations" pos="196 688" stroke="black" type="label" width="14.958" height="7.708" depth="0.91" valign="baseline" size="large">+1</text>
+<path matrix="1 0 0 1 384 284" stroke="black">
+208 688 m
+80 688 l
+80 616 l
+128 616 l
+</path>
+<path matrix="1 0 0 1 384 284" stroke="black">
+192 600 m
+160 600 l
+</path>
+<path matrix="1 0 0 1 416 232" stroke="black" pen="heavier">
+96 644 m
+84 644 l
+</path>
+<path matrix="1 0 0 1 384 284" stroke="black">
+160 608 m
+160 592 l
+128 576 l
+128 624 l
+160 608 l
+</path>
+<text matrix="1 0 0 1 388.455 287.818" transformations="translations" pos="136 596" stroke="black" type="label" width="13.221" height="3.386" depth="0" valign="baseline" size="tiny">Mux</text>
+<path matrix="1 0 0 1 384 284" stroke="black">
+144 584 m
+144 560 l
+</path>
+<text matrix="1 0 0 1 444 264" transformations="translations" pos="132 548" stroke="black" type="label" width="58.392" height="6.918" depth="0" valign="baseline">CodeMCount</text>
+<text matrix="1 0 0 1 392 284" transformations="translations" pos="208 596" stroke="black" type="label" width="18.952" height="13.319" depth="0" valign="baseline" size="huge">00</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+512 1032 m
+512 784 l
+720 784 l
+720 1032 l
+h
+</path>
+<text matrix="1 0 0 1 432 356" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00800008</text>
+<text matrix="1 0 0 1 388 356" transformations="translations" pos="352 652" stroke="black" type="label" width="39.297" height="6.42" depth="0" valign="baseline">020000e0</text>
+<text matrix="1 0 0 1 476 356" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 356" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+532 1032 m
+532 784 l
+</path>
+<text matrix="1 0 0 1 376 276" transformations="translations" pos="320 608" stroke="black" type="label" width="23.797" height="9.963" depth="0" valign="baseline" size="Large">Adr</text>
+<text matrix="1 0 0 1 384 352" transformations="translations" pos="532 576" stroke="black" type="label" width="10.728" height="9.803" depth="0" valign="baseline" size="Large">D</text>
+<text matrix="1 0 0 1 516 412" transformations="translations" pos="208 596" stroke="black" type="label" width="9.963" height="6.42" depth="0" valign="baseline">00</text>
+<text matrix="1 0 0 1 516 396" transformations="translations" pos="208 596" stroke="black" type="label" width="9.963" height="6.42" depth="0" valign="baseline">04</text>
+<text matrix="1 0 0 1 516 380" transformations="translations" pos="208 596" stroke="black" type="label" width="9.963" height="6.42" depth="0" valign="baseline">08</text>
+<text matrix="1 0 0 1 516 364" transformations="translations" pos="208 596" stroke="black" type="label" width="9.409" height="6.42" depth="0" valign="baseline">0c</text>
+<text matrix="1 0 0 1 388 340" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 432 340" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 476 340" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 340" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 388 324" transformations="translations" pos="352 652" stroke="black" type="label" width="39.297" height="6.42" depth="0" valign="baseline">00000c00</text>
+<text matrix="1 0 0 1 432 324" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">01401900</text>
+<text matrix="1 0 0 1 476 324" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 324" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 388 308" transformations="translations" pos="352 652" stroke="black" type="label" width="39.297" height="6.42" depth="0" valign="baseline">0080000c</text>
+<text matrix="1 0 0 1 432 308" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 476 308" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 308" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<use matrix="1 0 0 1 384 284" name="mark/disk(sx)" pos="288 600" size="normal" stroke="black"/>
+<path matrix="1 0 0 1 448 216" stroke="lightgray">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 212" stroke="lightgray">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 208" stroke="0">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 204" stroke="0">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 200" stroke="0">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 196" stroke="0">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 192" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 188" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 184" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 180" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 176" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 172" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 168" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 164" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 160" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 156" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 152" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 148" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 144" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 140" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 136" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 132" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 128" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 124" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 120" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 116" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 112" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 108" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 104" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 100" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 96" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 92" stroke="black">
+512 716 m
+528 716 l
+</path>
+<path matrix="1 0 0 1 448 232" stroke="black" pen="ultrafat">
+480 632 m
+512 632 l
+</path>
+<path matrix="1 0 0 1 448 232" stroke="black" pen="ultrafat">
+512 700 m
+512 576 l
+</path>
+<path matrix="1 0 0 1 448 232" stroke="black" pen="ultrafat">
+500 636 m
+492 628 l
+</path>
+<text matrix="1 0 0 1 448 232" transformations="translations" pos="492 640" stroke="black" type="label" width="9.963" height="6.42" depth="0" valign="baseline">$32$</text>
+<text matrix="1 0 0 1 448 232" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">0</text>
+<text matrix="1 0 0 1 448 236" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">1</text>
+<text matrix="1 0 0 1 448 240" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">2</text>
+<text matrix="1 0 0 1 448 244" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">3</text>
+<text matrix="1 0 0 1 448 248" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">4</text>
+<text matrix="1 0 0 1 448 252" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">5</text>
+<text matrix="1 0 0 1 448 256" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">6</text>
+<text matrix="1 0 0 1 448 260" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">7</text>
+<text matrix="1 0 0 1 448 264" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">8</text>
+<text matrix="1 0 0 1 448 268" transformations="translations" pos="516 576" stroke="black" type="label" width="3.39" height="3.21" depth="0" valign="baseline" size="tiny">9</text>
+<text matrix="1 0 0 1 448 272" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">10</text>
+<text matrix="1 0 0 1 448 276" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">11</text>
+<text matrix="1 0 0 1 448 280" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">12</text>
+<text matrix="1 0 0 1 448 284" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">13</text>
+<text matrix="1 0 0 1 448 288" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">14</text>
+<text matrix="1 0 0 1 448 292" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">15</text>
+<text matrix="1 0 0 1 448 296" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">16</text>
+<text matrix="1 0 0 1 448 300" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">17</text>
+<text matrix="1 0 0 1 448 304" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">18</text>
+<text matrix="1 0 0 1 448 308" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">19</text>
+<text matrix="1 0 0 1 448 312" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">20</text>
+<text matrix="1 0 0 1 448 316" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">21</text>
+<text matrix="1 0 0 1 448 320" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">22</text>
+<text matrix="1 0 0 1 448 324" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">23</text>
+<text matrix="1 0 0 1 448 328" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">24</text>
+<text matrix="1 0 0 1 448 332" transformations="translations" pos="516 576" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">25</text>
+<text matrix="1 0 0 1 448 336" transformations="translations" pos="516 576" stroke="0" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">26</text>
+<text matrix="1 0 0 1 448 340" transformations="translations" pos="516 576" stroke="0" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">27</text>
+<text matrix="1 0 0 1 448 344" transformations="translations" pos="516 576" stroke="0" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">28</text>
+<text matrix="1 0 0 1 448 348" transformations="translations" pos="516 576" stroke="0" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">29</text>
+<text matrix="1 0 0 1 448 352" transformations="translations" pos="516 576" stroke="lightgray" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">30</text>
+<text matrix="1 0 0 1 448 356" transformations="translations" pos="516 576" stroke="lightgray" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">31</text>
+<text matrix="1 0 0 1 448 232" transformations="translations" pos="532 608" stroke="black" type="label" width="29.432" height="3.459" depth="0" valign="baseline" size="tiny">ReadMem</text>
+<text matrix="1 0 0 1 448 232" transformations="translations" pos="532 612" stroke="black" type="label" width="23.911" height="3.386" depth="0" valign="baseline" size="tiny">SetMem</text>
+<text matrix="1 0 0 1 448 236" transformations="translations" pos="532 612" stroke="black" type="label" width="30.117" height="3.386" depth="0" valign="baseline" size="tiny">SetRADM</text>
+<text matrix="1 0 0 1 448 240" transformations="translations" pos="532 612" stroke="black" type="label" width="24.257" height="3.459" depth="0" valign="baseline" size="tiny">ReadPC</text>
+<text matrix="1 0 0 1 448 244" transformations="translations" pos="532 612" stroke="black" type="label" width="18.736" height="3.386" depth="0" valign="baseline" size="tiny">SetPC</text>
+<text matrix="1 0 0 1 448 248" transformations="translations" pos="532 612" stroke="black" type="label" width="19.884" height="3.459" depth="0" valign="baseline" size="tiny">ReadA</text>
+<text matrix="1 0 0 1 448 252" transformations="translations" pos="532 612" stroke="black" type="label" width="14.363" height="3.386" depth="0" valign="baseline" size="tiny">SetA</text>
+<text matrix="1 0 0 1 448 256" transformations="translations" pos="532 612" stroke="black" type="label" width="19.656" height="3.459" depth="0" valign="baseline" size="tiny">ReadB</text>
+<text matrix="1 0 0 1 448 260" transformations="translations" pos="532 612" stroke="black" type="label" width="14.135" height="3.386" depth="0" valign="baseline" size="tiny">SetB</text>
+<text matrix="1 0 0 1 448 276" transformations="translations" pos="532 612" stroke="black" type="label" width="13.906" height="3.386" depth="0" valign="baseline" size="tiny">UAL</text>
+<text matrix="1 0 0 1 448 288" transformations="translations" pos="532 612" stroke="black" type="label" width="39.201" height="3.459" depth="0" valign="baseline" size="tiny">CodeMCount</text>
+<path matrix="1 0 0 1 208 -8" stroke="black" pen="ultrafat">
+768 916 m
+768 908 l
+</path>
+<path matrix="1 0 0 1 448 228" stroke="black" pen="ultrafat">
+528 668 m
+528 656 l
+</path>
+<path matrix="1 0 0 1 448 232" stroke="black" pen="ultrafat">
+528 604 m
+528 576 l
+</path>
+<text matrix="1 0 0 1 448 216" transformations="translations" pos="532 608" stroke="black" type="label" width="16.439" height="3.459" depth="0" valign="baseline" size="tiny">@Adr</text>
+<path matrix="1 0 0 1 384 304" stroke="black">
+128 584 m
+80 584 l
+</path>
+<text matrix="1 0 0 1 352 288" transformations="translations" pos="80 596" stroke="black" type="label" width="24.658" height="6.918" depth="0" valign="baseline">@Adr</text>
+<path matrix="1 0 0 1 448 232" stroke="black">
+64 632 m
+52 632 l
+</path>
+<path matrix="1 0 0 1 416 232" stroke="black">
+72.0587 645.875 m
+72.011 634.32 l
+</path>
+<path matrix="1 0 0 1 416 232" stroke="black" pen="heavier">
+72 636 m
+80 636 l
+</path>
+<path matrix="1 0 0 1 416 232" stroke="black" pen="heavier">
+84 644 m
+72 644 l
+</path>
+<path matrix="1 0 0 1 416 232" stroke="black">
+72 640 m
+52 640 l
+</path>
+<text matrix="1 0 0 1 416 232" transformations="translations" pos="76 648" stroke="black" type="label" width="16.19" height="3.741" depth="1.24" valign="baseline" size="tiny">[8:15]</text>
+<text matrix="1 0 0 1 415.839 222.075" transformations="translations" pos="76 648" stroke="black" type="label" width="12.799" height="3.741" depth="1.24" valign="baseline" size="tiny">[0:7]</text>
+<text matrix="1 0 0 1 416 232" transformations="translations" pos="97.1755 667.946" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">00</text>
+<text matrix="1 0 0 1 416.136 219.999" transformations="translations" pos="97.1755 667.946" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">01</text>
+<text matrix="1 0 0 1 415.864 207.726" transformations="translations" pos="97.1755 667.946" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">10</text>
+<text matrix="1 0 0 1 416.136 195.862" transformations="translations" pos="97.1755 667.946" stroke="black" type="label" width="6.78" height="3.21" depth="0" valign="baseline" size="tiny">11</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+260 880 m
+256 880 l
+256 768 l
+</path>
+<use matrix="1 0 0 1 208 -8" name="mark/disk(sx)" pos="256 768" size="normal" stroke="black"/>
+<text matrix="1 0 0 1 284 -8" transformations="translations" pos="684 680" stroke="black" type="label" width="5.175" height="5.446" depth="0" valign="baseline" size="footnote">Z</text>
+<text matrix="1 0 0 1 280 -8" transformations="translations" pos="680 668" stroke="black" type="label" width="6.116" height="5.446" depth="0" valign="baseline" size="footnote">C</text>
+<text matrix="1 0 0 1 280 -12" transformations="translations" pos="676 660" stroke="black" type="label" width="6.343" height="5.446" depth="0" valign="baseline" size="footnote">V</text>
+<path matrix="1 0 0 1 280 -8" stroke="black">
+696 680 m
+720 680 l
+720 776 l
+</path>
+<text matrix="1 0 0 1 384 408" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 416 408" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 456 408" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 500 408" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 548 408" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 516 292" transformations="translations" pos="208 596" stroke="black" type="label" width="12.592" height="6.808" depth="0" valign="baseline">D0</text>
+<text matrix="1 0 0 1 476 236" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 236" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 516 244" transformations="translations" pos="208 596" stroke="black" type="label" width="11.761" height="6.808" depth="0" valign="baseline">E0</text>
+<text matrix="1 0 0 1 516 232" transformations="translations" pos="208 596" stroke="black" type="label" width="11.761" height="6.808" depth="0" valign="baseline">E4</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+792 776 m
+432 776 l
+432 808 l
+352 808 l
+</path>
+<path matrix="1 0 0 1 176 4" stroke="black">
+396 808 m
+384 808 l
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+304 832 m
+304 800 l
+352 800 l
+352 832 l
+h
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+320 852 m
+320 832 l
+</path>
+<text matrix="1 0 0 1 208 -12" transformations="translations" pos="316 816" stroke="black" type="label" width="27.749" height="5.535" depth="0" valign="baseline" size="footnote">MuxSel</text>
+<path matrix="1 0 0 1 396 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<path matrix="1 0 0 1 468 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 468 -8" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 412 -96" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<path matrix="1 0 0 1 412 -96" stroke="black">
+320 720 m
+316.101 719.993 l
+</path>
+<path matrix="1 0 0 1 396 -8" stroke="black">
+384 728 m
+384 736 l
+</path>
+<use matrix="1 0 0 1 396 -8" name="mark/disk(sx)" pos="384 736" size="normal" stroke="black"/>
+<path matrix="1 0 0 1 396 -8" stroke="black">
+328 624 m
+328 576 l
+</path>
+<path matrix="1 0 0 1 396 -8" stroke="black">
+328 640 m
+328 672 l
+336 672 l
+</path>
+<path matrix="1 0 0 1 396 -8" stroke="black">
+376 672 m
+384 672 l
+384 712 l
+</path>
+<use matrix="1 0 0 1 396 -8" name="mark/disk(sx)" pos="328 576" size="normal" stroke="black"/>
+<text matrix="1 0 0 1 396 -8" transformations="translations" pos="344 632" stroke="black" type="label" width="26.152" height="6.808" depth="0" valign="baseline">SetSP</text>
+<text matrix="1 0 0 1 396 -8" transformations="translations" pos="392 720" stroke="black" type="label" width="34.593" height="6.918" depth="0" valign="baseline">ReadSP</text>
+<text matrix="1 0 0 1 348 -8" transformations="translations" pos="400 696" stroke="black" type="label" width="11.391" height="6.127" depth="0" valign="baseline" size="small">SP</text>
+<text matrix="1 0 0 1 560 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0000</text>
+<text matrix="1 0 0 1 448 264" transformations="translations" pos="532 612" stroke="black" type="label" width="23.219" height="3.459" depth="0" valign="baseline" size="tiny">ReadSP</text>
+<text matrix="1 0 0 1 448 268" transformations="translations" pos="532 612" stroke="black" type="label" width="17.698" height="3.386" depth="0" valign="baseline" size="tiny">SetSP</text>
+<text matrix="1 0 0 1 448 264" transformations="translations" pos="532 612" stroke="black" type="label" width="23.219" height="3.459" depth="0" valign="baseline" size="tiny">ReadSP</text>
+<text matrix="1 0 0 1 388 236" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">10800000</text>
+<text matrix="1 0 0 1 432 236" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 516 220" transformations="translations" pos="208 596" stroke="black" type="label" width="11.761" height="6.808" depth="0" valign="baseline">E8</text>
+<text matrix="1 0 0 1 516 208" transformations="translations" pos="208 596" stroke="black" type="label" width="13.975" height="6.808" depth="0" valign="baseline">EC</text>
+<text matrix="1 0 0 1 384 348" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 416 348" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 456 348" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 500 348" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<text matrix="1 0 0 1 548 348" transformations="translations" pos="340 516" stroke="black" type="label" width="11.623" height="4.428" depth="0" valign="baseline">$\cdots$</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+768 920 m
+784 920 l
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+768 924 m
+784 924 l
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+768 928 m
+784 928 l
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+768 932 m
+784 932 l
+</path>
+<text matrix="1 0 0 1 464 300" transformations="translations" pos="532 612" stroke="black" type="label" width="16.487" height="3.386" depth="0" valign="baseline" size="tiny">INTA</text>
+<text matrix="1 0 0 1 464 304" transformations="translations" pos="532 612" stroke="black" type="label" width="22.686" height="3.459" depth="0" valign="baseline" size="tiny">ClearIF</text>
+<text matrix="1 0 0 1 464 308" transformations="translations" pos="532 612" stroke="black" type="label" width="16.252" height="3.386" depth="0" valign="baseline" size="tiny">SetIF</text>
+<text matrix="1 0 0 1 464 312" transformations="translations" pos="532 612" stroke="black" type="label" width="37.921" height="3.459" depth="0" valign="baseline" size="tiny">ReadINTAdr</text>
+<path matrix="1 0 0 1 104 -8" stroke="black">
+312 728 m
+304 712 l
+320 712 l
+312 728 l
+</path>
+<text matrix="1 0 0 1 72 -8" transformations="translations" pos="256 720" stroke="black" type="label" width="56.621" height="6.918" depth="0" valign="baseline">ReadINTAdr</text>
+<path matrix="1 0 0 1 148 -8" stroke="black">
+268 728 m
+268 736 l
+</path>
+<use matrix="1 0 0 1 148 -8" name="mark/disk(sx)" pos="268 736" size="normal" stroke="black"/>
+<path matrix="1 0 0 1 24 -8" stroke="black">
+336 704 m
+376 704 l
+376 648 l
+336 648 l
+336 704 l
+</path>
+<text matrix="1 0 0 1 188 -12" transformations="translations" pos="180 676" stroke="black" type="label" width="27.902" height="5.778" depth="0" valign="baseline" size="small">0x0002</text>
+<path matrix="1 0 0 1 120 -8" stroke="black">
+292 720 m
+288 720 l
+</path>
+<path matrix="1 0 0 1 120 -8" stroke="black">
+296 712 m
+296 680 l
+280 680 l
+</path>
+<text matrix="1 0 0 1 108 -32" transformations="translations" pos="256 720" stroke="black" type="label" width="34.343" height="6.918" depth="0" valign="baseline">INTAdr</text>
+<path matrix="0.458333 0 0 0.5 732 312" stroke="black">
+192 768 m
+192 656 l
+272 656 l
+272 768 l
+h
+</path>
+<text matrix="0.458333 0 0 0.5 735.333 324" transformations="translations" pos="240 688" stroke="black" type="label" width="7.876" height="6.815" depth="1.93" valign="baseline">$Q$</text>
+<text matrix="0.458333 0 0 0.5 735.667 312" transformations="translations" pos="192 736" stroke="black" type="label" width="8.525" height="6.808" depth="0" valign="baseline">$D$</text>
+<path matrix="0.458333 0 0 0.5 732 312" stroke="black">
+192 736 m
+176 736 l
+</path>
+<path matrix="0.458333 0 0 0.5 732 312" stroke="black">
+192 688 m
+176 688 l
+</path>
+<path matrix="0.458333 0 0 0.5 732 328" stroke="black">
+272 688 m
+288 688 l
+</path>
+<path matrix="0.458333 0 0 0.5 732 312" stroke="black">
+192 696 m
+208 688 l
+192 680 l
+</path>
+<text matrix="1 0 0 1 200 -12" transformations="translations" pos="624 652" stroke="black" type="label" width="30.026" height="6.918" depth="0" valign="baseline">Enable</text>
+<text matrix="1 0 0 1 204 -8" transformations="translations" pos="596 664" stroke="black" type="label" width="12.453" height="6.918" depth="0" valign="baseline">clk</text>
+<text matrix="1 0 0 1 396 -40" transformations="translations" pos="392 720" stroke="black" type="label" width="23.938" height="6.808" depth="0" valign="baseline">SetIF</text>
+<text matrix="1 0 0 1 208 -8" transformations="translations" pos="652 684" stroke="black" type="label" width="10.101" height="6.808" depth="0" valign="baseline">IF</text>
+<path matrix="-0.00912958 0.447611 -0.507657 -0.00804973 1163.65 512.87" stroke="black">
+259.876 655.995 m
+283.876 655.995
+291.876 639.995
+291.876 639.995 c
+259.876 623.995 m
+283.876 623.995
+291.876 639.995
+291.876 639.995 c
+259.876 655.995 m
+275.876 639.995
+259.876 623.995
+259.876 623.995 c
+265.463 647.995 m
+259.876 647.995 l
+259.876 647.995 l
+265.227 631.991 m
+259.876 631.995 l
+259.876 631.995 l
+292 640 m
+296 640 l
+296 640 l
+259.876 655.995 m
+283.876 655.995
+291.876 639.995
+291.876 639.995 c
+259.876 623.995 m
+283.876 623.995
+291.876 639.995
+291.876 639.995 c
+259.876 655.995 m
+275.876 639.995
+259.876 623.995
+259.876 623.995 c
+265.463 647.995 m
+255.561 648 l
+259.876 647.995 l
+265.227 631.991 m
+255.561 632 l
+259.876 631.995 l
+292 640 m
+296 640 l
+296 640 l
+</path>
+<text matrix="1 0 0 1 416 -112" transformations="translations" pos="392 720" stroke="black" type="label" width="23.938" height="6.808" depth="0" valign="baseline">SetIF</text>
+<text matrix="1 0 0 1 448 -112" transformations="translations" pos="392 720" stroke="black" type="label" width="33.375" height="6.918" depth="0" valign="baseline">ClearIF</text>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+312 800 m
+312 792 l
+</path>
+<path matrix="1 0 0 1 208 -8" stroke="black">
+340 800 m
+340 792 l
+</path>
+<text matrix="1 0 0 1 208 -8" transformations="translations" pos="304 784" stroke="black" type="label" width="25.598" height="6.808" depth="0" valign="baseline">INTR</text>
+<text matrix="1 0 0 1 208 -12" transformations="translations" pos="336 788" stroke="black" type="label" width="10.101" height="6.808" depth="0" valign="baseline">IF</text>
+<text matrix="1 0 0 1 516 280" transformations="translations" pos="208 596" stroke="black" type="label" width="12.592" height="6.808" depth="0" valign="baseline">D4</text>
+<text matrix="1 0 0 1 476 224" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 520 224" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 388 224" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">08800000</text>
+<text matrix="1 0 0 1 432 224" transformations="translations" pos="352 652" stroke="black" type="label" width="39.851" height="6.42" depth="0" valign="baseline">00000000</text>
+<text matrix="1 0 0 1 208 -8" transformations="translations" pos="540 844" stroke="black" type="label" width="66.722" height="6.918" depth="0" valign="baseline">Microcode INT</text>
+<text matrix="1 0 0 1 200 -12" transformations="translations" pos="548 824" stroke="black" type="label" width="65.754" height="6.918" depth="0" valign="baseline">Microcode RTI</text>
+</page>
+</ipe>
