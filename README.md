@@ -10,6 +10,6 @@ Ce dépôt contient les supports de cours que j'ai utilisé pour le cours d'arch
 
 Le cours part du composant de base, le transistor et fini avec un micro-processeur basique, simulé sous logisim, sur lequel s'exécute un petit jeu programmé en un language ressemblant à de l'assembleur.
 
-
+![Space invaders](https://github.com/jeremyfix/Architecture/blob/main/spaceinvaders.gif)
 
 
