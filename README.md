@@ -2,4 +2,4 @@
 
 Ce dépôt contient les supports de cours que j'ai utilisé pour le cours d'architecture des ordinateurs de 2015 à 2018 :
 
-- le polycopié : [support.pdf](./)
+- le polycopié : [support.pdf](https://github.com/jeremyfix/Architecture/blob/main/Support/support.pdf)
