@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="seq_decode.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js" active="3"></script>
+
+    <div class="container">
+      <div class="title">
+	<hr>
+	<h1>La pile et l'appel de routines</h1>
+      </div>
+
+      <h2>Introduction</h2>
+
+      <p>
+      Le but de ce BE est d'étudier une extension de l'architecture des séances précédentes pour gérer l'appel de sous-programmes. On va voir notamment:
+      <ul>
+	<li>le registre Stack Pointer (SP) et la zone mémoire réservée à la pile dans la RAM</li>
+	<li>les instructions permettant de manipuler la pile</li>
+	<li>le codage en language assembleur et l'exécution de fonctions récursives</li>
+      </ul>
+
+      L'architecture que je vous propose d'utiliser est représentée ci-dessous. Vous y verrez notamment l'<b>ajout d'un registre (Stack Pointer)</b> ainsi que <b>deux signaux de contrôle SetSP et ReadSP</b> qui permettent l'accès en lecture et écriture du registre. Téléchargez le fichier <a href="Architectures/archi_routines.circ">archi_routines.circ</a> ainsi que le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à placer dans <b>le même répertoire</b> que archi_routines.circ. Ouvrez le circuit avec logisim. Chargez la ROM <a href="Architectures/microcode_routines.rom">microcode_routines.rom</a> qui contient les micro-instructions des instructions introduites dans le sujet précédent.
+      </p>
+
+
+      <p>
+	Je vous rappelle que vous disposez de <a href="reference_card.pdf">la carte de référence de l'architecture</a>.
+      </p>
+
+      <p>
+	<img src="img/archi_routines.png" width="1000px"><br/><br/>
+      </p>
+
+
+      <hr>
+      <h2>Manipulation de la pile (1/2)</h2>
+
+
+      <h3>Introduction</h3>
+      <p>
+	Le registre de pile (SP , Stack Pointer) est introduit dans le chemin de données. On introduit également de nouvelles instructions qui permettent de gérer la pile.
+
+	<table class="table instructions">
+	  <thead>
+	    <tr>
+              <th>Code Opération (8 bits)</th>
+              <th>Nom de l'opération</th>
+	      <th>Nombre de mots</th>
+              <th>Description</th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <tr>
+              <td>0x80</td>
+              <td>LDSPi</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur de l'opérande dans le registre SP.<br/><b class="infoinstruction">[SP := opérande]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x84</td>
+              <td>LDSPd</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur dans la RAM pointée par l'opérande dans le registre SP.<br/><b class="infoinstruction">[SP := Mem[opérande]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x8c</td>
+              <td>STSP</td>
+	      <td>2</td>
+              <td>
+		Sauvegarde en mémoire la valeur du registre SP à l'adresse donnée par l'opérande.<br/><b class="infoinstruction">[Mem[opérande] := SP]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x90</td>
+              <td>INCSP</td>
+	      <td>1</td>
+              <td>
+		Incrémente le pointeur de pile.<br/><b class="infoinstruction">[SP := SP + 1]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x94</td>
+              <td>DECSP</td>
+	      <td>1</td>
+              <td>
+		Décrémente le pointeur de pile.<br/><b class="infoinstruction">[SP := SP - 1]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xb0</td>
+              <td>PUSHA</td>
+	      <td>1</td>
+              <td>
+		Empile le registre A.<br/><b class="infoinstruction">[Mem[SP] := A; SP := SP - 1]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xb4</td>
+              <td>POPA</td>
+	      <td>1</td>
+              <td>
+		Dépile le registre A.<br/><b class="infoinstruction">[SP := SP + 1; A := Mem[SP]]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xb8</td>
+              <td>POKEA</td>
+	      <td>2</td>
+              <td>
+		Sauvegarde le registre A dans la pile.<br/><b class="infoinstruction">[Mem[SP+operande] := A]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xbc</td>
+              <td>PEEKA</td>
+	      <td>2</td>
+              <td>
+		Récupère le registre A dans la pile.<br/><b class="infoinstruction">[A := Mem[SP + operande]]</b>
+	      </td>
+	    </tr>
+
+
+	    <tr>
+              <td>0xc0</td>
+              <td>PUSHB</td>
+	      <td>1</td>
+              <td>
+		Empile le registre B.<br/><b class="infoinstruction">[Mem[SP] := B; SP := SP - 1]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xc4</td>
+              <td>POPB</td>
+	      <td>1</td>
+              <td>
+		Dépile le registre B.<br/><b class="infoinstruction">[SP := SP + 1; B := Mem[SP]]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xc8</td>
+              <td>POKEB</td>
+	      <td>2</td>
+              <td>
+		Sauvegarde le registre B dans la pile.<br/><b class="infoinstruction">[Mem[SP+operande] := B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xcc</td>
+              <td>PEEKB</td>
+	      <td>2</td>
+              <td>
+		Récupère le registre B dans la pile.<br/><b class="infoinstruction">[B := Mem[SP + operande]]</b>
+	      </td>
+	    </tr>
+
+
+	  </tbody>
+	</table>
+      </p>
+
+      <p>
+	Il est important de s'assurer qu'après chaque instruction (non pas micro-instruction bien sûr), le pointeur de pile pointe la prochaine zone mémoire libre de la pile. Je vous rappelle aussi que la pile augmente dans le sens des adresses décroissantes; c'est la raison pour laquelle, par exemple, récupérer une variable dans la pile (PEEKA ou PEEKB) se fait en ajoutant un décalage au pointeur de pile. Tout ça est illustré ci-dessous.
+
+	<p>
+	  <img src="img/stack.png" width="100%">
+	</p>
+      </p>
+
+
+      <h3>Travail à réaliser</h3>
+
+
+
+
+      <p>
+	Ecrivez les micro-instructions des instructions ci-dessus. Pour faciliter votre travail, je vous propose ci-dessous un outil qui permet de passer des signaux de contrôle du chemin de données au code hexadécimal de la micro-instruction et vice-versa. Vous remarquerez l'introduction de deux champs pour contrôler le registre de pointeur de pile (SP).
+
+	
+  <div id="genmicrocode" data-id="0" data-sp=""></div><br/><br/>
+      </p>
+
+
+      <p>
+	Testez votre architecture avec le programme <a href="Architectures/stack.mem">stack.mem</a>. Si tout se passe bien, vos afficheurs et votre RAM (regardez bien les adresses 0x1e, 0x1f et 0x20) devraient donner :
+      </p>
+<br/><br/>
+      <p>
+	<img src="img/archi_routines_stack.png" width="100%">
+      </p>
+<br/><br/>
+      <p>
+	N'hésitez pas à retranscrire le code machine en utilisant le nom des opérations pour plus facilement découvrir ce que ces programmes doivent faire. Par exemple :
+	<pre>
+8000 20
+9400
+1000 3
+1c00 1000
+b000
+...	</pre>
+	peut se voir de manière équivalente comme :
+<pre>
+LDSPi 0x0020
+DECSP
+LDAi  0x0003
+STA   0x1000
+PUSHA
+...</pre>
+      </p>
+
+
+
+
+      <hr>
+      <h2>Appel de routines : CALL, RET (1/2)</h2>
+
+      <h3>Introduction</h3>
+
+      <p>
+	On va maintenant voir une utilisation intéressante de la pile lors de l'appel de routines, et en particulier le passage d'arguments et de la valeur de retour d'une routine. Il nous suffit d'introduire deux instructions pour l'appel d'une routine (<b class="infoinstruction">CALL</b>) et le retour d'une routine (<b class="infoinstruction">RET</b>) :
+
+	<table class="table instructions">
+	  <thead>
+	    <tr>
+              <th>Code Opération (8 bits)</th>
+              <th>Nom de l'opération</th>
+	      <th>Nombre de mots</th>
+              <th>Description</th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <tr>
+              <td>0xa0</td>
+              <td>CALL</td>
+	      <td>2</td>
+              <td>
+		Empile le compteur de programme (PC) et branche à l'adresse de la routine fournie par l'opérande<br/>
+	      </td>
+	    </tr>
+
+	    <tr>
+              <td>0xa8</td>
+              <td>RET</td>
+	      <td>2</td>
+              <td>
+		Dépile le compteur de programme (PC) de la pile<br/>
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+      </p>
+
+
+      <p>
+	Pour se rappeler la manière dont l'appel de routine fonctionne, je vous propose de considérer l'appel d'une fonction :
+	<pre>
+	  f(a, b) = a + b</pre>
+	Cette fonction doit disposer des opérandes "a" et "b", calculer son opération et retourner le résultat au programme appelant. En supposant par example que le programme appelant appelle f(7,8), on aurait par exemple le code suivant en RAM, ici écrit en assembleur pour être plus lisible:
+<pre>
+# Programme appelant :
+0x0000     LDSPi 0x0030
+0x0002     DECSP          # On réserve de la place dans la pile pour la valeur de retour
+0x0003     LDAi  0x0007
+0x0005     PUSHA          # On charge la première opérande
+0x0006     LDAi  0x0008
+0x0008     PUSHA          # On charge la deuxième opérande
+0x0009     CALL 0x0020    # On appelle la routine
+0x000b     POPA           # On enlève la deuxième opérande de la pile
+0x000c     POPA           # On enlève la première opérande de la pile
+0x000d     POPA           # On récupère le résultat
+0x000e     STA  0x1000    # On affiche le résultat
+0x0010     END            # Fin de programme
+
+# Routine à l'adresse 0x0020:
+0x0020     PEEKA 0x0003   # On récupère la première opérande
+0x0022     PEEKB 0x0002   # On récupère la seconde opérande
+0x0024     ADDA           # On en fait la somme
+0x0025     POKEA 0x0004   # On sauvegarde le résultat
+0x0027     RET            # On retourne au programme appelant
+</pre>
+      </p>
+
+      <p>
+	Pour qu'à la sortie de la routine (RET), on sache quelle adresse charger dans le compteur de programme (PC), l'instruction CALL sauvegarde la valeur courante du PC <b>après avoir lu son opérande</b>, i.e. l'adresse de l'instruction qui suit le CALL. Il faut bien faire attention à prendre en compte que l'adresse de retour est mise dans la pile lorsqu'on calcule les décalages des instructions PEEK et POKE. En image, ça nous donne une évolution de la pile ci-dessous :
+      <p>
+	<img src="img/stack_call_ret.png" width="100%">
+      </p>
+
+
+      <p>
+	L'adresse de retour empilée par le CALL est la valeur du PC après lecture de l'opérande du CALL. Lorsqu'on exécute les micro-instructions du CALL, le PC pointe sur son opérande; Faites donc bien attention à sauvegarder l'adresse de retour PC+1 dans la pile. Le tableau ci-dessous vous permet de calculer les micro-instructions avec les deux signaux de contrôle activés.
+      </p>
+
+      <p>
+
+	<div id="genmicrocode" data-id="1" data-sp=""></div><br/><br/>
+	
+      </p>
+
+
+
+      <h3>Travail à réaliser</h3>
+
+      <p>
+	Je vous propose le travail suivant :
+
+	<ul>
+	  <li>introduisez les micro-instructions pour les instructions CALL (0xa0) et RET (0xa8),</li>
+	  <li>programmez votre RAM pour exécuter l'exemple illustratif ci-dessus et tester votre implémentation.</li>
+	</ul>
+
+	Une fois que vous êtes assurés que votre architecture est fonctionnelle, je vous propose deux exercices . Pour commencer je vous propose de programmer une généralisation des suites de Syracuse (ou de Collatz) :
+	<pre>
+	  u(n+1) = f(u(n), a, b)
+       f(u, a, b) = u/2         si u est pair
+                  = a * u + b   sinon</pre>
+	Je vous propose d'écrire un programme permettant de calculer les valeurs de cette suite en écrivant une routine pour la fonction "f".<br/>
+
+
+	Ecrivez également une routine qui calcule la factorielle d'un nombre et utilisez le pour calculer "8!". Pour rappel :
+	<pre>
+	  fac(n) = 1            si n = 0
+	         = n * fac(n-1) sinon</pre>
+	On voit donc que, si n est non nul, le résultat de fact(n) est calculé à partir du résultat de fact(n-1); nous avons donc ici une fonction <b>récursive</b>.
+      </p>
+
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </div><!-- /.container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

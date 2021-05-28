@@ -1,0 +1,32 @@
+v2.0 raw
+00800008 0	  0        0     	# goto fetch/decode		     00
+0        0        0        0            #				     04
+0	 0 	  0        0            # Fetch / Decode		     08	
+0080000c 0        0        0		# END	  			     0c
+0	 0 	  0 	   0		# LDAi				     10
+0 	 0	  0 	   0		# LDAd				     14	
+0	 0	  0	   0		# 				     18	
+0 	 0	  0	   0 		# STA				     1c
+0 	 0	  0 	   0		# LDBi				     20
+0 	 0 	  0 	   0		# LDBd				     24
+0	 0	  0	   0		# 				     28
+0 	 0 	  0 	   0 		# STB				     2c
+0 	 0	  0	   0		# ADDA				     30
+0 	 0	  0	   0		# ADDB				     34	
+0 	 0	  0	   0		# SUBA				     38
+0 	 0	  0	   0		# SUBB				     3c
+0 	 0	  0	   0		# MULA				     40
+0 	 0 	  0	   0		# MULB				     44
+0 	 0	  0	   0		# DIVA : A = A/2		     48
+0	 0	  0	   0		#      	     			     4c
+0 	 0	  0	   0		# ANDA				     50
+0 	 0	  0	   0		# ANDB				     54
+0 	 0	  0	   0		# ORA				     58
+0 	 0	  0	   0		# ORB				     5c
+0 	 0	  0	   0		# NOTA				     60
+0 	 0	  0	   0		# NOTB				     64
+0	 0	  0	   0		# 				     68
+0	 0	  0	   0		#				     6c
+0 	 0 	  0	   0		# JMP				     70
+0 	 0 	  0 	   0		# JZA				     74
+0 	 0 	  0 	   0		# JZB				     78

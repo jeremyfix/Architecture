@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="seq_decode.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js" active="4"></script>
+
+    <div class="container">
+      <div class="title">
+	<h1>Les interruptions</h1>
+      </div>
+
+
+      <h2>Introduction</h2>
+
+      <p>
+      Jusqu'à maintenant, notre architecture vit dans son monde, elle est quasiment incapable de s'interfacer avec le monde extérieur. Nous avons en vérité déjà vus quelques sorties avec les afficheurs 7 segments mais elle n'est pas sensible à des entrées. On va ici étudier comment ajouter des périphériques d'entrée et être capable de répondre à des événements asynchrones (e.g. l'appui sur un bouton) produits lorsque ces périphériques sont utilisés. On va voir notamment:
+      <ul>
+	<li>le principe des interruptions</li>
+	<li>le codage des gestionnaires d'interruption (interrupt handlers)</li>
+	<li>la gestion d'une interruption pendant l'exécution d'un programme</li>
+      </ul>
+
+      L'architecture que je vous propose d'utiliser est représentée ci-dessous. Vous y verrez notamment l'ajout d'<b>un registre (Interrupt Flag)</b> ainsi que <b>quatre signaux de contrôle INTA, SetIF, ClearIF, ReadINTAdr</b>. Vous y verrez également un petit circuit (à côté de la RAM) permettant de générer une interruption lors de l'appui sur un bouton et une modification du contrôle du multiplexeur du MicroPC. Téléchargez le fichier <a href="Architectures/archi_irq.circ">archi_irq.circ</a> ainsi que le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à placer dans <b>le même répertoire</b> que archi_irq.circ. Ouvrez le circuit avec logisim. Chargez la ROM <a href="Architectures/microcode_irq.rom">microcode_irq.rom</a> qui contient les micro-instructions des instructions introduites dans le sujet précédent.
+      </p>
+      <p>
+	Je vous rappelle que vous disposez de <a href="reference_card.pdf">la carte de référence de l'architecture</a>.
+      </p>
+
+      <p>
+	<img src="img/archi_irq.png" width="1000px"><br/><br/>
+      </p>
+
+
+      <h2>Le principe des interruptions</h2>
+
+      <p>
+	Le registre Interrupt Flag est là pour autoriser ou non les interruptions. En effet, si, par exemple, le pointeur de pile n'est pas encore initialisé, il ne faut surtout pas partir en interruption puisque c'est justement sur la pile qu'on mémorise le contenu des registres en quittant la routine d'interruption. Au démarrage de la machine, ce registre est à 0, <b>on s'assurera d'autoriser les interruptions après l'initialisation</b>. On introduit deux instructions pour gérer l'état de ce registre ainsi que deux instructions pour partir en interruption et revenir d'une interruption.
+	<table class="table instructions">
+	  <thead>
+	    <tr>
+              <th>Code Opération (8 bits)</th>
+              <th>Nom de l'opération</th>
+	      <th>Nombre de mots</th>
+              <th>Description</th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <tr>
+              <td>0xd0</td>
+              <td>CLI</td>
+	      <td>1</td>
+              <td>
+		Met à zéro le registre Interrupt Flag (IF).<br/><b class="infoinstruction">[IF := 0]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xd4</td>
+              <td>STI</td>
+	      <td>1</td>
+              <td>
+		Met à un le registre Interrupt Flag (IF).<br/><b class="infoinstruction">[IF := 1]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xe0</td>
+              <td>INT</td>
+	      <td>1</td>
+              <td>
+		Départ en interruption. Le vecteur d'interruption doit être en RAM à l'adresse 0x0002. Cette adresse est chargeable dans le PC via le signal de contrôle ReadINTAdr.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0xe8</td>
+              <td>RTI</td>
+	      <td>1</td>
+              <td>
+		Retour d'une interruption en reprenant le déroulement du programme interrompu.
+	      </td>
+	    </tr>
+	  </tbody>
+	</table>
+
+      </p>
+
+
+      <p>
+	On pourrait appeler depuis un programme l'interruption (en invoquant INT) mais on va ici voir comment partir en interruption lors qu'on appui sur le bouton. Si le bouton est pressé, alors INTR = 1. La <b>détection d'une interruption</b> se fait avant l'exécution de chaque instruction du programme principal (à l'adresse 0x00 de la ROM) avec des signaux CodeMCount particulier. Je vous rappelle la sémantique de CodeMCount qui permet de piloter le multiplexeur du MicroPC:
+	<ul>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b000</b>, alors <b class="infoinstruction">SMux=MicroPC+1</b></li>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b001</b>, alors <b class="infoinstruction">SMux=@Adr</b></li>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b010</b>, alors <b class="infoinstruction">SMux=InstCode</b></li>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b011</b> <b>et</b> <b class="infoinstruction">Z=0</b>, alors <b class="infoinstruction">SMux=MicroPC+1</b></li>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b011</b> <b>et</b> <b class="infoinstruction">Z=1</b>, alors <b class="infoinstruction">SMux=@Adr</b></li>
+	</ul>
+	On y ajoute les codes suivants :
+	<ul>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b100</b> <b>et</b> <b class="infoinstruction">INTR & IF=0</b>, alors <b class="infoinstruction">SMux=@Adr</b></li>
+	  <li>Si <b class="infoinstruction">CodeMCount=0b100</b> <b>et</b> <b class="infoinstruction">INTR & IF=1</b>, alors <b class="infoinstruction">SMux=MicroPC+1</b></li>
+	</ul>
+
+	Lorsqu'il n'y a pas d'interruption, le MicroPC se branche directement sur l'adresse du Fetch/Decode (0x08), il n'y a donc pas de surcoût à détecter si une interruption est levée ou non. Si il y a une interruption, la prochaine instruction en ROM[0x01] branchera vers les micro-instructions de l'instruction INT (0xe0).
+      </p>
+
+      <p>
+	Si une interruption est détectée, il faut gérer l'interruption. La <b>gestion de l'interruption</b> se fait par les micro-instructions à l'adresse 0xe0 (INT). On va supposer ici que notre interruption n'est pas masquable, non interruptible. Aussi, je vous rappelle qu'une interruption doit être <b>gérée de manière transparente</b> pour le programme qui est entrain de tourner, c'est à dire qu'<b>il faut sauvegarder les registres</b> avant de partir vers le programme de l'interruption, qu'il faudra recharger après la routine d'interruption (RTI). Enfin, le programme exécuté lors de l'interruption sera ici par convention à l'adresse 0x0002 en RAM. Le microcode pour INT devra donc :
+	<ul>
+	  <li>mettre à zéro le registre IF, accuser réception de l'interruption (signal de contrôle INTA)</li>
+	  <li>sauvegarder les registres (A, B, PC) sur la pile</li>
+	  <li>charger le PC avec l'adresse 0x0002</li>
+	</ul>
+	On dira alors qu'on est en parti en interruption. Les vecteurs d'interruptions seront codés en RAM avec des instructions JMP. En assembleur, le début de votre RAM devra donc ressembler à:
+	<pre>
+0x0000	  JMP init
+0x0002	  JMP handler</pre>
+	avec init l'adresse de votre programme principal et handler l'adresse du programme à exécuter lorsque l'interruption est levée (notez que "JMP handler" doit ici être à l'adresse 0x0002).
+      </p>
+
+      <p>
+	Le programme associé à l'interruption s'exécute alors (par exemple, il modifie la valeur d'une variable en RAM). A la fin du programme d'interruption, il faut revenir au programme interrompu en invoquant l'instruction RTI (ReTurn from Interrupt). Il faut donc remettre le chemin de données dans l'état dans lequel il était avant le départ en interruption, c'est à dire:
+	<ul>
+	  <li>récupérer les registres de la pile</li>
+	  <li>réactiver les interruptions en mettant à un le registre IF</li>
+	</ul>
+      </p>
+
+      <p>
+	Les étapes de départ en interruption, exécution du programme d'interruption et de retour d'interruption sont illustrées ci-dessous.
+
+      <p>
+	<img src="img/irq.png" width="100%">
+      </p>
+
+      </p>
+
+
+    <h2>Travail à réaliser</h2>
+
+      <p>
+	<ul>
+	  <li>Commencez par modifier la ROM à l'adresse 0x00 pour ajouter les micro-instructions permettant de sauter à l'adresse INT (0xe0) si une interrution est levée et de sauter à l'adresse des micro-instructions de Fetch/Decode (0x08),</li>
+	  <li>Définissez le microcode pour les instructions STI (0xd4) , CLI (0xd0),</li>
+	  <li>Définissez le microcode pour les instructions INT (0xe0) et RTI (0xe8). Testez votre architecture avec le programme suivant <a href="Architectures/irq_bouton_simple.asm">irq_bouton_simple.asm</a>, <a href="Architectures/irq_bouton_simple.mem">irq_bouton_simple.mem</a>. Le programme principal incrémente un compteur, l'interruption alterne 0, 1 sur le deuxième afficheur</li>
+	</ul>
+
+	Je vous propose aussi le programme <a href="Architectures/irq_bouton.asm">irq_bouton.asm</a>, <a href="Architectures/irq_bouton.mem">irq_bouton.mem</a> qui incrémente un compteur réinitialisé (en principe) chaque fois qu'on appui sur le bouton. En pratique, si vous testez bien, ça ne marche pas tout le temps et le compteur n'est pas toujours réinitialisé comme on pense qu'il devrait l'être. Savez-vous pourquoi ? Savez vous modifier le programme pour garantir que le compteur soit correctement réinitialisé ?
+      </p>
+
+
+
+      <p>
+	Pour faciliter votre travail, je vous propose ci-dessous un outil qui permet des signaux de contrôle du chemin de données au code hexadécimal de la micro-instruction et vice-versa.
+	
+	<div id="genmicrocode" data-id="0" data-sp="" data-int=""></div><br/><br/>
+      </p>
+
+
+    <h2>Une application des interruptions : un contrôleur clavier</h2>
+
+    <p>
+      Je vous propose une application des interruptions en ajoutant un clavier et un écran à notre architecture. On aimerait que les caractères saisis sur le clavier (le clavier s'utilise en tapant des caractères tandis que le clavier est sélectionné avec le poke tool) soient affichés à l'écran. Dans l'architecture <a href="Architectures/archi_irq_clavier.circ">archi_irq_clavier.circ</a>, le clavier est accessible en lecture à l'adresse 0x1003, l'écran est accessible en écriture à l'adresse 0x1004. Lorsqu'un caractère est saisi sur le clavier, une interruption est levée. L'interface avec le clavier est faite de telle sorte qu'à la réception du signal INTA, le caractère saisi est transféré dans un registre tampon. Pour l'écran, chaque fois qu'on écrit un caractère à l'adresse 0x1004, ce caractère est écrit à la suite des caractères précédents. Ecrivez la RAM telle que le programme principal incrémente un compteur et l'interruption affiche les caractères saisis au clavier sur l'écran.
+
+    <p>
+      <img src="img/archi_clavier.png" width="100%">
+    </p>
+
+
+    </p>
+            <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+</div><!-- /.container -->
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script> -->
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+    <script type="text/javascript" src="seq_decode.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js" active="7"></script>
+
+    <div class="container">
+      <div class="title">
+	<hr>
+
+	<img src="img/SpaceInvaders.png"><br/>
+
+	<hr>
+
+	<h1>Place aux jeux !</h1>
+      </div>
+
+      <h2>Introduction</h2>
+
+      Jusqu'à maintenant, nous avons travaillé sur des problèmes jouets pour illustrer différents concepts d'architecture. Je vous propose maintenant de laisser libre court à votre imagination et de programmer votre architecture. Rien de tel alors que de se lancer le défi de programmer un jeu. Alors, n'exagérons pas, notre architecture est limitée à bien des égards : la fréquence d'horloge qui est dépendante de la fréquence à laquelle notre circuit peut être simulé n'excédera que difficilement le kHz (nos ordinateurs sont cadencés à une fréquence 10000000 plus grande), on va ajouter un petit écran de 16x16 pixels monochrome et on va essayer de ne pas être exagérément ambitieux quand au jeu que nous devons écrire en assembleur. Mais soit, faisons avec;<br/>
+
+      Je vous propose d'utiliser l'architecture <a href="Architectures/archi_jeu.circ">archi_jeu.circ</a> ainsi que le microcode <a href="Architectures/microcode_jeu.rom">microcode_jeu.rom</a>.
+
+     <p>
+	<img src="img/archi_jeu.png" width="100%"><br/><br/>
+      </p>
+
+
+
+
+     Comme nouveautés, j'ai ajouté deux nouvelles instructions :
+      <ul>
+	<li>STAB (0x1800) : Place le contenu du registre A à l'adresse contenue dans le registre B :<b class="infoinstruction">Mem[B] := A</b></li>
+	<li>STBA (0x2800) : Place le contenu du registre B à l'adresse contenu dans le registre A :<b class="infoinstruction">Mem[A] := B</b></li>
+      </ul>
+      Le programme Python assembleur <a href="Architectures/assemble_jeu.py">assemble_jeu.py</a> prends en compte ces deux nouvelles instructions.<br/>
+
+
+      Au niveau des périphériques, notre mini console dispose:
+      <ul>
+	<li>d'un clavier, qui signale la présence d'un caractère par interruption son buffer étant accessible en lecture à l'adresse 0x1003</li>
+	<li>d'un écran de 16 x 16 pixels monochromes; un périphérique de sortie pour lequel on renseigne le contenu des lignes individuellement. Chaque pixel peut avoir l'état 0 ou 1. Une ligne pleine sera par exemple codée avec la valeur 0xFFFF</li>
+      </ul>
+
+      L'écran est couplé au chemin de données par l'intermédiaire d'un composant appelé pompeusement "CarteGraphique". N'hésitez pas à cliquer avec le "Poke Tool" sur ce composant pour inspecter son contenu. Notre carte graphique dispose de deux blocs de buffers, chaque bloc étant constitué de 16 registres 16 bits pour définir la couleur de chaque pixel de l'écran. Ces deux blocs de buffers constituent ce qu'on appelle du <a href="https://en.wikipedia.org/wiki/Multiple_buffering#Double_buffering_in_computer_graphics">double buffering</a>. Par la suite j'appelle buffer un bloc de 16 registres de 16 bits. On dispose donc de deux buffers. Sans double buffering, puisque chaque des lignes est adressée individuellement, on verrait visuellement la mise à jour progressive de chaque ligne et le rendu ne serait pas très agréable. Avec le double buffering, l'un de ces buffers, le front buffer, alimente l'écran. Pendant ce temps, on écrit une nouvelle image dans l'autre buffer, le back buffer. Une fois l'image complètement écrite en mémoire, on permute le rôle des front buffer et back buffer. On voit alors d'un coup, la nouvelle image.
+
+     <p>
+	<img src="img/doubleBuffer.png" width="100%"><br/><br/>
+     </p>
+
+
+
+
+     En pratique, le composant CarteGraphique dispose :
+      <ul>
+	<li> de 16 registres 16 bits adressables aux adresses 0x2000, 0x2001, 0x2002, ... 0x200F</li>
+	<li> d'un registre 16 bit adressable à l'adresse 0x2010 qui définit quel buffer est le front buffer et quel buffer est le back buffer</li>
+  </ul>
+      Le registre est de 16 bits pour se faciliter la vie avec la compatibilité avec nos bus 16 bits. En pratique, seul le bit de poids faible est utilisé pour sélectionner le front et back buffer. Donc :
+      <ul>
+	<li><b class="infoinstruction">LDAi 0000 ; STA 0x2010</b> : sélectionne le buffer "de gauche" en front buffer et le buffer "de droite" en back buffer</li>
+	<li><b class="infoinstruction">LDAi 0001 ; STA 0x2010</b> : sélectionne le buffer "de gauche" en back buffer et le buffer "de droite" en front buffer</li>
+      </ul>
+
+      Pour utiliser ce système de double buffering, on remplira alors toute l'image en adressant toutes les lignes puis on terminera par permuter les front et back buffers pour déclencher l'affichage de l'image.
+
+      A titre d'illustration, je vous propose ci-dessous une petite vidéo d'une réalisation d'un mini space invaders. Pendant la vidéo, les tirs sont générés en appuyant sur le touche "L", les touches "Q" et "D" déplacent la plateforme à gauche et à droite. Soyez patient, la video dure 5 minutes, ... le processeur est cadencé au mieux à 1 kHz. Je vous donne également le <a href="Architectures/jeu.asm">code source en assembleur</a> si vous souhaitez utiliser ce jeu comme point de départ.
+
+
+      <embed src="spaceinvaders.swf" width="960" height="536" controls="console"><br/>
+
+
+
+   <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+
+      <!-- Si vous avez tout terminé, je vous propose de vous rendre dans la section <a href="bonus.html">bonus</a> pour voir de nouvelles extensions de l'architecture. -->
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    </div><!-- /.container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

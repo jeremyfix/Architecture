@@ -1,0 +1,62 @@
+
+h1, h2, h3, h4{
+    text-decoration: underline;
+}
+
+hr { 
+    display: block;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    margin-left: auto;
+    margin-right: auto;
+    border-style: inset;
+    border-width: 5px;
+} 
+
+body {
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 17px;
+    padding-top: 100px;
+}
+
+img {
+    align:center;
+}
+
+.title {
+    padding: 40px 15px;
+    text-align: center;
+}
+
+.codeop { 
+    margin-left:auto; 
+    margin-right:auto;
+    border-collapse: collapse; 
+    font-size: 13px;
+}
+.codeop th, .codeop td { padding: 0.5em; }
+.codeop th {
+    background: #aedaff;
+    border: 2px solid #333;
+}
+.codeop td {
+    border: 2px solid #333;
+    text-align:center;
+}
+
+.instructions th {
+    background: #aedaff;
+}
+
+.instructions td {
+    border: 1px solid #333;
+}
+
+.infoinstruction {
+    color: #00bc04;
+    font-family: "Times New Roman", Times, serif;
+}
+
+.todo {
+    color: #FF0000;
+}

@@ -1,0 +1,19 @@
+	JMP	init		; Vecteur d'interruption du reset
+	JMP	sched		; Vecteur d'interrupteur du scheduler
+	DSW	sp0		; 
+	DSW 	sp1
+	DSW	current
+init:	.....
+	.....
+	RTI
+
+	
+main0:	.....
+
+	
+main1:	.....
+
+	
+sched:	.....
+	.....
+	RTI

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js"></script>
+
+    <div class="container">
+      <div class="title">
+	<h1>Corrections des BE/TP</h1>
+      </div>
+
+      <p>
+	Il vous faut récupérer l'archive <a href="logisim-2.7.2.jar">logisim-2.7.2.jar</a>, disposer d'une installation du <a href="https://www.java.com/fr/download/">Java runtime environnement</a> et exécuter la commande ci-dessous :
+	<pre>
+java -jar logisim-2.7.2.jar</pre>
+
+	Notez au passage qu'il existe plusieurs forks de logisim sur Internet. La <a href="http://www.cburch.com/logisim/">version officielle</a> contient des bugs qui risquent de poser quelques problèmes, en particulier des bugs dans le copier/coller dans les modules RAM et ROM. On utilise ici la version <a href="https://github.com/lawrancej/logisim">https://github.com/lawrancej/logisim</a> avec une modification de l'épaisseur des traits pour voir leur statut.
+      </p>
+
+      <h2>Séquenceur manuel (BE)</h2>
+
+      <b>Travail sur les registres</b><br/>
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_seq_man_regual.circ">archi_seq_man_regual.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+
+      Notez qu'après chaque ligne, il faut déclencher un cycle d'horloge (Ctrl + t  deux fois) et que les signaux non mentionnés sont à zéro.
+      <ul>
+	<li>Mettre 10000 dans data, ReadMem, UAL=0001, SetA</li>
+	<li>Mettre 1100 dans data, ReadMem, UAL=0001, SetB</li>
+	<li>ReadA, SetMem</li>
+	<li>ReadA, ReadB, UAL= 0110, SetA</li>
+	<li>ReadA, UAL = 1011, SetA, SetMem</li>
+      </ul>
+
+      <b>Travail avec la RAM</b><br/>
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_seq_man.circ">archi_seq_man.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+
+
+      On commence par charger le fichier <a href="Architectures/seq_man.mem">seq_man.mem</a> dans la RAM puis :
+      <ul>
+	<li>Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>Charger l'opérande dans A : ReadMem, UAL=0001, SetA</li>
+	<li>Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>Charger l'opérande dans RADM : ReadMem, UAL=0001, SetRADM</li>
+	<li>Afficher A sur le premier afficheur : ReadA, SetMem</li>
+	<li>Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>Charger l'opérande dans B : ReadMem, UAL=0001, SetB</li>
+	<li>Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>Charger l'opérande dans RADM : ReadMem, UAL=0001, SetRADM</li>
+	<li>Afficher B sur le premier afficheur : ReadB, SetMem</li>
+	<li>Soustraire B à A : ReadA, ReadB, UAL=0111, SetA</li>
+	<li>Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>Charger l'opérande dans RADM : ReadMem, UAL=0001, SetRADM</li>
+	<li>Afficher A sur le premier afficheur : ReadA, SetMem</li>
+      </ul>
+
+
+      La mémoire modifiée pour diviser par deux doit seulement contenir les opérandes nécessaires :
+      <pre>80 1000</pre>
+      ensuite, on effectue simplement (en fait, ici certaines opérations ne sont pas fondamentalement nécessaires):
+      <ul>
+	<li>[0] Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>[1] Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>[2] Charger l'opérande dans A : ReadMem, UAL=0001, SetA</li>
+	<li>[3] Charger le PC dans RADM : ReadPC, SetRADM</li>
+	<li>[4] Incrémenter le PC : ReadPC, UAL=1000, SetPC</li>
+	<li>[5] Charger l'opérande dans RADM : ReadMem, UAL=0001, SetRADM</li>
+	<li>[6] Diviser par deux A : ReadA, UAL = 1011, SetA</li>
+	<li>[7] Afficher A : ReadA, SetMem</li>
+	<li>[8] Lire A et décider si on boucle : ReadA; Si Z alors aller à [9] sinon retourner à [6]</li>
+	<li>[9] c'est fini </li>
+      </ul>
+
+      <h2>Séquenceur microprogrammé (TL)</h2>
+
+
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_seq.circ">archi_seq.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+      <p>
+      Le micro-code à charger dans la ROM avec toutes les instructions : <a href="Architectures/microcode_seq_sol.rom">microcode_seq_sol.rom</a>.
+      </p>
+
+
+
+      Les programmes pour tester l'architecture :
+      <ul>
+	<li><a href="Architectures/LDAiSTA.mem">LDAiSTA.mem</a> : Load immédiat de 2015 et store sur le premier afficheur</li>
+	<li><a href="Architectures/LDAdSTA.mem">LDAdSTA.mem</a> : Load direct à l'adresse 0x5 ou est stockée la valeur 2015 et store sur le premier afficheur</li>
+	<li><a href="Architectures/LDBiSTB.mem">LDBiSTB.mem</a>, <a href="Architectures/LDBdSTB.mem">LDBdSTB.mem</a></li>
+	<li><a href="Architectures/LDADDST.mem">LDADDST.mem</a> charge 3 dans A, 5 dans B, fait la somme soit dans A soit dans B et affiche sur les deux premiers afficheurs,</li>
+	<li><a href="Architectures/JMP.mem">JMP.mem</a> : le premier afficheur incrémente de 0 à 10, puis un deuxième programme décrémente le troisième afficheur de 10 à 0, et on recommence,</li>
+	<li><a href="Architectures/JZ.mem">JZ.mem</a> : pareil que JMP.mem mais avec des tant que,</li>
+	<li><a href="Architectures/DIV.mem">DIV.mem</a> : on divise par 2 à partir de 4096 jusqu'à zéro</li>
+	<li><a href="Architectures/syr.mem">syr.mem</a> : la suite de syracuse 127 s'affiche sur le premier afficheur</li>
+      </ul>
+
+      <h2>Appel de routines (BE)</h2>
+
+      <h3>Manipulation de la pile</h3>
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_routines.circ">archi_routines_sol.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+      <p>
+	Le micro-code à charger dans la ROM avec toutes les instructions (de pile et le CALL et RET) : <a href="Architectures/microcode_routines_sol.rom">microcode_routines_sol.rom</a>.
+      </p>
+
+      <p> Le programme pour tester les instructions de pile est <a href="Architectures/stack.mem">stack.mem</a> qui se retranscrit en assembleur :
+	<pre>
+LDSPI 0x0050
+DESCP
+LDAi  0x0003
+STA   0x1000
+PUSHA
+LDBi  0x0005
+STB   0x1001
+PUSHB
+ADDA
+POKEA 0x0003
+POPA
+POPB
+POPA
+STA   0x1002
+END
+	</pre>
+
+      </p>
+
+      <p> Le programme donné en exemple f(a,b) = a + b donne en RAM <a href="Architectures/call_ret.mem">call_ret.mem</a>.
+      </p>
+
+      <p>La généralisation de Syracuse donne en assembleur <a href="Architectures/gen_syr.asm">gen_syr.asm</a> et en RAM <a href="Architectures/gen_syr.mem">gen_syr.mem</a> avec a=3, b=1, u0=127 dans le programme principal.
+	<pre>
+	  u(n+1) = f(u(n), a, b)
+	  f(u, b) = u/2         si n est pair
+                  = a x u + b   sinon</pre>
+      </p>
+
+      <p>La factorielle donne en assembleur <a href="Architectures/fact.asm">fact.asm</a> et en RAM <a href="Architectures/fact.mem">fact.mem</a>
+	<pre>
+	  fac(n) = 1            si n = 0
+                 = n * fac(n-1) sinon</pre>
+      </p>
+
+
+      <h2>Interruptions (BE) </h2>
+
+      <h3>Manipulation de la pile</h3>
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_irq.circ">archi_irq.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+      <p>
+	Le micro-code à charger dans la ROM avec toutes les instructions (STI, CLI, INT, RTI) : <a href="Architectures/microcode_irq_sol.rom">microcode_irq_sol.rom</a>.
+      </p>
+
+      <p>
+	Les programmes :
+
+	<ul>
+	  <li>Le programme principal incrémente un compteur, l'interruption alterne 0, 1 sur le deuxième afficheur <a href="Architectures/irq_bouton_simple.asm">irq_bouton_simple.asm</a>, <a href="Architectures/irq_bouton_simple.mem">irq_bouton_simple.mem</a>,</li>
+	  <li>programme naïf qui incrémente un compteur et le réinitialise si on appui sur un bouton <a href="Architectures/irq_bouton.asm">irq_bouton.asm</a>, <a href="Architectures/irq_bouton.mem">irq_bouton.mem</a></li>
+	</ul>
+	Le programme précédent ne marche pas à tout les coups parce qu'on peut être parti en interruption avant la sauvegarde du registre A qu'on vient d'incrémente (STA 0x101). Si l'interruption annule l'adresse 0x101, le retour d'interruption recharge le contexte (donc le contenu de A) et exécute l'instruction STA 0x0101 ce qui fait que le bouton n'a eu aucun effet sur le compteur. Pour que ça marche vraiment, une solution est de se donner une variable booléenne que le bouton met à 1 et que le programme principal vérifie régulièrement : <a href="Architectures/irq_bouton_bool.asm">irq_bouton_bool.asm</a>, <a href="Architectures/irq_bouton_bool.mem">irq_bouton_bool.mem</a>. Une autre solution consiste à rendre ininterruptible une partie du programme en l'entourant de CLI, STI : <a href="Architectures/irq_bouton_sticli.asm">irq_bouton_sticli.asm</a>, <a href="Architectures/irq_bouton_sticli.mem">irq_bouton_sticli.mem</a>
+
+      </p>
+
+      <h3>Contrôleur clavier</h3>
+
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_irq_clavier.circ">archi_irq.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+      <p>
+	Le micro-code à charger dans la ROM avec toutes les instructions (STI, CLI, INT, RTI) : <a href="Architectures/microcode_irq_sol.rom">microcode_irq_sol.rom</a>.
+      </p>
+
+      <p>Le programme permettant de transférer les données du clavier à l'écran dans la routine d'interruption pendant que le programme principal incrémente un compteur : <a href="Architectures/irq_clavier.asm">irq_clavier.asm</a>, <a href="Architectures/irq_clavier.mem">irq_clavier.mem</a></p>
+
+
+
+      <h2>Programmation assembleur et ordonnanceur (TL)</h2>
+
+      <p>
+	L'architecture considérée : <a href="Architectures/archi_irq.circ">archi_irq.circ</a>, avec le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à mettre dans le même répertoire.
+      </p>
+
+      <p>
+	Le micro-code à charger dans la ROM avec toutes les instructions (STI, CLI, INT, RTI) : <a href="Architectures/microcode_irq_sol.rom">microcode_irq_sol.rom</a>.
+      </p>
+
+      <p>
+	Le script python permettant d'assembler : <a href="Architectures/assemble.py">assemble.py</a>
+      </p>
+
+      <p>
+	Les programmes :
+	<ul>
+	  <li>le programme principal incrémente un compteur, l'interruption en incrémente un second, indépendant du premier : <a href="Architectures/compteur.asm">compteur.asm</a>, <a href="Architectures/compteur.mem">compteur.mem</a></li>
+	  <li>la factorielle : <a href="Architectures/fact.asm">fact.asm</a>, <a href="Architectures/fact.mem">fact.mem</a></li>
+	  <li>la syracuse généralisée : <a href="Architectures/gen_syr.asm">gen_syr.asm</a>, <a href="Architectures/gen_syr.mem">gen_syr.mem</a></li>
+	  <li>le programme avec l'ordonnanceur : <a href="Architectures/scheduling.asm">scheduling.asm</a>, <a href="Architectures/scheduling.mem">scheduling.mem</a></li>
+	</ul>
+
+      </p>
+
+
+
+    </div><!-- /.container -->
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

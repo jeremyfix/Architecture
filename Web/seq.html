@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script type="text/javascript" src="seq_decode.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js" active="2"></script>
+
+    <div class="container">
+      <div class="title">
+	<h1>Séquenceur micro-programmé</h1>
+      </div>
+
+      <h2>Introduction</h2>
+      <p>
+	Le but de ce TL est de réaliser un séquenceur micro-programmé pour piloter notre architecture représentée ci-dessous. Nous allons voir qu'un nouveau composant est introduit, une ROM, et votre travail consiste alors à écrire le micro-code de quelques instructions dans cette ROM. Plusieurs programmes vous sont fournis pour tester votre réalisation et vous aurez également à écrire vos propres programmes en code machine. Lancez <b>logisim</b> et chargez l'architecture <a href="Architectures/archi_seq.circ" download="archi_sequenceur.circ">archi_sequenceur.circ</a> ainsi que le fichier <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> à placer dans <b>le même répertoire</b> que archi_sequenceur.circ. Lisez ensuite la présentation ci-dessous avec l'architecture sous les yeux.
+      </p>
+
+
+      <p>
+	<img src="img/archi_seq.png" width="1000px"><br/><br/>
+      </p>
+
+      <p>
+	La mémoire RAM contient des <b>mots de 16 bits</b> et est <b>adressable sur 16 bits</b> et a donc une capacité de 128 Ko. Les opérandes et les adresses sont codées sur 16 bits. Les instructions sont codées sur un ou deux mots de 16 bits : le premier mot contient le code de l'opération et l'éventuel mot suivant contient l'opérande. Le code de l'opération est codé dans les 8 bits de poids fort d'un mot.
+
+	<table class="codeop">
+	  <thead>
+	    <tr><th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th> 9</th><th> 8</th><th> 7</th><th> 6</th><th> 5</th><th> 4</th><th> 3</th><th> 2</th><th> 1</th><th> 0</th></tr>
+	  </thead>
+	  <tr><td colspan="8">Code de l'opération</td><td colspan="8">Inutilisé</td></tr>
+	</table>
+	<table class="codeop">
+	  <thead>
+	    <tr><th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th> 9</th><th> 8</th><th> 7</th><th> 6</th><th> 5</th><th> 4</th><th> 3</th><th> 2</th><th> 1</th><th> 0</th></tr>
+	  </thead>
+	  <tr><td colspan=16>Opérande</td></tr>
+	</table>
+
+	<br/><br/>
+
+
+
+	On considère les instructions suivantes :
+	<table class="table instructions">
+	  <thead>
+	    <tr>
+              <th>Code Opération (8 bits)</th>
+              <th>Nom de l'opération</th>
+	      <th>Nombre de mots</th>
+              <th>Description</th>
+	    </tr>
+	  </thead>
+
+	  <tbody>
+	    <tr>
+              <td>0x0c</td>
+              <td>END</td>
+	      <td>1</td>
+              <td>
+		Fin du programme.<br/>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x10</td>
+              <td>LDAi</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur de l'opérande dans le registre A. <br/><b class="infoinstruction">[A := opérande]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x14</td>
+              <td>LDAd</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur dans la RAM pointée par l'opérande dans le registre A. <br/><b class="infoinstruction">[A := Mem[opérande]]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x18</td>
+              <td></td>
+	      <td></td>
+              <td>
+		Inutilisé
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x1c</td>
+              <td>STA</td>
+	      <td>2</td>
+              <td>
+		Sauvegarde en mémoire la valeur du registre A à l'adresse donnée par l'opérande.<br/><b class="infoinstruction">[Mem[opérande] := A]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x20</td>
+              <td>LDBi</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur de l'opérande dans le registre B. <br/><b class="infoinstruction">[B := opérande]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x24</td>
+              <td>LDBd</td>
+	      <td>2</td>
+              <td>
+		Charge la valeur dans la RAM pointée par l'opérande dans le registre B. <br/><b class="infoinstruction">[B := Mem[opérande]]</b>.
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x28</td>
+              <td></td>
+	      <td></td>
+              <td>
+		Inutilisé
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x2c</td>
+              <td>STB</td>
+	      <td>2</td>
+              <td>
+		Sauvegarde en mémoire la valeur du registre B à l'adresse donnée par l'opérande.<br/><b class="infoinstruction">[Mem[opérande] := B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td></td><td></td><td></td><td></td>
+	    </tr>
+	    <tr>
+              <td>0x30</td>
+              <td>ADDA</td>
+	      <td>1</td>
+              <td>Ajoute le contenu des registres A et B et mémorise le résultat dans le registre A.
+		<br/><b class="infoinstruction">[A := A + B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x34</td>
+              <td>ADDB</td>
+	      <td>1</td>
+              <td>Ajoute le contenu des registres A et B et mémorise le résultat dans le registre B.
+		<br/><b class="infoinstruction">[B := A + B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x38</td>
+              <td>SUBA</td>
+	      <td>1</td>
+              <td>Soutstrait le contenu des registres A et B et mémorise le résultat dans le registre A.
+		<br/><b class="infoinstruction">[A := A - B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x3c</td>
+              <td>SUBB</td>
+	      <td>1</td>
+              <td>Soutstrait le contenu des registres A et B et mémorise le résultat dans le registre B.
+		<br/><b class="infoinstruction">[B := A - B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x40</td>
+              <td>MULA</td>
+	      <td>1</td>
+              <td>Multiplie le contenu des registres A et B et mémorise le résultat dans le registre A.
+		<br/><b class="infoinstruction">[A := A x B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x44</td>
+              <td>MULB</td>
+	      <td>1</td>
+              <td>Multiplie le contenu des registres A et B et mémorise le résultat dans le registre B.
+		<br/><b class="infoinstruction">[B := A x B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x48</td>
+              <td>DIVA</td>
+	      <td>1</td>
+              <td>Divise le contenu du registre A par deux et mémorise le résultat dans A.
+		<br/><b class="infoinstruction">[A := A / 2]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x4c</td>
+              <td></td>
+	      <td></td>
+              <td>Inutilisé</td>
+	    </tr>
+	    <tr>
+              <td>0x50</td>
+              <td>ANDA</td>
+	      <td>1</td>
+              <td>Calcule un ET logique entre le contenu des registres A et B et mémorise le résultat dans A.
+		<br/><b class="infoinstruction">[A := A & B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x54</td>
+              <td>ANDB</td>
+	      <td>1</td>
+              <td>Calcule un ET logique entre le contenu des registres A et B et mémorise le résultat dans B.
+		<br/><b class="infoinstruction">[B := A & B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x58</td>
+              <td>ORA</td>
+	      <td>1</td>
+              <td>Calcule un OU logique entre le contenu des registres A et B et mémorise le résultat dans A.
+		<br/><b class="infoinstruction">[A := A | B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x5c</td>
+              <td>ORB</td>
+	      <td>1</td>
+              <td>Calcule un OU logique entre le contenu des registres A et B et mémorise le résultat dans B.
+		<br/><b class="infoinstruction">[B := A | B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x60</td>
+              <td>NOTA</td>
+	      <td>1</td>
+              <td>Mémorise dans A la négation de A.
+		<br/><b class="infoinstruction">[A := !A]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x64</td>
+              <td>NOTB</td>
+	      <td>1</td>
+              <td>Mémorise dans B la négation de B.
+		<br/><b class="infoinstruction">[B := !B]</b>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>0x68</td><td></td><td></td><td>Inutilisé</td>
+	    </tr>
+	    <tr>
+	      <td>0x6c</td><td></td><td></td><td>Inutilisé</td>
+	    </tr>
+	    <tr>
+              <td>0x70</td>
+              <td>JMP</td>
+	      <td>2</td>
+              <td>Saute inconditionnellement à l'adresse donnée par l'opérande.
+		<br/><b class="infoinstruction">[PC := operande]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x74</td>
+              <td>JZA</td>
+	      <td>2</td>
+              <td>Saute à l'adresse donnée par l'opérande si le contenu du registre A est nul.
+		<br/><b class="infoinstruction">[PC := operande si A=0]</b>
+	      </td>
+	    </tr>
+	    <tr>
+              <td>0x78</td>
+              <td>JZB</td>
+	      <td>2</td>
+              <td>Saute à l'adresse donnée par l'opérande si le contenu du registre B est nul.
+		<br/><b class="infoinstruction">[PC := operande si B=0]</b>
+	      </td>
+	    </tr>
+	    <tr>
+	      <td>0x7c</td><td></td><td></td><td>Inutilisé</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </p>
+
+
+      <h3>Présentation du chemin de données</h3>
+      Le chemin de données est constitué de différents éléments que je vous propose de détailler.
+
+      <h4>Mémoire RAM</h4>
+      <p>
+	La mémoire contient les instructions et les données du programme à exécuter. Elle est adressable par le registre RADM (Registre d'Adresse Mémoire); Pour lire la mémoire, il faut d'abord placer l'adresse du mot mémoire à lire dans le registre d'adresse mémoire (RADM). Pour cela, il faut placer l'adresse sur le bus S, activer le registre d'adresse mémoire <b class="infoinstruction">SetRADM=1</b> et activer un front montant d'horloge. En mettant la mémoire en lecture <b class="infoinstruction">ReadMem=1</b>, le mot mémoire à l'adresse contenue dans le registre RADM est <b>immédiatement</b> disponible sur la sortie.
+      </p>
+
+      <p>
+	<img src="img/seq_ram.png" width="25%"><br/><br/>
+      </p>
+
+      <p>
+	Pour modifier le contenu de la mémoire, il faut d'abord mettre dans le registre d'adresse mémoire (RADM) l'adresse à laquelle l'information doit être stockée. Ensuite, il faut placer l'information à stocker sur le bus S, mettre la mémoire en mode écriture <b class="infoinstruction">SetMem=1</b> et activer un front montant d'horloge. Le mot disponible sur l'entrée D sera alors sauvegardée à l'adresse contenue dans le registre RADM au prochain front montant d'horloge.
+      </p>
+
+      <h4>Adressage des afficheurs 7 segments</h4>
+
+      <p>
+	<img src="img/seq_afficheurs.png" width="25%"><br/><br/>
+      </p>
+
+      <p>
+	L'utilisation des afficheurs 7 segments se fait en adressant la mémoire à des adresses particulières. Les adresses, sur 16 bits, inférieures strict à 0x1000 adressent la RAM; Les trois afficheurs ont respectivement les adresses <b class="infoinstruction">0x1000</b>, <b class="infoinstruction">0x1001</b> et <b class="infoinstruction">0x1002</b>. Pour afficher une valeur sur le premier afficheur, il faut placer l'adresse 0x1000 dans le registre RADM, puis faire comme si on sauvegardait une valeur en mémoire : placer la valeur sur le bus S, mettre la mémoire en écriture (SetMem) et déclencher un front montant d'horloge.
+      </p>
+
+      <p>
+	Le composant combinatoire ToBCD (Binaire Codé Décimal) assure la traduction d'un entier codé en binaire sur 16 bits en son codage BCD sur 20 bits pour ensuite afficher chacun des 5 chiffres sur un afficheur 7 segments.
+      </p>
+
+      <h4>Unité arithmétique et logique</h4>
+
+      <p>
+	L'unité arithmétique et logique reçoit ses opérandes des bus A et B. Son opération est définie par l'état des entrées U3,U2,U1,U0. L'UAL est un circuit combinatoire donc lorsque le code opération U3U2U1U0 est définie, la sortie est "immédiatement" disponible (en réalité, modulo le temps de transit des signaux dans l'UAL). L'UAL comporte également 3 indicateurs Z, C, V:
+	<ul>
+	  <li>Z : indicateur de résultat nul, <b class="infoinstruction">Z=1 si S=0</b></li>
+	  <li>C : indicateur de retenue, C=1 si une retenue apparaît lors du calcul de S</li>
+	  <li>V : indicateur de débordement, V=1 si le calcul de S produit un débordement</li>
+	</ul>
+
+      <p>
+	<img src="img/seq_ual.png" width="300px"><br/><br/>
+      </p>
+
+      L'UAL fournit 11 opérations décrites dans la table ci-dessous:
+      </p>
+
+      <table class="table instructions">
+	<thead>
+	  <tr>
+	    <th><i>U</i><sub>3</sub></th>
+	    <th><i>U</i><sub>2</sub></th>
+	    <th><i>U</i><sub>1</sub></th>
+	    <th><i>U</i><sub>0</sub></th>
+	    <th>Opération</th>
+	  </tr>
+	</thead>
+	<tbody>
+	  <tr>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td><i>S</i> = <i>A</i></td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td><i>S</i> = <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>0</td>
+	    <td><i>S</i> = <i>A</i> ET <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>1</td>
+	    <td><i>S</i> = <i>A</i> OU <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td><i>S</i> = non(<i>A</i>)</td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td><i>S</i> = non(<i>B</i>)</td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>1</td>
+	    <td>0</td>
+	    <td><i>S</i> = <i>A</i> + <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>1</td>
+	    <td>1</td>
+	    <td><i>S</i> = <i>A</i> - <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td><i>S</i> = <i>A</i> + 1</td>
+	  </tr>
+	  <tr>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td><i>S</i> = <i>A</i> - 1</td>
+	  </tr>
+	  <tr>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>0</td>
+	    <td><i>S</i> = <i>A</i> * <i>B</i></td>
+	  </tr>
+	  <tr>
+	    <td>1</td>
+	    <td>0</td>
+	    <td>1</td>
+	    <td>1</td>
+	    <td><i>S</i> = <i>A</i> &gt;&gt; 1</td>
+	  </tr>
+	  <tr>
+	    <td>x</td>
+	    <td>x</td>
+	    <td>x</td>
+	    <td>x</td>
+	    <td><i>S</i> = Erreur</td>
+	  </tr>
+	</tbody>
+      </table>
+
+<h4>Registres d'opérandes et Program Counter</h4>
+
+Les registres A, B et program counter sont accessibles en lecture et en écriture. Pour écrire dans ces registres, il suffit de placer une valeur sur le bus S, de les activer <b class="infoinstruction">SetA</b>, <b class="infoinstruction">SetB</b>, <b class="infoinstruction">SetPC</b> et de déclencher un front montant d'horloge. Pour lire les données, il suffit d'activer les portes de sorties, <b class="infoinstruction">ReadA</b>, <b class="infoinstruction">ReadB</b>, <b class="infoinstruction">ReadPC</b>. <b>Attention</b>, les registres A et PC mettent leur sortie sur le bus A mais le registre B sort sur le bus B.
+
+<p>
+  <img src="img/seq_acpc.png" width="30%"><br/><br/>
+</p>
+
+<h4>Séquenceur microprogrammé</h4>
+
+      <p>
+	Le séquenceur microprogrammé reçoit en entrée le code de l'instruction sur 8 bits (les 8 bits du poids fort du mot mémoire). Programmer le séquenceur consiste à définir la séquence des signaux (micro-instructions) pilotant le chemin de données pour chacune des instructions. La code de l'instruction (e.g. 0x10 pour LDAi) adresse directement la ROM de telle sorte que la séquence de micro-instructions pour l'instruction LDAi commence à l'adresse 0x10 de la ROM. Comme vous pouvez le remarquer, entre chaque code instruction, il y a un offset de 4 mots, ce qui veut dire que vous devez coder chaque instruction par une séquence d'<u>au plus</u> 4 micro-instructions. Pour remplir la ROM, il suffit de faire un clic droit sur la ROM et d'aller dans le menu <b>"Edit Content"</b>. <b>Attention</b>: dans la version de logisim que nous utilisons le copier/coller est buggé; le contenu collé est malheureusement toujours collé en début de mémoire. Vous avez la possibilité d'éditer le fichier mémoire avec un éditeur de texte et de charger son contenu ensuite dans la ROM (clic droit sur la ROM, <b>"Load image"</b>). On va revenir sur ce point dans la partie "Conseil de mise en oeuvre" à la fin du sujet.
+      </p>
+      <p>
+	La disposition des instructions dans la ROM vous est imposée.
+	<ul>
+	  <li>A l'adresse 0x00, vous devez sauter à l'adresse 0x08 qui contient les micro-instructions pour les phases de Fetch/Decode. Nous utiliserons dans un sujet ultérieur cette zone mémoire différemment,</li>
+	  <li>A l'adresse 0x08 se trouvent les micro-instructions de la phase de Fetch/Decode,</li>
+	  <li>A l'adresse 0x0c se trouvent les micro-instructions pour l'instruction END,</li>
+	  <li>A l'adresse 0x10 se trouvent les micro-instructions pour l'instruction LDAi, puis à l'adrese 0x14 pour l'instruction LDAd, etc..</li>
+	</ul>
+      </p>
+
+<p>
+  <img src="img/seq_rom.png" width="100%"><br/><br/>
+</p>
+
+<p>
+  Une micro-instruction est un mot sur 32 bits, les 24 premiers bits pilotant le chemin de données, les 8 derniers bits codant une adresse essentiellement utilisée pour les branchements. Schématiquement, une micro-instruction a donc le format suivant : <br/>
+
+
+  <table class="codeop">
+    <thead>
+      <tr><td>31</td><td>30</td><td>29</td><td>28</td><td>27</td><td>26</td><th>25</th><th>24</th><th>23</th><th>22</th><th>21</th><th>20</th><th>19</th><td>18</td><td>17</td><th>16</th><th>15</th><th>14</th><th>13</th><th>12</th><th>11</th><th>10</th><th>9</th><th>8</th><th>7</th><th>6</th><th> 5</th><th> 4</th><th> 3</th><th> 2</th><th> 1</th><th> 0</th></tr>
+    </thead>
+    <tr>
+      <td colspan="6"></td>
+      <td colspan="3">Code Mcount</td>
+      <td colspan="4">Code UAL</td>
+      <td colspan="2"></td>
+      <td>SetB</td><td>ReadB</td>
+      <td>SetA</td><td>ReadA</td>
+      <td>SetPC</td><td>ReadPC</td>
+      <td>SetRADM</td><td>SetMem</td><td>ReadMem</td>
+      <td colspan="8">Adr</td>
+    </tr>
+  </table>
+  <br/><br/>
+</p>
+<p>
+  Il nous reste à expliquer le rôle du champ sur 3 bits CodeMCount et de l'adresse sur 8 bits Adr. Les 3 bits CodeMCount sont combinés avec la sortie Z de l'UAL pour piloter le multiplexeur en entrée du registre d'adresse de micro-instruction MicroPC. Notons SMux la sortie du multiplexeur, le composant qui interface CodeMCount, Z et le multiplexeur agit ainsi:
+  <ul>
+    <li>Si <b class="infoinstruction">CodeMCount=0b000</b>, alors <b class="infoinstruction">SMux=MicroPC+1</b></li>
+    <li>Si <b class="infoinstruction">CodeMCount=0b001</b>, alors <b class="infoinstruction">SMux=@Adr</b></li>
+    <li>Si <b class="infoinstruction">CodeMCount=0b010</b>, alors <b class="infoinstruction">SMux=InstCode</b></li>
+    <li>Si <b class="infoinstruction">CodeMCount=0b011</b> <b>et</b> <b class="infoinstruction">Z=0</b>, alors <b class="infoinstruction">SMux=MicroPC+1</b></li>
+    <li>Si <b class="infoinstruction">CodeMCount=0b011</b> <b>et</b> <b class="infoinstruction">Z=1</b>, alors <b class="infoinstruction">SMux=@Adr</b></li>
+  </ul>
+</p>
+
+<p>
+  Le registre micro PC est au séquenceur en ROM ce que le program counter est au programme en RAM : il permet de l'adresser et de savoir quelle micro-instruction exécuter. Pour certaines instructions (e.g. JZA), il est nécessaire de sauter plusieurs mots dans la ROM. Pour simplifier le nombre de composants, il a été choisi de préciser dans la micro-instruction l'adresse du saut:
+  <ul>
+    <li>pour ce TL, la première micro-instruction de la ROM, i.e. à l'adresse 0x00, doit faire sauter le micro PC à l'adresse des microinstructions de fetch/decode : <b class="infoinstruction">CodeMCount=0b001</b>, <b class="infoinstruction">@Adr=0x08</b> soit <b class="infoinstruction">ROM[0x00]=0x00800008</b></li>
+    <li>il ne faudra pas oublier de retourner à l'adresse 0x00 à la fin d'une séquence de micro-instruction</li>
+    <li>oour les sauts conditionnels JZA, JZB, on devra utiliser @Adr si le test est vrai</li>
+  </ul>
+</p>
+
+<p>
+  Prenons par exemple l'instruction de chargement immédiat dans le registre A (LDAi, code:0x10). Pour exécuter cette instruction, il faut:
+  <ul>
+    <li>Charger dans le registre d'adresse mémoire le contenu du registre PC (<b class="infoinstruction">ReadPC=1</b>, <b class="infoinstruction">Code UAL=0000</b> qui correspond à l'opération S=A, <b class="infoinstruction">SetRADM=1</b>). Le code de la microinstruction associée est donc <b class="infoinstruction">0x00000c00</b></li>
+    <li>Mettre la mémoire en mode lecture (<b class="infoinstruction">ReadMem = 1</b>), diriger l'entrée B vers la sortie S (<b class="infoinstruction">Code UAL=0001</b>) et activer le registre A en écriture (<b class="infoinstruction">SetA = 1</b>). Le code de la microinstruction associée est donc <b class="infoinstruction">0x00084100</b></li>
+    <li>Enfin, il faut incrémenter le program counter (<b class="infoinstruction">ReadPC=1</b>, <b class="infoinstruction">CodeUAL=1000</b>, <b class="infoinstruction">SetPC=1</b>) et mettre dans le registre micro PC l'adresse du début de la ROM (<b class="infoinstruction">Adr=0x00</b>, <b class="infoinstruction">CodeMCount=001</b>). Le code de la microinstruction associée est donc <b class="infoinstruction">0x00c01800</b></li>
+  </ul>
+  L'instruction LDA immédiat nécessite donc 3 micro-instructions : <b class="infoinstruction">0x00000c00</b>, <b class="infoinstruction">0x00084100</b>, <b class="infoinstruction">0x00c01800</b>.
+</p>
+
+<h3>Travail à réaliser</h3>
+
+<p>
+  On vous demande d'écrire le microcode dans la ROM pour chacune des instructions présentées un peu plus haut. La méthode consiste à prendre les instructions les unes après les autres et à écrire la séquence de codes hexadécimaux permettant de réaliser l'instruction. Ces codes hexadécimaux permettent de configurer le chemin de données. Les codes d'instructions, d'UAL, ... sont synthésisés dans la carte de référence <a href="reference_card.pdf">reference_card.pdf</a>.
+</p>
+
+<p>
+  Pour faciliter votre travail, je vous propose ci-dessous un outil qui permet de passer des signaux de contrôle du chemin de données au code hexadécimal de la micro-instruction et vice-versa.
+
+  <div id="genmicrocode" data-id="0" ></div><br/><br/>
+      </p>
+
+      <p>
+	Comme expliqué dans la partie ci-dessous "Conseils de mise en oeuvre", vous partirez du fichier mémoire <a href="Architectures/microcode_seq.rom" download="microcode_seq.rom">microcode_seq.rom</a>. Vous remarquerez que la première micro-instruction est déjà mentionnée, elle permet de sauter dans la ROM à l'adresse des micro-instructions du Fetch/Decode. Les micro-instructions pour l'instruction END sont également déjà mentionnées. Pour pouvoir tester les séquences de micro-instruction que vous allez définir, vous trouverez ci-dessous quelques programmes à charger dans la RAM. <b>Il faudra toujours cliquer sur le bouton "Clear" en haut du circuit pour remettre les registres dans leur état initial avant de tester un programme.</b>. Je vous propose de coder les instructions dans l'ordre suivant :
+	<ul>
+	  <li>renseignez les micro-instructions pour la phase de Fetch/Decode en commençant à l'adresse 0x08</li>
+	  <li>renseignez les micro-instructions pour les instructions LDAi et STA et testez votre architecture avec le programme <a href="Architectures/LDAiSTA.mem">LDAiSTA.mem</a>. Vous devriez voir 2015 sur le premier afficheur (pourquoi?),</li>
+	  <li>renseignez les micro-instructions pour l'instructions LDAd et testez votre architecture avec le programme <a href="Architectures/LDAdSTA.mem">LDAdSTA.mem</a>. Vous devriez voir 2015 sur le premier afficheur (pourquoi?),</li>
+	  <li>renseignez les micro-instructions pour les instructions LDBi, LDBd, STB, ADDA et testez votre architecture en écrivant vous même un fichier mémoire de test,</li>
+	  <li>renseignez les micro-instructions pour les instructions arithmétiques SUB, MUL, .. et logiques AND, OR, .. et adaptez les codes donnés précédemment pour tester votre architecture,</li>
+	  <li>renseignez les micro-instructions pour le saut inconditionnel JMP et testez votre architecture avec le programme <a href="Architectures/JMP.mem">JMP.mem</a>. Que vous attendez vous à voir ? </li>
+	  <li>renseignez les micro-instructions pour le saut conditionnel JZA et JZB et testez votre architecture avec le programme  <a href="Architectures/JZ.mem">JZ.mem</a>,</li>
+	  <li>renseignez les micro-instructions pour l'instruction DIVA et testez votre architecture avec le programme <a href="Architectures/DIV.mem">DIV.mem</a>.</li>
+	</ul>
+
+	Calculez la suite de syracuse avec votre architecture en écrivant le code machine adéquat : u(0) = 127 ; u(n+1) = u(n) / 2 si u(n) pair; u(n+1) = 3 * u(n) + 1 si u(n) est impair. Affichez les valeurs sur les afficheurs 7 ségments (voir par exemple <a href="http://www.dcode.fr/conjecture-syracuse">ce site</a> pour vérifier les valeurs).... 4, 2, 1, 4, 2, 1, mais <a href="https://fr.wikipedia.org/wiki/Conjecture_de_Syracuse">pourquoi ?</a> ["Les mathématiques ne sont pas encore prêtes pour de tels problèmes [P. Erdos]"]
+
+      </p>
+
+      <h3>Conseil de mise en oeuvre</h3>
+
+      <p>
+	Vous avez la possibilité de modifier le contenu des RAM et ROM depuis logisim. Néanmoins, je vous conseille de procéder différemment. Vous avez en effet la possibilité de charger la mémoire à partir d'un fichier. Je vous propose donc de télécharger le fichier <a href="Architectures/microcode_seq.rom" download="microcode_seq.rom">microcode_seq.rom</a>, de le modifier avec un éditeur de texte (gedit ou emacs par example) et de le charger ensuite en ROM. Le texte commençant par "#" sont des commentaires pour vous aider à vous repérer dans la ROM.
+      </p>
+
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    </div><!-- /.container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>-->
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>

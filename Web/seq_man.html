@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+    <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Architecture des ordinateurs</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Custom styles for this template -->
+    <link href="template.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    html,body,h1,h2,h3,h4,h5 {font-family: "Roboto", sans-serif}
+    </style>
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+	<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+
+    <script type="text/javascript" src="seq_decode.js"></script>
+
+  </head>
+
+  <body>
+
+    <script type="text/javascript" src="nav.js" active="1"></script>
+
+    <div class="container">
+      <div class="title">
+	<h1>Introduction et utilisation d'un chemin de données : séquencement manuel</h1>
+      </div>
+
+      <h2>Introduction</h2>
+
+      <p>
+	Le but de ce premier BE est d'introduire un chemin de données qu'on va utiliser tout au long du cours et des BE/TP. On introduit progressivement des éléments de logique combinatoire et de logique séquentielle avec le but utiltime de cette séance d'être capable de piloter à la main le chemin de données pour lui faire réaliser quelques opérations. Nous verrons durant les séances suivantes comment automatiser le pilotage du chemin de données ainsi que quelques extensions de ce chemin de données.
+
+	On va voir notamment:
+	<ul>
+	  <li>l'unité arithmétique et logique</li>
+	  <li>les registres</li>
+	  <li>la mémoire RAM (Random Access Memory)</li>
+	  <li>le séquencement du chemin de données</li>
+	</ul>
+      </p>
+      <p>
+	Logisim <b>est installé</b> sur les postes de travail. <font color="red">Lisez <a href="index.html">la page principale</a> pour savoir comment le démarrer plus 2/3 autres indications</font>.
+      </p>
+
+
+      <h2>Charger des registres et effectuer des opérations arithmétiques</h2>
+
+      <h3>Lancement de logisim et chargement de l'architecture</h3>
+
+      <p>
+	On considère dans un premier temps l'architecture ci-dessous. Téléchargez les fichiers <a href="Architectures/csmetz2015.jar" download="csmetz2015.jar">csmetz2015.jar</a> et <a href="Architectures/archi_seq_man_regual.circ" download="archi_seq_man_regual.circ">archi_seq_man_regual.circ</a> et placez les <b>dans le même répertoire</b>. Lancez logisim et chargez le fichier archi_seq_man_regual.circ. L'architecture chargée est représentée ci-dessous.<br/>
+      </p>
+
+      <p>
+	Avant de jouer avec cette architecture, je vous propose de décrire rapidement quelques éléments de l'interface logisim.
+      </p>
+
+      <p>
+	<img src="img/logisim.png" width="100%"><br/><br/>
+      </p>
+
+      <p>
+	Vos outils principaux dans ce TP sont le "poke tool" et l'horloge. Le poke tool, la petite main en haut à gauche de l'interface, permet de modifier la valeur des entrées, cliquer sur les boutons, .... L'horloge est activée en appuyant sur les touches "Ctrl + t", le petit symbole de l'horloge indiquant si elle est à un niveau haut ou bas. Appuyer sur Ctrl + t déclenche une transition de niveau bas vers niveau haut ou niveau haut vers niveau bas.
+      </p>
+
+
+      <h3>Présentation de l'architecture</h3>
+
+      <p>
+      L'architecture proposée est constituée :
+      <ul>
+	<li> de signaux de contrôle : des entrées modifiables avec le poke tool, et un bouton Clear pour réinitialiser le contenu des registres,</li>
+	<li>d'une entrée pour les données labelisée Data, tout à gauche. Changez son contenu avec le poke tool,</li>
+	<li>de deux registres A et B actifs sur front montant d'horloge,</li>
+	<li>d'une Unité Arithmétique et Logique,</li>
+	<li>d'une sortie avec quelques afficheurs 7 ségments et un registre mémorisant la valeur à afficher (le convertisseur ToBCD est un circuit de logique combinatoire convertissant un nombre binaire en binaire codé décimal pour l'affichage).</li>
+      </ul>
+
+      La circulation des données sur les bus A, B et S est autorisée par des buffers contrôlés par un signal de contrôle particulier. Par exemple, pour charger le registre A, il faut placer des données sur le bus S, autoriser le chargement du registre (SetA), et déclencher un front montant d'horloge.
+      </p>
+
+      <p>
+	En plus des signaux Zero (Z), Retenue (Carry) et de débordement (V), l'UAL fournit 11 opérations décrites dans la table ci-dessous:
+
+	<table class="table instructions">
+	  <thead>
+	    <tr>
+	      <th><i>U</i><sub>3</sub></th>
+	      <th><i>U</i><sub>2</sub></th>
+	      <th><i>U</i><sub>1</sub></th>
+	      <th><i>U</i><sub>0</sub></th>
+	      <th>Opération</th>
+	    </tr>
+	  </thead>
+	  <tbody>
+	    <tr>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td><i>S</i> = <i>A</i></td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td><i>S</i> = <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>0</td>
+	      <td><i>S</i> = <i>A</i> ET <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>1</td>
+	      <td><i>S</i> = <i>A</i> OU <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td><i>S</i> = non(<i>A</i>)</td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td><i>S</i> = non(<i>B</i>)</td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>1</td>
+	      <td>0</td>
+	      <td><i>S</i> = <i>A</i> + <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>1</td>
+	      <td>1</td>
+	      <td><i>S</i> = <i>A</i> - <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td><i>S</i> = <i>A</i> + 1</td>
+	    </tr>
+	    <tr>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td><i>S</i> = <i>A</i> - 1</td>
+	    </tr>
+	    <tr>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>0</td>
+	      <td><i>S</i> = <i>A</i> * <i>B</i></td>
+	    </tr>
+	    <tr>
+	      <td>1</td>
+	      <td>0</td>
+	      <td>1</td>
+	      <td>1</td>
+	      <td><i>S</i> = <i>A</i> &gt;&gt; 1</td>
+	    </tr>
+	    <tr>
+	      <td>x</td>
+	      <td>x</td>
+	      <td>x</td>
+	      <td>x</td>
+	      <td><i>S</i> = Erreur</td>
+	    </tr>
+	  </tbody>
+	</table>
+      </p>
+
+
+      <h3><font color="blue">Travail à réaliser</font></h3>
+
+      En utilisant les signaux de contrôle et l'entrée Data, réalisez les opérations suivantes les unes après les autres. Je vous conseille de remettre à zéro tous les signaux de contrôle avant de passer à l'instruction suivante.
+      <ul>
+	<li>charger la valeur décimale 16 dans le registre A</li>
+	<li>charger la valeur décimale 12 dans le registre B</li>
+	<li>afficher le contenu du registre A sur les afficheurs 7 ségments</li>
+	<li>afficher le contenu du registre B sur les afficheurs 7 ségments</li>
+	<li>sommer le contenu des registres A et B et stocker le résultat dans le registre A</li>
+	<li>stocker dans A le résultat de la division entière par deux du contenu du registre A et l'afficher simultanément sur les afficheurs 7 ségments</li>
+      </ul>
+
+
+      <h2>Connecter le chemin de données avec une mémoire RAM</h2>
+
+      On introduit maintenant une mémoire dans le chemin de données depuis laquelle on va charger des données et dans laquelle on va également écrire des données: <a href="Architectures/archi_seq_man.circ" download="archi_seq_man.circ">archi_seq_man.circ</a>. Pour ce faire, on modifie un peu le chemin de données en ajoutant une RAM et deux registres : PC (Program counter) et RADM (Registre d'ADresse Mémoire). On ajoute aussi quelques afficheurs.
+
+      <p>
+	<img src="img/archi_seq_man.png" width="100%"><br/><br/>
+      </p>
+
+      La RAM ainsi que les afficheurs sont adressables. Cela veut dire qu'on peut lire/écrire dans la RAM et écrire dans les afficheurs. Pour une lecture, on commencera par 1) placer l'adresse du mot à lire dans le registre RADM, 2) déclencher la lecture avec le signal ReadMem. Pour une écriture, on commencera par 1) placer l'adresse du mot à écrire dans le registre RADM, 2) placer les données à écrire sur le bus S et déclencher l'écriture avec le signal SetMem. Les afficheurs sont dits mappés en mémoire (on verra un plus en détails ce que cela signifie plus tard), c'est à dire qu'ils ont des adresses particulières:
+      <ul>
+	<li>Si le contenu de RADM est inférieur strict à 0x1000, on adresse la RAM</li>
+	<li>Si le contenu de RADM vaut 0x1000, 0x1001 ou 0x1002 on adresse respectivement le premier, deuxième et troisième afficheur</li>
+      </ul>
+      Ne vous laissez pas dérouter par le plat de spaghettis de connexions autour de la mémoire et des afficheurs, en pratique, si je veux afficher le contenu du registre A sur le premier afficheur, je procéderais ainsi :
+      <ul>
+	<li>1) mettre 0x1000 dans RADM</li>
+	<li>2) Lire A (ReadA), rediriger A vers S (UAL=0000), et écrire en mémoire (SetMem)</li>
+      </ul>
+      Si je veux charger, dans le registre A, le contenu de la RAM à l'adresse 0x0010, je procéderais ainsi :
+      <ul>
+	<li>1) mettre 0x0010 dans RADM</li>
+	<li>2) Lire la mémoire (ReadMem), rediriger B vers S (UAL=0001), et écrire dans le registre A (SetA)</li>
+      </ul>
+      Si je veux écrire le contenu du registre A dans la RAM à l'adresse 0x0010, je procéderais ainsi :
+      <ul>
+	<li>1) mettre 0x0010 dans RADM</li>
+	<li>2) Lire A (ReadA), rediriger A vers S (UAL=0000), et écrire en mémoire (SetMem)</li>
+      </ul>
+
+
+      Dans le travail que je propose de réaliser, nous allons charger des opérandes en mémoire à partir d'un fichier (bouton droit sur la RAM, "charger l'image" et choisir par example <a href="Architectures/seq_man.mem">seq_man.mem</a>) ou bien en éditant directement la RAM (bouton droit sur la RAM, "éditer le contenu"). <b>Chargez l'image en mémoire</b> <a href="Architectures/seq_man.mem">seq_man.mem</a> et regardez ensuite le contenu de la RAM :
+<pre>
+0010 1000 000c 1001 1002
+</pre>
+On va considérer les opérandes les unes après les autres (on va bientôt voir le sens de ces valeurs) et pour ce faire, il nous faut disposer d'un registre qui sauvegarde l'adresse de l'opérande en mémoire actuellement considérée; c'est le rôle du <b>program counter (PC)</b>. Pour récupérer une opérande dont l'adresse est dans le PC, il suffit de transférer le PC dans le registre RADM et de lire la mémoire. Chaque fois qu'une opérande est utilisée, on devra <b>incrémenter le program counter</b>.
+
+
+      <h3><font color="blue">Travail à réaliser</font></h3>
+
+      En utilisant uniquement les signaux de contrôle (donc on ne modifie pas les registres "à la main"), et après avoir chargé l'image <a href="Architectures/seq_man.mem">seq_man.mem</a> dans la RAM, <b>effectuez les opérations</b> ci-dessous. Je vous conseille <b>de prendre des notes des signaux de contrôle</b> que vous utilisez pour chaque étape. Notez que pour chacune des opérations ci-dessous, les opérandes sont placées dans la RAM.
+      <ul>
+	<li>charger la valeur décimale 16 dans le registre A</li>
+	<li>afficher le contenu du registre A sur le premier afficheur</li>
+	<li>charger la valeur décimale 12 dans le registre B</li>
+	<li>afficher le contenu du registre B sur le second afficheur</li>
+	<li>soustraire le contenu du registre B au contenu du registre A et stocker le résultat dans le registre A</li>
+	<li>afficher le contenu du registre A sur le troisème afficheur</li>
+      </ul>
+
+
+      <b>Modifiez</b> le contenu de la mémoire et exécutez le programme avec les signaux de contrôle permettant de faire les divisions par deux successives de 128 jusqu'à un résultat nul en affichant le résultat sur les afficheurs à chaque étape. Quel signal me permettait de détecter qu'il faut s'arrêter ?
+
+
+      <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+
+    </div><!-- /.container -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+  </body>
+</html>
