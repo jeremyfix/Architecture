@@ -1,0 +1,4 @@
+	DWS u
+	LDSPi @stack@
+	LDAi  7f
+	STA u

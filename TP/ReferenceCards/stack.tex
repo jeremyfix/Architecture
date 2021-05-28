@@ -1,0 +1,37 @@
+\documentclass{standalone}
+\standaloneconfig{border=10pt}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{cases}
+\usepackage{booktabs}
+
+\begin{document}
+
+\renewcommand{\arraystretch}{1.2}
+
+\begin{tabular}{@{}lllll@{}}
+\textbf{\underline{Instructions pour la pile}} & & & & \\
+\addlinespace[1em]
+\toprule
+Nom & Mnémonique & Nb. d'arguments & Opération & Opcode \\
+\toprule
+Load SP immédiat & LDSPi & 1 & SP := operande & 0x80\\
+Load SP direct & LDSPd & 1 & SP := RAM[operande] & 0x84\\
+Store SP & STSP & 1 & RAM[operande] := SP & 0x8c\\
+\addlinespace[1em]
+Incrémente le pointeur de pile & INCSP & 0 & SP := SP + 1 & 0x90\\
+Décrémente le pointeur de pile & DECCSP & 0 & SP := SP - 1 & 0x94\\
+\addlinespace[1em]
+Empiler A & PUSHA & 0 & RAM[SP- -] := A & 0xb0\\
+Depiler A & POPA & 0 & A := RAM[++SP] & 0xb4\\
+Sauvegarder A dans la pile & POKEA & 1 & RAM[SP+operande] := A& 0xb8\\
+Récupérer A dans la pile & PEEKA & 1 & A := RAM[SP+operande] & 0xbc\\
+\addlinespace[1em]
+Empiler B & PUSHB & 0 & RAM[SP- -] := B & 0xc0\\
+Depiler B & POPB & 0 & B := RAM[++SP] & 0xc4\\
+Sauvegarder B dans la pile & POKEB & 1 & RAM[SP+operande] := B& 0xc8\\
+Récupérer B dans la pile & PEEKB & 1 & B := RAM[SP+operande] & 0xcc\\
+\end{tabular}
+
+\end{document}

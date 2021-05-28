@@ -1,0 +1,6 @@
+- générer les pdf puis les convertir en SVG avec pdf2svg
+
+- Utiliser inkscape pour aggréger les PDF générés pour chaque partie
+- utiliser pdftk pour générer reference_card.pdf
+
+pdftk A=reference1.pdf B=reference2.pdf C=archi.pdf cat A B C output reference_card.pdf

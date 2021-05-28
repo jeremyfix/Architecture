@@ -1,0 +1,32 @@
+\documentclass{standalone}
+\standaloneconfig{border=10pt}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{cases}
+\usepackage{booktabs}
+
+\begin{document}
+
+\begin{minipage}{5in}
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{3ex plus 0.5ex minus 0.2ex}
+
+\textbf{\underline{Sous-programmes}}\\
+
+L'appel et le retour de routines (sous-programmes) s'effectuent par les instructions CALL et RET.\\
+
+L'instruction CALL doit sauvegarder le compteur de programme (PC) sur la pile avant de brancher à l'adresse fournie par l'opérande. L'instruction RET dépile le compteur de programme (PC).\\
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Nom & Mnémonique & Nb. d'arguments & Opcode \\
+\toprule
+Appel de routine & CALL & 1 & 0xa0 \\
+Retour de routine & RET & 0 & 0xa8
+\end{tabular}
+
+\end{minipage}
+
+\end{document}

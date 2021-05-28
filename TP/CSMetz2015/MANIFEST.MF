@@ -1,0 +1,2 @@
+Manifest-Version: 1.0
+Library-Class: fr.cs2015.CSMetz2015

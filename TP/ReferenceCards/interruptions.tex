@@ -1,0 +1,34 @@
+\documentclass{standalone}
+\standaloneconfig{border=10pt}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{cases}
+\usepackage{booktabs}
+
+\begin{document}
+
+\begin{minipage}{5in}
+\setlength{\parindent}{10pt}
+\setlength{\parskip}{3ex plus 0.5ex minus 0.2ex}
+
+\textbf{\underline{Interruptions}}\\
+
+L'activation ou inactivation des interruptions dépendents du register \emph{Interrupt Flag} : elles sont activiées si $IF = 1$ et désactivées sinon. L'activation des interruptions s'effectue par l'instruction STI (\emph{Set Interrupt}) et l'inactivation par l'instruction CLI (\emph{Clear Interrupt}).\\
+
+L'architecture proposée ne supporte qu'une interruption. L'appel de la routine d'interruption s'effectue par l'instruction INT et le retour de la routine d'interruption par l'instruction RTI. 
+
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lllll@{}}
+\toprule
+Nom & Mnémonique & Nb. d'arguments & Opcode \\
+\toprule
+Inactivation des interruptions & CLI & 0 & 0xd0 \\
+Activation des interruptions & STI & 0 & 0xd4\\
+Appel de l'interruption & INT & 0 & 0xe0 \\
+Retour de l'interruption & RTI & 0 & 0xe8
+\end{tabular}
+
+\end{minipage}
+
+\end{document}

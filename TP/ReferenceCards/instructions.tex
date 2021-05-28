@@ -1,0 +1,44 @@
+\documentclass{standalone}
+\standaloneconfig{border=10pt}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage{amsmath}
+\usepackage{cases}
+\usepackage{booktabs}
+\begin{document}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}lllll@{}}
+\textbf{\underline{Instructions}} & & & & \\
+\addlinespace[1em]
+\toprule
+Nom & Mnémonique & Nb. d'arguments & Opération & Opcode \\
+\toprule
+Fin du programme & END & 0 & Arrête la machine & 0x0c\\
+Load A immédiat & LDAi & 1 & A := operande & 0x10 \\
+Load A direct & LDAd & 1 & A := RAM[operande] & 0x14 \\
+Store A  & STA & 1 & RAM[operande] := A & 0x1c\\
+\addlinespace[1em]
+Load B immédiat & LDBi & 1 & B := operande & 0x20 \\
+Load B direct & LDBd & 1 & B := RAM[operande] & 0x24 \\
+Store B  & STB & 1 & RAM[operande] := B & 0x2c\\
+\addlinespace[1em]
+Add A & ADDA & 0 & A := A + B & 0x30 \\
+Add B & ADDB & 0 & B := A + B & 0x34 \\
+Sub A & SUBA & 0 & A := A - B & 0x38 \\
+Sub B & SUBB & 0 & B := A - B & 0x3c \\
+Mul A & MULA & 0 & A := A $\times$ B & 0x40 \\
+Mul B & MULB & 0 & B := A $\times$ B & 0x44 \\
+Division de A par 2 & DIVA & 0 & A := A / 2 & 0x48 \\
+\addlinespace[1em]
+And A & ANDA & 0 & A := A \& B & 0x50 \\
+And B & ANDB & 0 & B := A \& B & 0x54 \\
+Or A & ORA & 0 & A := A $\mid$ B & 0x58 \\
+Or B & ORB & 0 & B := A $\mid$ B & 0x5c \\
+Not A & NOTA & 0 & A := ! A & 0x60 \\
+Not B & NOTB & 0 & B := ! B & 0x64 \\
+\addlinespace[1em]
+Branchement inconditionnel & JMP & 1 & PC := operande & 0x70\\
+Branchement si A nul & JZA & 1 & PC := $\left\{\begin{array}{ll}\text{operande} & \text{si A} = 0 \\\text{PC} + 1 & \text{sinon}\end{array}\right.$& 0x74\\
+Branchement si B nul & JZB & 1 & PC := $\left\{\begin{array}{ll}\text{operande} & \text{si B} = 0 \\\text{PC} + 1 & \text{sinon}\end{array}\right.$& 0x78
+\end{tabular}
+\end{document}

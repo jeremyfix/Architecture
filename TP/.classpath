@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="lib" path="EL_ASI1_Logisim/ese1010.jar"/>
+	<classpathentry kind="lib" path="EL_ASI1_Logisim/logisim-2.7.1.jar"/>
+	<classpathentry kind="lib" path="ese1010.jar"/>
+	<classpathentry kind="lib" path="logisim_goes_fpga_2_9_12.jar"/>
+	<classpathentry kind="lib" path="MiniARMSimple/ese1010.jar"/>
+	<classpathentry kind="lib" path="MiniARMSimple/Logisim.app/Contents/Resources/Java/logisim.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
