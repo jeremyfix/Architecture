@@ -1,0 +1,57 @@
+% http://tex.stackexchange.com/questions/107637/repeated-division-converting-from-base-10-to-another-base
+
+
+\newcount\total
+\newcount\lasttotal
+\newcount\targetbase
+
+\def\digittoalpha#1{%
+    \ifcase#1\relax0\or1\or2\or3\or4\or5\or6\or7\or8\or9%
+    \or a\or b\or c\or d\or e\or f\or g\or h\or i\or j\or k\or l\or m%
+    \or n\or p\or p\or q\or r\or s\or t\or u\or v\or w\or x\or y\or z\else?\fi%
+}
+
+\def\baseconversiontable#1#2{%
+    \begin{tikzpicture}[every node/.style={minimum width=1cm, minimum height=0.5cm}, x=1cm,y=0.5cm]
+    %
+    \total=#1%
+    \targetbase=#2
+    \def\newnumber{}
+    %
+    \pgfmathloop
+    \ifnum\total<1
+    \else
+        %
+        \ifnum\pgfmathcounter>1
+            \node at (\pgfmathcounter, -\pgfmathcounter+1) (tmp) {\the\targetbase};
+            \draw (tmp.north west) |- (tmp.south east);
+            %
+            \node at (\pgfmathcounter-1, -\pgfmathcounter) (tmp) {\pgfmathparse{int(-\total*\targetbase)}\pgfmathresult};
+            \draw (tmp.south west) -- (tmp.south east);
+            %
+            \pgfmathparse{int(\lasttotal-\total*\targetbase)}%
+            \let\digit=\pgfmathresult
+            \node at (\pgfmathcounter-1, -\pgfmathcounter-1) [text=red] {\digit};
+            \edef\newnumber{\digit\newnumber}
+        \fi
+        %
+        \ifnum\total<\targetbase
+            \edef\currentdigit{\uppercase{\digittoalpha{\the\total}}}%
+            \edef\newnumber{\currentdigit\newnumber}
+            \ifnum\total>9
+              \edef\currentdigit{\noexpand\rm{\currentdigit}}%
+            \fi
+            \node at (\pgfmathcounter, -\pgfmathcounter) [text=red]  {\the\total};
+            %\color{black}\the\total(\color{red}\currentdigit\color{black})
+            %};
+        \else
+            \node at (\pgfmathcounter, -\pgfmathcounter) {\the\total};
+        \fi
+        \lasttotal=\total
+        \divide\total by\targetbase
+    \repeatpgfmathloop    
+    \draw [->] (\pgfmathcounter-1,-\pgfmathcounter-1) -- ++(-0.5,0); 
+    %\node [anchor=west] at (1, -\pgfmathcounter-2) {$#1=\newnumber_{\the\targetbase}$};
+    \end{tikzpicture}   
+}
+

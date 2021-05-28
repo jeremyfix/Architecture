@@ -1,0 +1,32 @@
+\tikzset{
+  multiplexer/.style={
+    draw,
+    trapezium,
+    shape border uses incircle, 
+    shape border rotate=270,
+    minimum size=18pt
+  }  
+}
+
+\tikzset{
+    alu/.style={trapezium,
+            trapezium angle=26,
+            shape border rotate=180,
+            minimum width=3cm,
+            minimum height=2cm,
+            trapezium stretches=true,
+            append after command={%
+                    \pgfextra
+                        \draw (\tikzlastnode.top left corner) --
+                           (\tikzlastnode.top right corner) -- 
+                           (\tikzlastnode.bottom right corner) -- 
+                           ($(\tikzlastnode.bottom right corner)!.666!(\tikzlastnode.bottom side)$)--
+                           ([yshift=-1cm]\tikzlastnode.bottom side)--
+                           ($(\tikzlastnode.bottom side)!.334!(\tikzlastnode.bottom left corner)$)--
+                           (\tikzlastnode.bottom left corner)--
+                           (\tikzlastnode.top left corner);
+                    \endpgfextra}},
+}
+
+
+
