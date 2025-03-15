@@ -1,0 +1,29 @@
+# Truth table
+# Generated from circuit MuxSelOpt
+# Exported on Thu Mar 13 10:56:55 CET 2025
+
+# Hints and Notes on Formatting:
+# * You can edit this file then import it back into Logisim!
+# * Anything after a '#' is a comment and will be ignored.
+# * Blank lines and separator lines (e.g., ~~~~~~) are ignored.
+# * Keep column names simple (no spaces, punctuation, etc.)
+# * 'Name[N..0]' indicates an N+1 bit variable, whereas
+#   'Name' by itself indicates a 1-bit variable.
+# * You can use 'x' or '-' to indicate "don't care" for both
+#   input and output bits.
+# * You can use binary (e.g., '10100011xxxx') notation or
+#   or hex (e.g., 'C3x'). Logisim will figure out which is which.
+
+CodeMCount[2..0] Z INTR_IF | SMux[1..0]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      000        -    -    |     00    
+      -01        -    -    |     01    
+      010        -    -    |     10    
+      011        0    -    |     00    
+      -11        1    -    |     01    
+      100        -    0    |     01    
+      100        -    1    |     00    
+      110        -    0    |     11    
+      110        -    1    |     10    
+      111        0    0    |     01    
+      111        0    1    |     00    
