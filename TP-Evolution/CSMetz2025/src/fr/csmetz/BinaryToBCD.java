@@ -11,6 +11,7 @@ import com.cburch.logisim.instance.InstancePainter;
 import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
+import static com.cburch.logisim.std.Strings.S;
 
 import java.lang.Math;
 
@@ -41,11 +42,16 @@ public class BinaryToBCD  extends InstanceFactory{
 		int widthInput = instance.getAttributeValue(StdAttr.WIDTH).getWidth();
 		int nbOutputs = (int)(Math.ceil(Math.log(Math.pow(2, widthInput))/Math.log(10))); 
 
-		Port[] ports = new Port[1 + nbOutputs];
+		final var ports = new Port[1 + nbOutputs];
 		ports[0] = new Port(-width, 0, Port.INPUT, StdAttr.WIDTH); // Input
 		for(int i = 0 ; i < nbOutputs ; ++i) 
 			ports[i+1] = new Port(0, height/2 - (i+1) * 10, Port.OUTPUT, 4);
-		
+	
+		// Set the TIPs on the ports
+		ports[0].setToolTip(S.fixedString("Input"));
+		for(int i = 0 ; i < nbOutputs ; ++i) 
+			ports[i+1].setToolTip(S.fixedString("Output " + i));
+
 		instance.setPorts(ports);
 	}
 

@@ -14,8 +14,7 @@ import com.cburch.logisim.instance.InstanceState;
 import com.cburch.logisim.instance.Port;
 import com.cburch.logisim.instance.StdAttr;
 import com.cburch.logisim.util.GraphicsUtil;
-
-
+import static com.cburch.logisim.std.Strings.S;
 
 
 public class UAL extends InstanceFactory {
@@ -26,16 +25,26 @@ public class UAL extends InstanceFactory {
 	private static final boolean[] needsA = { true,  false,    true,    true,   true,  false,    true,    true,    true,    true,    true,       true, false, false, false, false};
 	private static final boolean[] needsB = {false,   true,    true,    true,  false,   true,    true,    true,   false,   false,    true,      false, false, false, false, false};
 	private static final int nb_valid_ops = 11;
-	private static final String[] pinNames = { "A   ", "   B", " U0", " U1", " U2", " U3", "   S", "Z ", "C ", "V " };
+	private static final String[] pinNames = { "A   ", "   B", " UAL", "   S", "Z ", "C ", "V " };
 	
 	private static final Direction[] pinNameDirs = {
-		Direction.SOUTH, Direction.SOUTH, Direction.EAST, Direction.EAST, Direction.EAST, Direction.EAST, 
+		Direction.SOUTH, Direction.SOUTH, Direction.EAST, 
 		Direction.NORTH, Direction.WEST, Direction.WEST, Direction.WEST };
 
   private static final int[] iconX = { 3, 10, 12, 14, 21, 17, 7 };
   private static final int[] iconY = { 2, 2, 8, 2, 2, 15, 15 };
   private static final int[] symbolX = { -140, -90, -70, -50, 0, -50, -90 };
   private static final int[] symbolY = { -20, -20, 0, -20, -20, 30, 30 };
+
+
+  private static final int inputA = 0;
+  private static final int inputB = 1;
+  private static final int inputUAL = 2;
+
+  private static final int outputS = 3;
+  private static final int outputZ = 4;
+  private static final int outputC = 5;
+  private static final int outputV = 6;
 
 	public UAL()
 	{
@@ -45,43 +54,45 @@ public class UAL extends InstanceFactory {
 				new Object[] { WIDTH_DEFAULT });
 		
 		setOffsetBounds(Bounds.create(-140, -20, 140, 50));
-		
-	    setPorts(new Port[] {
-	    	      new Port(-110, -20, "input", StdAttr.WIDTH), 
-	    	      new Port(-30, -20, "input", StdAttr.WIDTH), 
-	    	      new Port(-130, -10, "input", 1), 
-	    	      new Port(-120, 0, "input", 1), 
-	    	      new Port(-110, 10, "input", 1), 
-	    	      new Port(-100, 20, "input", 1), 
-	    	      new Port(-70, 30, "output", StdAttr.WIDTH), 
-	    	      new Port(-20, 0, "output", 1), 
-	    	      new Port(-30, 10, "output", 1), 
-	    	      new Port(-40, 20, "output", 1) });
+	
+		final var ps = new Port[7];
+
+		ps[inputA] = new Port(-110, -20, Port.INPUT, StdAttr.WIDTH);
+		ps[inputA].setToolTip(S.fixedString("Input A"));
+
+		ps[inputB] = new Port(-30, -20, Port.INPUT, StdAttr.WIDTH);
+		ps[inputB].setToolTip(S.fixedString("Input B"));
+
+		ps[inputUAL] = new Port(-120, 0, Port.INPUT, 4);
+		ps[inputUAL].setToolTip(S.fixedString("Code UAL"));
+
+		ps[outputS] = new Port(-70, 30, Port.OUTPUT, StdAttr.WIDTH);
+		ps[outputS].setToolTip(S.fixedString("Output"));
+
+		ps[outputZ] = new Port(-20, 0, Port.OUTPUT, 1);
+		ps[outputC] = new Port(-30, 10, Port.OUTPUT, 1);
+		ps[outputV] = new Port(-40, 20, Port.OUTPUT, 1);
+
+		setPorts(ps);
+
 	}
 
 	public void propagate(InstanceState state)
 	{
-		Value inA = state.getPortValue(0);
-		Value inB = state.getPortValue(1);
-		Value inU0 = state.getPortValue(2);
-		Value inU1 = state.getPortValue(3);
-		Value inU2 = state.getPortValue(4);
-		Value inU3 = state.getPortValue(5);
+		Value inA = state.getPortValue(inputA);
+		Value inB = state.getPortValue(inputB);
+		Value inUAL = state.getPortValue(inputUAL);
 		Value outS;
 		Value outV;
 		Value outC;
 		Value outZ;
-		if ((inU0.isFullyDefined()) && (inU1.isFullyDefined()) && (inU2.isFullyDefined()) && (inU3.isFullyDefined()))
+		if (inUAL.isFullyDefined())
 		{
 			BitWidth width = inA.getBitWidth();
 			int wdInt = width.getWidth();
 
-			int BIT_U0 = Math.toIntExact(inU0.toLongValue());
-			int BIT_U1 = Math.toIntExact(inU1.toLongValue());
-			int BIT_U2 = Math.toIntExact(inU2.toLongValue());
-			int BIT_U3 = Math.toIntExact(inU3.toLongValue());
+			int command = Math.toIntExact(inUAL.toLongValue());
 
-			int command = 8 * BIT_U3 + 4 * BIT_U2 + 2 * BIT_U1 + BIT_U0;
 			if (((needsA[command]) && (!inA.isFullyDefined())) || ((needsB[command]) && (!inB.isFullyDefined())))
 			{
 				if (((needsA[command]) && (inA.isErrorValue())) || ((needsB[command]) && (inB.isErrorValue())))
@@ -148,7 +159,7 @@ public class UAL extends InstanceFactory {
 		}
 		else
 		{
-			if ((inU0.isErrorValue()) || (inU1.isErrorValue()) || (inU2.isErrorValue()) || (inU3.isErrorValue()))
+			if ((inUAL.isErrorValue()))
 			{
 				outS = Value.createError(inA.getBitWidth());
 				outZ = outC = outV = Value.ERROR;
@@ -159,10 +170,10 @@ public class UAL extends InstanceFactory {
 				outZ = outC = outV = Value.createUnknown(inA.getBitWidth());
 			}
 		}
-		state.setPort(6, outS, 1);
-		state.setPort(7, outZ, 1);
-		state.setPort(8, outC, 1);
-		state.setPort(9, outV, 1);
+		state.setPort(outputS, outS, 1);
+		state.setPort(outputZ, outZ, 1);
+		state.setPort(outputC, outC, 1);
+		state.setPort(outputV, outV, 1);
 	}
 
 	public void paintInstance(InstancePainter painter)
@@ -178,17 +189,10 @@ public class UAL extends InstanceFactory {
 	      GraphicsUtil.switchToWidth(g, 2);
 	      g.drawPolygon(symbolX, symbolY, symbolX.length);
 	      
-	      Value inU0 = painter.getPortValue(2);
-	      Value inU1 = painter.getPortValue(3);
-	      Value inU2 = painter.getPortValue(4);
-	      Value inU3 = painter.getPortValue(5);
-	      if ((painter.getShowState()) && (inU0.isFullyDefined()) && (inU1.isFullyDefined()) && (inU2.isFullyDefined()) && (inU3.isFullyDefined()))
+	      Value inUAL = painter.getPortValue(inputUAL);
+	      if ((painter.getShowState()) && (inUAL.isFullyDefined()))
 	      {
-	        int BIT_U0 = Math.toIntExact(inU0.toLongValue());
-	        int BIT_U1 = Math.toIntExact(inU1.toLongValue());
-	        int BIT_U2 = Math.toIntExact(inU2.toLongValue());
-	        int BIT_U3 = Math.toIntExact(inU3.toLongValue());
-	        int command = 8 * BIT_U3 + 4 * BIT_U2 + 2 * BIT_U1 + BIT_U0;
+	        int command = Math.toIntExact(inUAL.toLongValue());
 	        
 	        GraphicsUtil.drawCenteredText(g, opNames[command], 
 	          bds.getWidth() / 2 - 140, bds.getHeight() / 2 - 20);
