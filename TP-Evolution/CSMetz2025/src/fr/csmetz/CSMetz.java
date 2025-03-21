@@ -7,8 +7,6 @@ import com.cburch.logisim.tools.AddTool;
 import com.cburch.logisim.tools.Library;
 import com.cburch.logisim.tools.Tool;
 
-import fr.csmetz.UAL;
-
 public class CSMetz extends Library {
 
     private List<AddTool> tools;
@@ -16,7 +14,8 @@ public class CSMetz extends Library {
     public CSMetz() {
         tools = Arrays.asList(new AddTool[]{
             new AddTool(new UAL()),
-            new AddTool(new BinaryToBCD())
+            new AddTool(new BinaryToBCD()),
+				new AddTool(new GraphicCard())
         });
     }
 
@@ -28,5 +27,4 @@ public class CSMetz extends Library {
     public List<? extends Tool> getTools() {
         return tools;
     }
-
 }
