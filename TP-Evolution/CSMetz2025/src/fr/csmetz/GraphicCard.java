@@ -103,40 +103,75 @@ public class GraphicCard extends InstanceFactory {
 		return Bounds.create(-width, 0, width, height);
 	}
 
+	public void fillPanda(InstanceState state) {
+		switchBuffer = Value.createKnown(BitWidth.create(nBits), 0);
+		int nRows = state.getAttributeValue(NROWS_OPTION);
+
+		int offset = nRows;
+
+		buffers[offset + 0] = Value.createKnown(BitWidth.create(nBits), 0x03C3);
+		buffers[offset + 1] = Value.createKnown(BitWidth.create(nBits), 0x03C7);
+		buffers[offset + 2] = Value.createKnown(BitWidth.create(nBits), 0x2201);
+		buffers[offset + 3] = Value.createKnown(BitWidth.create(nBits), 0x4400);
+		buffers[offset + 4] = Value.createKnown(BitWidth.create(nBits), 0x8C00);
+		buffers[offset + 5] = Value.createKnown(BitWidth.create(nBits), 0x88C0);
+		buffers[offset + 6] = Value.createKnown(BitWidth.create(nBits), 0x89CC);
+		buffers[offset + 7] = Value.createKnown(BitWidth.create(nBits), 0x898C);
+		buffers[offset + 8] = Value.createKnown(BitWidth.create(nBits), 0xCC04);
+		buffers[offset + 9] = Value.createKnown(BitWidth.create(nBits), 0xCE71);
+		buffers[offset + 10] = Value.createKnown(BitWidth.create(nBits), 0x6F23);
+		buffers[offset + 11] = Value.createKnown(BitWidth.create(nBits), 0x7F8F);
+		buffers[offset + 12] = Value.createKnown(BitWidth.create(nBits), 0x7FFF);
+		buffers[offset + 13] = Value.createKnown(BitWidth.create(nBits), 0x3BC7);
+		buffers[offset + 14] = Value.createKnown(BitWidth.create(nBits), 0x1BCF);
+		buffers[offset + 15] = Value.createKnown(BitWidth.create(nBits), 0x01EE);
+	}
+
+
 	@Override
 	public void propagate(InstanceState state) {
 
+		int nRows = state.getAttributeValue(NROWS_OPTION);
+
 		// If reset is true, reset all buffers
-		if(state.getPortValue(inputReset) == Value.TRUE) {
+		if(state.getPortValue(nRows + inputReset) == Value.TRUE) {
 			for(int i = 0; i < 2*nRows; i++) {
-				buffers[i] = Value.createKnown(BitWidth.create(nBits), 0);
+				buffers[i] = Value.createKnown(BitWidth.create(nBits), 1);
 			}
+			fillPanda(state);
 		}
 
 		// Determine if the clock triggers an update
 		Object triggerType = state.getAttributeValue(StdAttr.EDGE_TRIGGER);
-		boolean triggered = clockState.updateClock(state.getPortValue(inputClk), triggerType);
+		boolean triggered = clockState.updateClock(state.getPortValue(nRows + inputClk), triggerType);
 
+		if(triggered && state.getPortValue(nRows + inputWE) == Value.TRUE) {
+			// The Value of the buffer, selected from the AddrBus is updated
+			// if Write Enable is True and the clock is rising edge
+			// Depending on the value of the switch buffer, it is either the first
+			// set of buffers that is updated or the second set
+			//
+			long addrValue = state.getPortValue(nRows + inputAdrBus).toLongValue();
+			long ioAddrValue = state.getPortValue(nRows + inputIOAdrBus).toLongValue();
 
-		// The Value of the buffer, selected from the AddrBus is updated
-		// if Write Enable is True and the clock is rising edge
-		// Depending on the value of the switch buffer, it is either the first
-		// set of buffers that is updated or the second set
-		//
-		long addrValue = state.getPortValue(inputAdrBus).toLongValue();
-		long ioAddrValue = state.getPortValue(inputIOAdrBus).toLongValue();
-		if(addrValue < ioAddrValue || addrValue >= ioAddrValue + nRows) {
-			return;
-		}
+			// Update the switch buffer if the input addr corresponds to the I/O addr
+			if(addrValue == ioAddrValue) {
+				// System.out.println("Switching buffer updated");
+				switchBuffer = state.getPortValue(nRows + inputDataBus);
+			}
+			else if(addrValue > ioAddrValue && addrValue < ioAddrValue + nRows + 1)
+			{
+				// Otherwise, update the row buffers
+				int bufferIdx = Math.toIntExact(addrValue - ioAddrValue - 1);
+				int switchBufferIdx = Math.toIntExact(switchBuffer.get(0).toLongValue());
 
-		int bufferIdx = Math.toIntExact(addrValue - ioAddrValue - 1);
-		int switchBufferIdx = Math.toIntExact(switchBuffer.get(0).toLongValue());
-
-		if(state.getPortValue(inputWE) == Value.TRUE && triggered) {
-			buffers[switchBufferIdx * nRows + bufferIdx] = state.getPortValue(inputDataBus);
+				// System.out.println("Updating buffer " + bufferIdx + " with value " + state.getPortValue(nRows + inputDataBus) + " and switch buffer " + switchBufferIdx);
+				buffers[switchBufferIdx * nRows + bufferIdx] = state.getPortValue(nRows + inputDataBus);
+			}
 		}
 
 		// Update the output depending on the switch buffer
+		int switchBufferIdx = Math.toIntExact(switchBuffer.get(0).toLongValue());
 		for(int i = 0; i < nRows; i++) {
 			state.setPort(i, buffers[(1 - switchBufferIdx)*nRows + i], nBits);
 		}
@@ -200,8 +235,11 @@ public class GraphicCard extends InstanceFactory {
 		// painter.drawLabel("GraphicCard", "center");
 		painter.drawPorts();
 
-		String text_first = buffers[0].toBinaryString();
-		GraphicsUtil.drawCenteredText(g, text_first, 0, 0);
+		// String text_first = buffers[0].toBinaryString();
+		final var loc = painter.getLocation();
+		int x = loc.getX();
+		int y = loc.getY();
+		GraphicsUtil.drawCenteredText(g, "Switch: " + switchBuffer.get(0).toDisplayString(), x-width/2, y+40);
 	}
 
 }
