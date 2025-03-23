@@ -1,0 +1,24 @@
+site_name: Architecture des ordinateurs
+docs_dir: ../md
+repo_url: https://github.com/jeremyfix/architecture
+theme: 
+  name: material
+  language: fr
+  features:
+    - navigation.sections
+    - navigation.instant
+    - navigation.instant.progress
+    - toc.follow
+
+extra_javascript:
+  - https://code.jquery.com/jquery-3.7.1.min.js
+  - js/seq_decode.js
+
+extra_css:
+  - css/extra.css
+
+site_url: https://jeremyfix.github.io/Architecture/
+
+plugins:
+    - mkdocs-video
+    - search
