@@ -9,10 +9,31 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - toc.follow
+    - toc.integrate
+
+  palette:
+    - media: "(prefers-color-scheme)"
+      toggle:
+        icon: material/link
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off
+        name: Switch to system preference
 
 extra_javascript:
   - https://code.jquery.com/jquery-3.7.1.min.js
-  - js/seq_decode.js
+  - ./js/seq_decode.js
 
 extra_css:
   - css/extra.css

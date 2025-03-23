@@ -4,7 +4,7 @@
 
 Le cours est structuré de la manière suivante :
 
-- 3 curs magistraux (3 x 1h30)
+- 3 cours magistraux (3 x 1h30)
 - 2 TP (4h30) 
 - 2 cours magistraux (2 x 1h30) 
 - 1 TP (4h30)
@@ -25,9 +25,9 @@ Ce simulatateur dispose de tout les éléments nécessaires à la compréhension
 
 Ci-dessous, une petite vidéo illutre en fonctionnement l'architecture que nous allons construire et étudier.
 <video controls autoplay loop width="100%">
-<source src="/videos/archi-all.webm" type="video/webm" />
+<source src="videos/archi-all.webm" type="video/webm" />
 
-Download the <a href="/videos/archi-all.webm">WEBM</a>
+Download the <a href="videos/archi-all.webm">WEBM</a>
 video.
 </video>
 
