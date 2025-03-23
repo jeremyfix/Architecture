@@ -15,17 +15,15 @@ Logisim est installé sur les postes de travail. Lisez la [page principale](inde
 
 ### Lancement de logisim et chargement de l'architecture
 
-On considère dans un premier temps l'architecture ci-dessous. Téléchargez les fichiers [csmetz.jar](assets/csmetz.jar) et [archi_seq_man_regual.circ](assets/circuits/archi_seq_man_regual.circ) et placez les dans le même répertoire. Lancez logisim et chargez le fichier archi_seq_man_regual.circ. L'architecture chargée est représentée ci-dessous.
-
-!!! danger
-
-	- Add the archi_seq_man_regual.circ circuit
+On considère dans un premier temps l'architecture ci-dessous. Téléchargez les fichiers [csmetz.jar](assets/csmetz.jar) et [archi_seq_man_regual.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_seq_man_regual.circ) et placez les dans le même répertoire. Lancez logisim et chargez le fichier archi_seq_man_regual.circ. L'architecture chargée est représentée ci-dessous.
 
 Avant de jouer avec cette architecture, je vous propose de décrire rapidement quelques éléments de l'interface logisim. 
 
-!!! danger
+![Interface annotée de logisim-evolution](assets/logisim_gui_annotely.png)
 
-	- Add the illustration of the architecture
+!!! note
+
+	L'annotation de l'image ci-dessus a été réalisée grâce à [annotely](https://annotely.com/editor).
 
 Vos outils principaux dans ce TP sont le "poke tool" et l'horloge. Le poke tool, la petite main en haut à gauche de l'interface, permet de modifier la valeur des entrées, cliquer sur les boutons, .... L'horloge est activée en appuyant sur les touches **Ctrl + t**, le petit symbole de l'horloge indiquant si elle est à un niveau haut ou bas. Appuyer sur Ctrl + t déclenche une transition de niveau bas vers niveau haut ou niveau haut vers niveau bas, il faut donc presser deux fois ces touches pour produire un cycle d'horloge.
 
@@ -79,25 +77,19 @@ En plus des signaux Zero (Z), Retenue (Carry) et de débordement (V), l'UAL four
 	- afficher le contenu du registre B sur les afficheurs 7 ségments
 	- sommer le contenu des registres A et B et stocker le résultat dans le registre A
 	- stocker dans A le résultat de la division entière par deux (une opération de l'UAL permet de le faire, si si) du contenu du registre A et l'afficher simultanément sur les afficheurs 7 ségments
+	- Est ce que vous obtenez le résultat attendu sur l'afficheur ?
 
 
 ## Connecter le chemin de données avec une mémoire RAM
 
-On introduit maintenant une mémoire dans le chemin de données depuis laquelle on va charger des données et dans laquelle on va également écrire des données. Cette nouvelle architecture est [archi_seq_man.circ](assets/circuits/archi_seq_man.circ). Le chemin de données est modifié en ajoutant une RAM et deux registres : 
+On introduit maintenant une mémoire dans le chemin de données depuis laquelle on va charger des données et dans laquelle on va également écrire des données. Cette nouvelle architecture est [archi_seq_man.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_seq_man.circ). Le chemin de données est modifié en ajoutant une RAM et deux registres : 
 
 - PC (Program counter) et,
 - RADM (Registre d'ADresse Mémoire).
 
 Quelques afficheurs 7-segments sont également disponibles.
 
-!!! danger
-
-	- Add the archi_seq_man.circ
-
-
-!!! danger
-
-	- Add the illustration of archi_seq_man.circ
+![Architecture avec l'ajout du PC, RADM et afficheurs](assets/archi_seq_man.png)
 
 
 La RAM ainsi que les afficheurs sont adressables. Cela veut dire qu'on peut lire/écrire dans la RAM ainsi qu'écrire dans les afficheurs. Pour une lecture, on réaliser les étapes suivantes :

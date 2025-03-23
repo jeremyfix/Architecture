@@ -50,3 +50,4 @@ site_url: https://jeremyfix.github.io/Architecture/
 plugins:
     - mkdocs-video
     - search
+    - glightbox
