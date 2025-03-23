@@ -91,13 +91,16 @@ Quelques afficheurs 7-segments sont également disponibles.
 
 ![Architecture avec l'ajout du PC, RADM et afficheurs](assets/archi_seq_man.png)
 
+Des signaux de contrôle additionnels ont également fait leur apparition : `SetPC`, `ReadPC`, `SetRADM` qui permettent de piloter les entrées/sorties des nouveaux registeres.
 
-La RAM ainsi que les afficheurs sont adressables. Cela veut dire qu'on peut lire/écrire dans la RAM ainsi qu'écrire dans les afficheurs. Pour une lecture, on réaliser les étapes suivantes :
+
+La RAM ainsi que les afficheurs sont adressables. Cela veut dire qu'on peut lire/écrire dans la RAM ainsi qu'écrire dans les afficheurs. Pour une lecture (en RAM donc), on réalise les étapes suivantes :
 
 1. placer l'adresse du mot à lire dans le registre RADM, 
-2. déclencher la lecture avec le signal ReadMem. 
+2. déclencher la lecture avec le signal ReadMem, qui va placer le contenu de la
+   RAM sur le bus B.
 
-Pour une écriture, on procédera par :
+Pour une écriture (en RAM ou sur un afficheur), on procédera par :
 
 1. placer l'adresse du mot à écrire dans le registre RADM, 
 2. placer les données à écrire sur le bus S et
