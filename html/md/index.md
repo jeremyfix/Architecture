@@ -33,8 +33,10 @@ video.
 
 Logisim **est installé** sur les postes de travail. Si vous souhaitez l'utiliser **chez vous**, il vous faut récupérer l'installeur mis à disposition dans les releases de logisim evolution : [https://github.com/logisim-evolution/logisim-evolution/releases]()
 
-> Notez au passage qu'il existe plusieurs versions de logisim sur Internet. La version initiale développé par C. Burch, dont il a arrêté le
-> développement en 2014. Il y a eu le fork de jlawrence qui a fixé quelques bugs résiduels mais qui ne reçoit plus de mise à jour	depuis 2016. Et il y a logisim-evolution qui continue à être mis à jour.
+!!! note
+
+	Notez au passage qu'il existe plusieurs versions de logisim sur Internet. La version initiale développé par C. Burch, dont il a arrêté le
+	développement en 2014. Il y a eu le fork de jlawrence qui a fixé quelques bugs résiduels mais qui ne reçoit plus de mise à jour	depuis 2016. Et il y a logisim-evolution qui continue à être mis à jour.
 
 ## Démarrer la version JAR de logisim sous Ubuntu
 
