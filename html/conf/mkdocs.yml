@@ -34,6 +34,9 @@ theme:
 markdown_extensions:
   - admonition
   - attr_list
+  - pymdownx.critic
+  - pymdownx.arithmatex:
+      generic: true  
   - pymdownx.emoji:
       emoji_index: !!python/name:material.extensions.emoji.twemoji
       emoji_generator: !!python/name:material.extensions.emoji.to_svg
@@ -41,6 +44,8 @@ markdown_extensions:
 extra_javascript:
   - https://code.jquery.com/jquery-3.7.1.min.js
   - ./js/seq_decode.js
+  - ./js/mathjax.js
+  - https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js
 
 extra_css:
   - css/extra.css
