@@ -74,105 +74,133 @@ function onkeyup(e) {
 		return false;
 }
 
-$(document).ready(function () {
+function openTable(dataid, datasp, dataint) {
+    
 
-	$('div[id="genmicrocode"]').each(function()
-		{
+	console.log("dataid: " + dataid);
+	console.log("datasp: " + datasp);
+	console.log("dataint: " + dataint);
+	console.log("typeof dataint: " + typeof dataint);
 
-			var html = "<div class=\"md-typeset__scrollwrap\"><div class=\"md-typeset__table\"><table id='Microcode" + $(this).data('id') + "'>";
-			html += "<caption>Microcode generator</caption>";
-			html += "<thead><tr>";
-			var attr = $(this).attr('data-int');
-			if (typeof attr !== typeof undefined && attr !== false) {
-				// Element has this attribute
-				console.log("int");
-				html += "<th colspan='2'><i class='material-icons'>clear</i></th>";
-				html += "<th colspan='1'>ReadIntAdr</th>\
-					<th colspan='1'>ClearIF</th>\
-					<th colspan='1'>SetIF</th>\
-					<th colspan='1'>INTA</th>";
-			}
-			else {
-				html += "<th colspan='6'><i class='material-icons'>clear</i></th>";
-			}
+	var html = "";
+	html += "<div id='genmicrocode' data-id='" + dataid + "' data-sp='" + datasp + "' data-int='" + dataint + "'>";
+	html += "<div class=\"table-responsive\">"
+	html += "<table id='Microcode" + dataid + "' class='table table-bordered' style='width:100%'>";
+	html += "<caption>Microcode generator</caption>";
+	html += "<thead><tr class='table-primary'>";
 
-			html += "<th colspan='3'>CodeMCount</th>\
-				<th colspan='4'>Code UAL</th>";
+	if (typeof dataint == "number" && dataint == 1) {
+		html += "<th colspan='2' style='text-align: center;'><span class=\"material-symbols-outlined\">cancel</span></th>";
+		html += "<th colspan='1'>ReadIntAdr</th>\
+			<th colspan='1'>ClearIF</th>\
+			<th colspan='1'>SetIF</th>\
+			<th colspan='1'>INTA</th>";
+	}
+	else {
+		html += "<th colspan='6' style='text-align: center;'><span class=\"material-symbols-outlined\">cancel</span></th>";
+	}
 
-			var attr = $(this).attr('data-sp');
-			if (typeof attr !== typeof undefined && attr !== false) {
-				// Element has this attribute
-				console.log("sp");
-				html += "<th>SetSP</th><th>ReadSP</th>";
-			}
-			else {
-				html += "<th colspan='2'><i class='material-icons'>clear</i></th>";
-			}
+	html += "<th colspan='3'>CodeMCount</th>\
+		<th colspan='4'>Code UAL</th>";
 
-			html += "<th>SetB</th><th>ReadB</th>\
-				<th>SetA</th><th>ReadA</th>\
-				<th>SetPC</th><th>ReadPC</th>\
-				<th>SetRADM</th>\
-				<th>SetMem</th><th>ReadMem</th>\
-				<th>@Adr (8 bits)</th>\
-				<th>Code microinstruction</th>\
-				</tr></thead>";
+	if (typeof datasp == "number" && datasp == 1) {
+		// Element has this attribute
+		html += "<th>SetSP</th><th>ReadSP</th>";
+	}
+	else {
+		html += "<th colspan='2' style='text-align: center;'><span class=\"material-symbols-outlined\">cancel</span></th>";
+	}
 
-			html += "<tbody><tr>";
+	html += "<th>SetB</th><th>ReadB</th>\
+		<th>SetA</th><th>ReadA</th>\
+		<th>SetPC</th><th>ReadPC</th>\
+		<th>SetRADM</th>\
+		<th>SetMem</th><th>ReadMem</th>\
+		<th>@Adr (8 bits)</th>\
+		<th>Code microinstruction</th>\
+		</tr></thead>";
 
-			html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_23' onclick='computeCode("+ $(this).data('id') +");' disabled></td>"
-			html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_22' onclick='computeCode("+ $(this).data('id') +");' disabled></td>"
-			var attr = $(this).attr('data-int');
-			if (typeof attr !== typeof undefined && attr !== false) {
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_21' onclick='computeCode("+ $(this).data('id') +");'></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_20' onclick='computeCode("+ $(this).data('id') +");'></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_19' onclick='computeCode("+ $(this).data('id') +");'></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_18' onclick='computeCode("+ $(this).data('id') +");'></td>";
-			}
-			else {
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_21' onclick='computeCode("+ $(this).data('id') +");' disabled></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_20' onclick='computeCode("+ $(this).data('id') +");' disabled></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_19' onclick='computeCode("+ $(this).data('id') +");' disabled></td>";
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_18' onclick='computeCode("+ $(this).data('id') +");' disabled></td>";
-			}
-			html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_17' onclick='computeCode("+ $(this).data('id') +");'></td><!-- CodeMCount -->\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_16' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_15' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_14' onclick='computeCode("+ $(this).data('id') +");'></td><!-- UAL -->\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_13' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_12' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_11' onclick='computeCode("+ $(this).data('id') +");'></td>";
+	html += "<tbody><tr>";
 
-			var attr = $(this).attr('data-sp');
-			if (typeof attr !== typeof undefined && attr !== false) {
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_10' onclick='computeCode("+ $(this).data('id') +");'></td>\
-					<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_9' onclick='computeCode("+ $(this).data('id') +");'></td>";
-			}
-			else {
+	html += "<td><input type='checkbox' id='checkbox" + dataid + "_23' onclick='computeCode("+ dataid +");' disabled></td>"
+	html += "<td><input type='checkbox' id='checkbox" + dataid + "_22' onclick='computeCode("+ dataid +");' disabled></td>"
 
-				html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_10' onclick='computeCode("+ $(this).data('id') +");' disabled></td>\
-					<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_9' onclick='computeCode("+ $(this).data('id') +");' disabled></td>";
+	if (typeof dataint == "number" && dataint == 1) {
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_21' onclick='computeCode("+ dataid +");'></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_20' onclick='computeCode("+ dataid +");'></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_19' onclick='computeCode("+ dataid +");'></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_18' onclick='computeCode("+ dataid +");'></td>";
+	}
+	else {
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_21' onclick='computeCode("+ dataid +");' disabled></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_20' onclick='computeCode("+ dataid +");' disabled></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_19' onclick='computeCode("+ dataid +");' disabled></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_18' onclick='computeCode("+ dataid +");' disabled></td>";
+	}
+	html += "<td><input type='checkbox' id='checkbox" + dataid + "_17' onclick='computeCode("+ dataid +");'></td><!-- CodeMCount -->\
+		<td><input type='checkbox' id='checkbox" + dataid + "_16' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_15' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_14' onclick='computeCode("+ dataid +");'></td><!-- UAL -->\
+		<td><input type='checkbox' id='checkbox" + dataid + "_13' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_12' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_11' onclick='computeCode("+ dataid +");'></td>";
 
-			}
-			html += "<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_8' onclick='computeCode("+ $(this).data('id') +");'></td><!-- CodeMCount -->\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_7' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_6' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_5' onclick='computeCode("+ $(this).data('id') +");'></td><!-- UAL -->\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_4' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_3' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_2' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_1' onclick='computeCode("+ $(this).data('id') +");'></td>\
-				<td><input type='checkbox' id='checkbox" + $(this).data('id') + "_0' onclick='computeCode("+ $(this).data('id') +");'></td>";
+	var attr = datasp;
+	if (typeof attr !== typeof undefined && attr !== 0) {
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_10' onclick='computeCode("+ dataid +");'></td>\
+			<td><input type='checkbox' id='checkbox" + dataid + "_9' onclick='computeCode("+ dataid +");'></td>";
+	}
+	else {
 
-			html += "<td><input type='text' id='adr"+$(this).data('id')+"' size='2' maxLength='2' value='00' oninput='computeCode("+$(this).data('id')+");'></td> <!-- Adr -->\
-				<td><input type='text' id='microcode"+$(this).data('id')+"' size='15' maxLength='10' value='0x00000000' onchange='fromCode("+$(this).data('id')+")'></td>";
+		html += "<td><input type='checkbox' id='checkbox" + dataid + "_10' onclick='computeCode("+ dataid +");' disabled></td>\
+			<td><input type='checkbox' id='checkbox" + dataid + "_9' onclick='computeCode("+ dataid +");' disabled></td>";
 
-			html += "</tr></tbody>";
-			html += "</table>";
+	}
+	html += "<td><input type='checkbox' id='checkbox" + dataid + "_8' onclick='computeCode("+ dataid +");'></td><!-- CodeMCount -->\
+		<td><input type='checkbox' id='checkbox" + dataid + "_7' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_6' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_5' onclick='computeCode("+ dataid +");'></td><!-- UAL -->\
+		<td><input type='checkbox' id='checkbox" + dataid + "_4' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_3' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_2' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_1' onclick='computeCode("+ dataid +");'></td>\
+		<td><input type='checkbox' id='checkbox" + dataid + "_0' onclick='computeCode("+ dataid +");'></td>";
 
-			html += "<input class=\"md-button\" type='button' value='Reinitialiser le code' onclick='initCode("+$(this).data('id')+");'/>";
-			html += "</div></div>";
-			$(this).html($(html));
-		});
+	html += "<td><input type='text' id='adr"+dataid+"' size='2' maxLength='2' value='00' oninput='computeCode("+dataid+");'></td> <!-- Adr -->\
+		<td><input type='text' id='microcode"+dataid+"' size='15' maxLength='10' value='0x00000000' onchange='fromCode("+dataid+")'></td>";
 
-})
+	html += "</tr></tbody>";
+	html += "</table>";
+
+	html += "<button type='button' class='btn btn-warning' onclick='initCode("+dataid+");'>Reinitialiser le code</button>";
+	html += "</div></div>";
+
+	var tableWindow = window.open("", "TableWindow", "width=800,height=600");
+
+	tableWindow.document.head.innerHTML = `
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+	<!-- Material Icons -->
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=cancel" />
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+	<script src="https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/html/md/js/seq_decode.js"></script>
+
+    <title>Microcode</title>
+	`;
+
+	tableWindow.document.body.innerHTML = `
+    <h2>Générateur de micro-code</h2>
+		` + html + `
+
+`;
+
+}
