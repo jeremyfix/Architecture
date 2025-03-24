@@ -160,10 +160,10 @@ L'adresse de retour empilée par le CALL est la valeur du PC après lecture de l
 	
 	Pour vous aider dans votre travail , pensez à utiliser la :
 
-	<button id="showTableBtn" class="md-button md-button--primary">Table de génération de micro-instructions</button>
+	<button id="showTableBtn2" class="md-button md-button--primary">Table de génération de micro-instructions</button>
 
 <script>
-document.getElementById('showTableBtn').onclick = function() {
+document.getElementById('showTableBtn2').onclick = function() {
     var dataId = 2;
 	var dataSp = 1;
 	var dataINT = 0;
