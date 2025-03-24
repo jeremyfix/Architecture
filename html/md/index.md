@@ -17,11 +17,11 @@ Tout au long de ces TP, vous allez construire votre propre ordinateur. Cet ordin
 
 Ce simulatateur dispose de tout les éléments nécessaires à la compréhension du fonctionnement d'un microprocesseur ou microcontrôleur. En construisant petit à petit une architecture de plus en plus complexe, on abordera les questions suivantes:
 
-- les composants constituants un microprocesseur : mémoire, registres, unité arithmétique et logique et leur coordination : <a href="seq_man.html">Séquenceur manuel (BE)</a>
-- le séquencement automatique du chemin de données : <a href="seq.html">Séquenceur microprogrammé (TL)</a>
-- la pile et l'appel de routines: <a href="routines.html">Pile et appel de routines (BE)</a>
-- la gestion des entrées par interruption :<a href="irq.html">Interruptions (BE)</a>
-- la programmation assembleur et l'ordonnancement dans un système multiprocessus : <a href="ordonnanceur.html">Programmation assembleur et ordonnanceur (TL)</a>
+- les composants constituants un microprocesseur : mémoire, registres, unité arithmétique et logique et leur coordination : <a href="seq_man/">Séquenceur manuel (TP)</a>
+- le séquencement automatique du chemin de données : <a href="seq_micro/">Séquenceur microprogrammé (TP)</a>
+- la pile et l'appel de routines: <a href="routines/">Pile et appel de routines (TP)</a>
+- la gestion des entrées par interruption :<a href="irq/">Interruptions (TP)</a>
+- la programmation assembleur et l'ordonnancement dans un système multiprocessus : <a href="ordonnanceur/">Programmation assembleur et ordonnanceur (TP)</a>
 
 Ci-dessous, une petite vidéo illutre en fonctionnement l'architecture que nous allons construire et étudier.
 <video controls autoplay loop width="100%">
