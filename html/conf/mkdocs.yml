@@ -56,3 +56,4 @@ plugins:
     - mkdocs-video
     - search
     - glightbox
+    - awesome-nav 

@@ -1,4 +1,4 @@
-name: ci 
+name: Mkdocs website construction and deployment
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
           path: .cache 
           restore-keys: |
             mkdocs-archi-
-      - run: pip install mkdocs-material mkdocs-glightbox mkdocs-video 
+      - run: pip install mkdocs-material mkdocs-glightbox mkdocs-video mkdocs-awesome-nav
       - name: Build and deploy website
         working-directory: ./html/conf
         run: mkdocs gh-deploy --force
