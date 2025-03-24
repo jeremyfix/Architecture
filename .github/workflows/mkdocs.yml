@@ -27,4 +27,6 @@ jobs:
           restore-keys: |
             mkdocs-archi-
       - run: pip install mkdocs-material mkdocs-glightbox mkdocs-video 
-      - run: mkdocs gh-deploy --force
+      - name: Build and deploy website
+        working-directory: ./html/conf
+        run: mkdocs gh-deploy --force
