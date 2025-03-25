@@ -3,3 +3,6 @@ nav:
   - seq_man.md
   - seq_micro.md
   - routines.md
+  - irq.md
+  - ordonnanceur.md
+  - spaceinvaders.md
