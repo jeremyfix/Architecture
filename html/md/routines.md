@@ -8,21 +8,12 @@
 
 L'architecture que je vous propose d'utiliser est représentée ci-dessous. Vous y verrez notamment l'ajout d'un registre (**Stack Pointer**) ainsi que deux signaux de contrôle {++SetSP++} et {++ReadSP++} qui permettent l'accès en lecture et écriture du registre. 
 
-Téléchargez le fichier [archi_routines.circ]() ainsi que le fichier [csmetz.jar](assets/csmetz.jar) à placer dans le même répertoire que votre circuit. Ouvrez le circuit avec logisim. Chargez la ROM [microcode_routines.rom]() qui contient les micro-instructions des instructions introduites dans le sujet précédent.
-
-!!! danger
-
-	ajouter archi_routines.circ
-
-!!! danger
-
-	ajouter microcode_routines.rom
+Téléchargez le fichier [archi_routines.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_routines.circ) ainsi que le fichier [csmetz.jar](assets/csmetz.jar) à placer dans le même répertoire que votre circuit. Ouvrez le circuit avec logisim. Chargez la ROM [microcode_routines.rom](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Microcodes/microcode_routines.rom) qui contient les micro-instructions des instructions introduites dans le sujet précédent.
 
 Je vous rappelle que vous disposez de [la carte de référence de l'architecture](assets/reference_card.pdf). 
 
-!!! danger
+![Architecture avec le registre de pointeur de pile](assets/archi_routines.png)
 
-	ajouter illustration de l'archi
 
 ## Instructions de manipulation de la pile et de son pointeur `PEEK`, `PUSH`, `POP`, `INCSP` et `DECSP`
 
