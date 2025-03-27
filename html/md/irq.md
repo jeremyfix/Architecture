@@ -8,17 +8,11 @@ Jusqu'à maintenant, notre architecture vit dans son monde, elle est quasiment i
 - le codage des gestionnaires d'interruption (interrupt handlers)
 - la gestion d'une interruption pendant l'exécution d'un programme
 
-L'architecture que je vous propose d'utiliser est représentée ci-dessous. Vous y verrez notamment l'ajout d'un registre (Interrupt Flag) ainsi que **quatre signaux de contrôle INTA, SetIF, ClearIF, ReadINTAdr**. Vous y verrez également un petit circuit (à côté de la RAM) permettant de générer une interruption lors de l'appui sur un bouton et une modification du contrôle du multiplexeur du MicroPC. Téléchargez le fichier [archi_irq.circ]() ainsi que le fichier csmetz2015.jar à placer dans le même répertoire que [archi_irq.circ](). Ouvrez le circuit avec logisim. Chargez la ROM [microcode_irq.rom]() qui contient les micro-instructions des instructions introduites dans le sujet précédent.
+L'architecture que je vous propose d'utiliser est représentée ci-dessous. Vous y verrez notamment l'ajout d'un registre (Interrupt Flag) ainsi que **quatre signaux de contrôle INTA, SetIF, ClearIF, ReadINTAdr**. Vous y verrez également un petit circuit (à côté de la RAM) permettant de générer une interruption lors de l'appui sur un bouton et une modification du contrôle du multiplexeur du MicroPC. Téléchargez le fichier [archi_irq.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_irq.circ) ainsi que le fichier csmetz.jar à placer dans le même répertoire que [archi_irq.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_irq.circ). Ouvrez le circuit avec logisim. Chargez la ROM [microcode_irq.rom](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Microcodes/microcode_irq.rom) qui contient les micro-instructions des instructions introduites dans le sujet précédent.
 
 Je vous rappelle que vous disposez de la carte de référence de l'architecture. 
 
-!!! danger
-
-	illustration irq
-
-!!! danger
-
-	archi_irq.circ et microcode_irq.rom
+![Architecture avec la gestion des interruptions](assets/archi_irq.png)
 
 ## Le principe des interruptions
 
@@ -91,7 +85,7 @@ Les étapes de départ en interruption, exécution du programme d'interruption e
 
 	Définissez le microcode pour les instructions INT (0xe0) et RTI (0xe8). 
 
-	Testez votre architecture avec le programme suivant [irq_bouton_simple.asm](), [irq_bouton_simple.mem](). Le programme principal incrémente un compteur, l'interruption alterne 0, 1 sur le deuxième afficheur
+	Testez votre architecture avec le programme suivant [irq_bouton_simple.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/irq_bouton_simple.asm), [irq_bouton_simple.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/irq_bouton_simple.mem). Le programme principal incrémente un compteur, l'interruption alterne 0, 1 sur le deuxième afficheur
 
 	Pour faciliter votre travail de calcul des micro-instructions, je vous propose
 	d'utiliser <br/>
@@ -114,7 +108,7 @@ Vous pouvez passer alors à un problème un peu plus compliqué.
 
 !!! question
 
-	Je vous propose aussi le programme irq_bouton.asm, irq_bouton.mem qui incrémente un compteur réinitialisé (en principe) chaque fois qu'on appui sur le bouton. 
+	Je vous propose aussi le programme [irq_bouton.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/irq_bouton.asm), [irq_bouton.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/irq_bouton.mem) qui incrémente un compteur réinitialisé (en principe) chaque fois qu'on appui sur le bouton. 
 
 	En pratique, si vous testez bien, ça ne marche pas tout le temps et le compteur n'est pas toujours réinitialisé comme on pense qu'il devrait l'être. 
 
@@ -123,14 +117,12 @@ Vous pouvez passer alors à un problème un peu plus compliqué.
 
 ## Une application des interruptions : un contrôleur clavier
 
-!!! danger
- 
-	archi_irq_clavier.circ
-
-Je vous propose une application des interruptions en ajoutant un clavier et un écran à notre architecture. On aimerait que les caractères saisis sur le clavier (le clavier s'utilise en tapant des caractères tandis que le clavier est sélectionné avec le poke tool) soient affichés à l'écran. Dans l'architecture [archi_irq_clavier.circ]():
+Je vous propose une application des interruptions en ajoutant un clavier et un écran à notre architecture. On aimerait que les caractères saisis sur le clavier (le clavier s'utilise en tapant des caractères tandis que le clavier est sélectionné avec le poke tool) soient affichés à l'écran. Dans votre architecture archi_irq.circ :
 
 - le clavier est accessible en lecture à l'adresse 0x1003, 
 - l'écran est accessible en écriture à l'adresse 0x1004. 
+
+![Architecture avec un périphérique clavier géré par interruption](assets/archi_irq_clavier.png)
 
 Lorsqu'un caractère est saisi sur le clavier, une interruption est levée. L'interface avec le clavier est faite de telle sorte qu'à la réception du signal INTA, le caractère saisi est transféré dans un registre tampon. 
 
@@ -143,7 +135,8 @@ Pour l'écran, chaque fois qu'on écrit un caractère à l'adresse 0x1004, ce ca
 	Ecrivez la RAM telle que le programme principal exécute un programme, par exemple incrémente un compteur en affichant le résultat sur un des afficheurs 7 ségments, et l'interruption affiche les caractères saisis au clavier sur l'écran. 
 
 
+
+
 !!! danger
 
-	illustration de l'architecture avec le clavier/écran
-
+	sujet à élaborer
