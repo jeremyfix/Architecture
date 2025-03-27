@@ -2,15 +2,9 @@
 
 ## Introduction
 
-Le but de ce TL est de réaliser un séquenceur micro-programmé pour piloter notre architecture représentée ci-dessous. Nous allons voir qu'un nouveau composant est introduit, une ROM, et votre travail consiste alors à écrire le micro-code de quelques instructions dans cette ROM. Plusieurs programmes vous sont fournis pour tester votre réalisation et vous aurez également à écrire vos propres programmes en code machine. Lancez logisim et chargez l'architecture [archi_sequenceur.circ]() ainsi que le fichier [csmetz.jar](assets/csmetz.jar) à placer dans le même répertoire que [archi_sequenceur.circ](). Lisez ensuite la présentation ci-dessous avec l'architecture sous les yeux.
+Le but de ce TL est de réaliser un séquenceur micro-programmé pour piloter notre architecture représentée ci-dessous. Nous allons voir qu'un nouveau composant est introduit, une ROM, et votre travail consiste alors à écrire le micro-code de quelques instructions dans cette ROM. Plusieurs programmes vous sont fournis pour tester votre réalisation et vous aurez également à écrire vos propres programmes en code machine. Lancez logisim et chargez l'architecture [archi_sequenceur.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_sequenceur.circ) ainsi que le fichier [csmetz.jar](assets/csmetz.jar) à placer dans le même répertoire que [archi_sequenceur.circ](). Lisez ensuite la présentation ci-dessous avec l'architecture sous les yeux.
 
-!!! danger
-
-	Mettre le fichier archi_sequenceur.circ
-
-!!! danger
-
-	Mettre l'illustration de l'archi
+![Architecture avec séquenceur micro-programmé](assets/archi_sequenceur.png)
 
 La mémoire RAM contient des mots de 16 bits et est adressable sur 16 bits et a donc une capacité de 128 Ko. Les opérandes et les adresses sont codées sur 16 bits. Les instructions sont codées sur un ou deux mots de 16 bits : le premier mot contient le code de l'opération et l'éventuel mot suivant contient l'opérande. Le code de l'opération est codé dans les 8 bits de poids fort d'un mot. Ce qui se résumé sur le tableau ci-dessous donnant la sémantique des bits d'un ou deux mots de 16 bits.
 
@@ -70,17 +64,14 @@ Le chemin de données est constitué de différents éléments que je vous propo
 
 La mémoire contient les instructions et les données du programme à exécuter. Elle est adressable par le registre RADM (Registre d'Adresse Mémoire); Pour lire la mémoire, il faut d'abord placer l'adresse du mot mémoire à lire dans le registre d'adresse mémoire (RADM). Pour cela, il faut placer l'adresse sur le bus S, activer le registre d'adresse mémoire `SetRADM=1` et activer un front montant d'horloge. En mettant la mémoire en lecture `ReadMem=1`, le mot mémoire à l'adresse contenue dans le registre RADM est immédiatement disponible sur la sortie.
 
-!!! danger
+![Le composant RAM](assets/RAM.png){width=40%}
 
-	illustration RAM
 
 Pour modifier le contenu de la mémoire, il faut d'abord mettre dans le registre d'adresse mémoire (RADM) l'adresse à laquelle l'information doit être stockée. Ensuite, il faut placer l'information à stocker sur le bus S, mettre la mémoire en mode écriture {++SetMem=1++} et activer un front montant d'horloge. Le mot disponible sur l'entrée D sera alors sauvegardée à l'adresse contenue dans le registre RADM au prochain front montant d'horloge. 
 
 ## Adressage des afficheurs 7 segments
 
-!!! danger
-
-	illustration 7 segments
+![Un afficheur 7 segments](assets/7segments.png){width=60%}
 
  L'utilisation des afficheurs 7 segments se fait en adressant la mémoire à des adresses particulières. Les adresses, sur 16 bits, inférieures strict à 0x1000 adressent la RAM; Les trois afficheurs ont respectivement les adresses {++0x1000++}, {++0x1001++} et {++0x1002++}. Pour afficher une valeur sur le premier afficheur, il faut placer l'adresse 0x1000 dans le registre RADM, puis faire comme si on sauvegardait une valeur en mémoire : placer la valeur sur le bus S, mettre la mémoire en écriture (SetMem) et déclencher un front montant d'horloge.
 
@@ -94,9 +85,8 @@ Le composant combinatoire ToBCD (Binaire Codé Décimal) assure la traduction d'
 - C : indicateur de retenue, C=1 si une retenue apparaît lors du calcul de S
 - V : indicateur de débordement, V=1 si le calcul de S produit un débordement
 
-!!! danger
+![L'Unité Arithmétique et Logique](assets/UAL.png){width=40%}
 
-	image ual
 
 L'UAL fournit 11 opérations décrites dans la table ci-dessous
 
@@ -120,9 +110,7 @@ L'UAL fournit 11 opérations décrites dans la table ci-dessous
 
 Les registres A, B et program counter sont accessibles en lecture et en écriture. Pour écrire dans ces registres, il suffit de placer une valeur sur le bus S, de les activer {++SetA, SetB, SetPC++} et de déclencher un front montant d'horloge. Pour lire les données, il suffit d'activer les portes de sorties, {++ReadA, ReadB, ReadPC++}. Attention, les registres A et PC mettent leur sortie sur le bus A mais le registre B sort sur le bus B.
 
-!!! danger
-
-	image registres
+![Les registres A, B, et PC](assets/registres.png){width=40%}
 
 ## Séquence microprogrammé
 
@@ -137,9 +125,7 @@ La disposition des instructions dans la ROM vous est imposée.
 - puis à l'adrese 0x14 pour l'instruction LDAd, 
 - etc..
 
-!!! danger
-
-	image séqunceur
+![Le séquenceur micro-programmé](assets/sequenceur.png){width=80%}
 
 Une micro-instruction est un mot sur 32 bits, les 24 premiers bits pilotant le chemin de données, les 8 derniers bits codant une adresse essentiellement utilisée pour les branchements. Schématiquement, une micro-instruction a donc le format suivant : 
 
@@ -187,11 +173,7 @@ document.getElementById('showTableBtn').onclick = function() {
 };
 </script>
 
-!!! danger
-
-	mettre à disposition le microcode_seq.rom
-
-Comme expliqué dans la partie ci-dessous "Conseils de mise en oeuvre", vous partirez du fichier mémoire [microcode_seq.rom](). Vous remarquerez que la première micro-instruction est déjà mentionnée, elle permet de sauter dans la ROM à l'adresse des micro-instructions du Fetch/Decode. Les micro-instructions pour l'instruction END sont également déjà mentionnées. Pour pouvoir tester les séquences de micro-instruction que vous allez définir, vous trouverez ci-dessous quelques programmes à charger dans la RAM. Il faudra toujours cliquer sur le bouton "Clear" en haut du circuit pour remettre les registres dans leur état initial avant de tester un programme.
+Comme expliqué dans la partie ci-dessous "Conseils de mise en oeuvre", vous partirez du fichier mémoire [microcode_seq.rom](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Microcodes/microcode_seq.rom). Vous remarquerez que la première micro-instruction est déjà mentionnée, elle permet de sauter dans la ROM à l'adresse des micro-instructions du Fetch/Decode. Les micro-instructions pour l'instruction END sont également déjà mentionnées. Pour pouvoir tester les séquences de micro-instruction que vous allez définir, vous trouverez ci-dessous quelques programmes à charger dans la RAM. Il faudra toujours cliquer sur le bouton "Clear" en haut du circuit pour remettre les registres dans leur état initial avant de tester un programme.
 
 !!! question
 
@@ -210,7 +192,7 @@ Comme expliqué dans la partie ci-dessous "Conseils de mise en oeuvre", vous par
 
 	**Conseil de mise en oeuvre**
 
-	Vous avez la possibilité de modifier le contenu des RAM et ROM depuis logisim. Néanmoins, je vous conseille de procéder différemment. Vous avez en effet la possibilité de charger la mémoire à partir d'un fichier. Je vous propose donc de télécharger le fichier microcode_seq.rom, de le modifier avec un éditeur de texte (gedit ou emacs par example) et de le charger ensuite en ROM. Le texte commençant par "#" sont des commentaires pour vous aider à vous repérer dans la ROM. 
+	Vous avez la possibilité de modifier le contenu des RAM et ROM depuis logisim. Néanmoins, je vous conseille de procéder différemment. Vous avez en effet la possibilité de charger la mémoire à partir d'un fichier. Je vous propose donc de télécharger le fichier [microcode_seq.rom](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Microcodes/microcode_seq.rom), de le modifier avec un éditeur de texte (gedit ou emacs par example) et de le charger ensuite en ROM. Le texte commençant par "#" sont des commentaires pour vous aider à vous repérer dans la ROM. 
 
 ## Travail à réaliser : calculer avec votre architecture
 
