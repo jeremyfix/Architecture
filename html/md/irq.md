@@ -135,7 +135,9 @@ Pour l'écran, chaque fois qu'on écrit un caractère à l'adresse 0x1004, ce ca
 	Ecrivez la RAM telle que le programme principal exécute un programme, par exemple incrémente un compteur en affichant le résultat sur un des afficheurs 7 ségments, et l'interruption affiche les caractères saisis au clavier sur l'écran. 
 
 
+## Gestion de plusieurs interruptions
 
+Voir pour s'inspirer du Intel 8259
 
 !!! danger
 
