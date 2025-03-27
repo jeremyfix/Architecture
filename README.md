@@ -14,6 +14,6 @@ Les éléments de cours sont mis à disposition sous license GPL-3 :
 
 Le cours part du composant de base, le transistor et fini avec un micro-processeur basique, simulé sous logisim, sur lequel s'exécute un petit jeu programmé en un language ressemblant à de l'assembleur.
 
-![Space invaders](https://github.com/jeremyfix/Architecture/blob/main/html/md/videos/archi-jeu.webm)
+[![Space Invaders à 500Hz, écran monochrome 16 x 16](https://img.youtube.com/vi/ZonEV3LbNP8/0.jpg)](https://youtu.be/ZonEV3LbNP8)
 
 
