@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/irq/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/ordonnanceur/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/routines/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/seq_man/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/seq_micro/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+    <url>
+         <loc>https://jeremyfix.github.io/Architecture/spaceinvaders/</loc>
+         <lastmod>2025-03-27</lastmod>
+    </url>
+</urlset>

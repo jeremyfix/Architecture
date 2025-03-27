@@ -1,0 +1,814 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://jeremyfix.github.io/Architecture/seq_man/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../seq_micro/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.9">
+    
+    
+      
+        <title>Séquenceur manuel (TP 1) - Architecture des ordinateurs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.4af4bdda.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../css/extra.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+   <link href="../assets/stylesheets/glightbox.min.css" rel="stylesheet"/><style>
+    html.glightbox-open { overflow: initial; height: 100%; }
+    .gslide-title { margin-top: 0px; user-select: text; }
+    .gslide-desc { color: #666; user-select: text; }
+    .gslide-image img { background: white; }
+    .gscrollbar-fixer { padding-right: 15px; }
+    .gdesc-inner { font-size: 0.75rem; }
+    body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color);}
+    body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color);}
+    body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color);}</style> <script src="../assets/javascripts/glightbox.min.js"></script></head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#sequenceur-manuel-tp-1" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href=".." title="Architecture des ordinateurs" class="md-header__button md-logo" aria-label="Architecture des ordinateurs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Architecture des ordinateurs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Séquenceur manuel (TP 1)
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue-grey" data-md-color-accent="blue-grey"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/jeremyfix/architecture" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+  
+
+<nav class="md-nav md-nav--primary md-nav--integrated" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Architecture des ordinateurs" class="md-nav__button md-logo" aria-label="Architecture des ordinateurs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Architecture des ordinateurs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/jeremyfix/architecture" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Accueil
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Séquenceur manuel (TP 1)
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Séquenceur manuel (TP 1)
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#introduction" class="md-nav__link">
+    <span class="md-ellipsis">
+      Introduction
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#charger-des-registres-et-effectuer-des-operations-arithmetiques" class="md-nav__link">
+    <span class="md-ellipsis">
+      Charger des registres et effectuer des opérations arithmétiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Charger des registres et effectuer des opérations arithmétiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#lancement-de-logisim-et-chargement-de-larchitecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Lancement de logisim et chargement de l'architecture
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#presentation-de-larchitecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      Présentation de l'architecture
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#connecter-le-chemin-de-donnees-avec-une-memoire-ram" class="md-nav__link">
+    <span class="md-ellipsis">
+      Connecter le chemin de données avec une mémoire RAM
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../seq_micro/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Séquence micro-programmé (TP 2)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../routines/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Pile et appel de routines (TP 3)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../irq/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interruptions (TP 4)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ordonnanceur/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Programmation assembleur et ordonnancement (TP 5)
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../spaceinvaders/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Bonus: place aux jeux
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<div><h1 id="sequenceur-manuel-tp-1">Séquenceur manuel (TP 1)</h1>
+<h2 id="introduction">Introduction</h2>
+<p>Le but de ce premier TP est d'introduire un chemin de données qu'on va utiliser tout au long du cours et des TPs. On introduit progressivement des éléments de logique combinatoire et de logique séquentielle avec le but utiltime de cette séance d'être capable de piloter à la main le chemin de données pour lui faire réaliser quelques opérations. Nous verrons durant les séances suivantes comment automatiser le pilotage du chemin de données ainsi que quelques extensions de ce chemin de données. On va voir notamment:</p>
+<ul>
+<li>l'unité arithmétique et logique</li>
+<li>les registres</li>
+<li>la mémoire RAM (Random Access Memory)</li>
+<li>le séquencement du chemin de données</li>
+</ul>
+<p>Logisim est installé sur les postes de travail. Lisez la <a href="../">page principale</a> pour savoir comment le démarrer plus 2/3 autres indications.</p>
+<h2 id="charger-des-registres-et-effectuer-des-operations-arithmetiques">Charger des registres et effectuer des opérations arithmétiques</h2>
+<h3 id="lancement-de-logisim-et-chargement-de-larchitecture">Lancement de logisim et chargement de l'architecture</h3>
+<p>On considère dans un premier temps l'architecture ci-dessous. Téléchargez les fichiers <a href="../assets/csmetz.jar">csmetz.jar</a> et <a href="https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_seq_man_regual.circ">archi_seq_man_regual.circ</a> et placez les dans le même répertoire. Lancez logisim et chargez le fichier archi_seq_man_regual.circ. L'architecture chargée est représentée ci-dessous.</p>
+<p>Avant de jouer avec cette architecture, je vous propose de décrire rapidement quelques éléments de l'interface logisim. </p>
+<p><a class="glightbox" href="../assets/logisim_gui_annotely.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Interface annotée de logisim-evolution" src="../assets/logisim_gui_annotely.png"></a></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>L'annotation de l'image ci-dessus a été réalisée grâce à <a href="https://annotely.com/editor">annotely</a>.</p>
+</div>
+<p>Vos outils principaux dans ce TP sont le "poke tool" et l'horloge. Le poke tool, la petite main en haut à gauche de l'interface, permet de modifier la valeur des entrées, cliquer sur les boutons, .... L'horloge est activée en appuyant sur les touches <strong>Ctrl + t</strong>, le petit symbole de l'horloge indiquant si elle est à un niveau haut ou bas. Appuyer sur Ctrl + t déclenche une transition de niveau bas vers niveau haut ou niveau haut vers niveau bas, il faut donc presser deux fois ces touches pour produire un cycle d'horloge.</p>
+<h3 id="presentation-de-larchitecture">Présentation de l'architecture</h3>
+<p>L'architecture proposée est constituée :</p>
+<ul>
+<li>de signaux de contrôle : des entrées modifiables avec le <code>poke tool</code>, et un bouton <code>Clear</code> pour réinitialiser le contenu des registres,</li>
+<li>d'une entrée pour les données labelisée Data, tout à gauche. Son contenu est modifié avec le <code>poke tool</code>,</li>
+<li>de deux registres A et B actifs sur front montant d'horloge,</li>
+<li>d'une Unité Arithmétique et Logique,</li>
+<li>d'une sortie avec quelques afficheurs 7 ségments et un registre mémorisant la valeur à afficher (le convertisseur ToBCD est un circuit de logique combinatoire convertissant un nombre binaire en binaire codé décimal pour l'affichage).</li>
+</ul>
+<p>La circulation des données sur les bus A, B et S est autorisée par des buffers contrôlés par un signal de contrôle particulier. </p>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Pour charger le registre A, il faut :</p>
+<ul>
+<li>placer des données sur le bus S, </li>
+<li>autoriser le chargement du registre (SetA), </li>
+<li>déclencher un front montant d'horloge.</li>
+</ul>
+</div>
+<p>En plus des signaux Zero (Z), Retenue (Carry) et de débordement (V), l'UAL fournit 12 opérations décrites dans la table ci-dessous: </p>
+<table>
+<thead>
+<tr>
+<th>U3</th>
+<th>U2</th>
+<th>U1</th>
+<th>U0</th>
+<th>Opération</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>S = A</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>S = B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>S = A ET B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>S = A OU B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>S = non(A)</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>S = non(B)</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>S = A + B</td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>S = A - B</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>S = A + 1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>S = A - 1</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td>S = A * B</td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>S = A &gt;&gt; 1</td>
+</tr>
+<tr>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M367.2 412.5 99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192 41.5 0 79.9-13.1 111.2-35.5m45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192-41.5 0-79.9 13.1-111.2 35.5zM0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0"></path></svg></span></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M367.2 412.5 99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192 41.5 0 79.9-13.1 111.2-35.5m45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192-41.5 0-79.9 13.1-111.2 35.5zM0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0"></path></svg></span></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M367.2 412.5 99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192 41.5 0 79.9-13.1 111.2-35.5m45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192-41.5 0-79.9 13.1-111.2 35.5zM0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0"></path></svg></span></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 512 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M367.2 412.5 99.5 144.8C77.1 176.1 64 214.5 64 256c0 106 86 192 192 192 41.5 0 79.9-13.1 111.2-35.5m45.3-45.3C434.9 335.9 448 297.5 448 256c0-106-86-192-192-192-41.5 0-79.9 13.1-111.2 35.5zM0 256a256 256 0 1 1 512 0 256 256 0 1 1-512 0"></path></svg></span></td>
+<td>S = Erreur</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p><strong>Travail à réaliser</strong></p>
+<p>En utilisant les signaux de contrôle et l'entrée Data <strong>uniquement</strong> (!), réalisez les opérations suivantes les unes après les autres. Je vous conseille de remettre à zéro tous les signaux de contrôle avant de passer à l'instruction suivante.</p>
+<ul>
+<li>charger la valeur décimale 16 dans le registre A</li>
+<li>charger la valeur décimale 12 dans le registre B</li>
+<li>afficher le contenu du registre A sur les afficheurs 7 ségments</li>
+<li>afficher le contenu du registre B sur les afficheurs 7 ségments</li>
+<li>sommer le contenu des registres A et B et stocker le résultat dans le registre A</li>
+<li>stocker dans A le résultat de la division entière par deux (une opération de l'UAL permet de le faire, si si) du contenu du registre A et l'afficher simultanément sur les afficheurs 7 ségments</li>
+<li>Est ce que vous obtenez le résultat attendu sur l'afficheur ?</li>
+</ul>
+</div>
+<h2 id="connecter-le-chemin-de-donnees-avec-une-memoire-ram">Connecter le chemin de données avec une mémoire RAM</h2>
+<p>On introduit maintenant une mémoire dans le chemin de données depuis laquelle on va charger des données et dans laquelle on va également écrire des données. Cette nouvelle architecture est <a href="https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_seq_man.circ">archi_seq_man.circ</a>. Le chemin de données est modifié en ajoutant une RAM et deux registres : </p>
+<ul>
+<li>PC (Program counter) et,</li>
+<li>RADM (Registre d'ADresse Mémoire).</li>
+</ul>
+<p>Quelques afficheurs 7-segments sont également disponibles.</p>
+<p><a class="glightbox" href="../assets/archi_seq_man.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Architecture avec l'ajout du PC, RADM et afficheurs" src="../assets/archi_seq_man.png"></a></p>
+<p>Des signaux de contrôle additionnels ont également fait leur apparition : <code>SetPC</code>, <code>ReadPC</code>, <code>SetRADM</code> qui permettent de piloter les entrées/sorties des nouveaux registeres.</p>
+<p>La RAM ainsi que les afficheurs sont adressables. Cela veut dire qu'on peut lire/écrire dans la RAM ainsi qu'écrire dans les afficheurs. Pour une lecture (en RAM donc), on réalise les étapes suivantes :</p>
+<ol>
+<li>placer l'adresse du mot à lire dans le registre RADM, </li>
+<li>déclencher la lecture avec le signal ReadMem, qui va placer le contenu de la
+   RAM sur le bus B.</li>
+</ol>
+<p>Pour une écriture (en RAM ou sur un afficheur), on procédera par :</p>
+<ol>
+<li>placer l'adresse du mot à écrire dans le registre RADM, </li>
+<li>placer les données à écrire sur le bus S et</li>
+<li>déclencher l'écriture avec le signal SetMem.</li>
+</ol>
+<p>Les afficheurs sont dits <em>mappés en mémoire</em> (on verra un plus en détails ce que cela signifie plus tard), c'est à dire qu'ils ont des adresses particulières:</p>
+<ul>
+<li>Si le contenu de RADM est inférieur strict à 0x1000, on adresse la RAM,</li>
+<li>Si le contenu de RADM vaut 0x1000, 0x1001 ou 0x1002 on adresse respectivement le premier, deuxième et troisième afficheur.</li>
+</ul>
+<div class="admonition example">
+<p class="admonition-title">Example</p>
+<p>Ne vous laissez pas dérouter par le plat de spaghettis de connexions autour de la mémoire et des afficheurs.</p>
+<p>En pratique, si je veux afficher le contenu du registre A sur le premier afficheur, je procéderais ainsi :</p>
+<ol>
+<li>mettre 0x1000 dans RADM pour adresser le premier afficheur</li>
+<li>Lire A (ReadA), rediriger A vers S (UAL=0000), et écrire en mémoire (SetMem)</li>
+</ol>
+<p>Si je veux charger, dans le registre A, le contenu de la RAM à l'adresse 0x0010, je procéderais ainsi :</p>
+<ol>
+<li>mettre 0x0010 dans RADM</li>
+<li>Lire la mémoire (ReadMem), rediriger B vers S (UAL=0001), et écrire dans le registre A (SetA)</li>
+</ol>
+<p>Si je veux écrire le contenu du registre A dans la RAM à l'adresse 0x0010, je procéderais ainsi :</p>
+<ol>
+<li>mettre 0x0010 dans RADM</li>
+<li>Lire A (ReadA), rediriger A vers S (UAL=0000), et écrire en mémoire (SetMem)</li>
+</ol>
+</div>
+<p>Dans le travail que je propose de réaliser, nous allons charger des opérandes en mémoire (plus tard, on ajoutera également les instructions) à partir d'un fichier (bouton droit sur la RAM, "charger l'image" et choisir par example <a href="assets/programs/seq_man.mem">seq_man.mem</a> ou bien en éditant directement la RAM (bouton droit sur la RAM, "éditer le contenu"). </p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p>Chargez l'image en mémoire <a href="assets/programs/seq_man.mem">seq_man.mem</a> et regardez ensuite le contenu de la RAM. Il doit être :</p>
+<p>0010 1000 000c 1001 1002</p>
+<p>Ces valeurs correspondent aux opérandes dont vous allez avoir besoin par la
+suite.</p>
+</div>
+<p>Les opérandes vont être considérées les unes après les autres (dans la question
+suivante, vous comprendrez pourquoi nous avons mis ces valeurs particulières).
+Pour savoir quelle est l'adresse de l'opérande en mémoire actuellement
+considérée, nous utilisons le regisgtre <strong>Program Counter</strong> (PC). Pour récupérer une opérande dont l'adresse est dans le PC, il suffit de transférer le PC dans le registre RADM et de lire la mémoire. Chaque fois qu'une opérande est utilisée, on <strong>devra incrémenter le program counter</strong>. </p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p><strong>Travail à réaliser</strong></p>
+<p>En utilisant uniquement les signaux de contrôle (donc on ne modifie pas les registres "à la main"), et après avoir chargé l'image seq_man.mem dans la RAM, effectuez les opérations ci-dessous. Je vous conseille de prendre des notes des signaux de contrôle que vous utilisez pour chaque étape. Notez que pour chacune des opérations ci-dessous, les opérandes sont placées dans la RAM.</p>
+<ol>
+<li>charger la valeur décimale 16 dans le registre A</li>
+<li>afficher le contenu du registre A sur le premier afficheur</li>
+<li>charger la valeur décimale 12 dans le registre B</li>
+<li>afficher le contenu du registre B sur le second afficheur</li>
+<li>soustraire le contenu du registre B au contenu du registre A et stocker le résultat dans le registre A</li>
+<li>afficher le contenu du registre A sur le troisème afficheur</li>
+</ol>
+</div>
+<p>On se propose désormai de travailler sur un deuxième exemple. Je vous propose de
+procède comme précédemment, en définissant votre contenu de RAM et en
+orchestrant manuellement le chemin de données via les signaux de contrôle. </p>
+<div class="admonition question">
+<p class="admonition-title">Question</p>
+<p><strong>Travail à réaliser</strong></p>
+<p>Modifiez le contenu de la mémoire et exécutez le programme avec les signaux de contrôle permettant de faire les divisions par deux successives de 128 jusqu'à un résultat nul. Affichez le résultat de chaque étape sur l'afficheur 7 segments. </p>
+<p>Quel signal me permet de détecter qu'il faut s'arrêter ? </p>
+</div>
+<p>Dans ce dernier exemple, on commence à voir apparaître une boucle. Nous
+introduirons prochainement des instructions, et en particulier des instructions
+de saut conditionnel (<code>JZA</code> et <code>JZB</code>) qui utilisent les signaux émis par l'UAL pour dérouter le fil d'exécution séquentiel d'un programme.</p></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2025 - Jérémy Fix –
+
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.sections", "toc.follow", "toc.integrate"], "search": "../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.c8b220af.min.js"></script>
+      
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+      
+        <script src="../js/seq_decode.js"></script>
+      
+        <script src="../js/mathjax.js"></script>
+      
+        <script src="https://unpkg.com/mathjax@3/es5/tex-mml-chtml.js"></script>
+      
+    
+  <script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(() => { lightbox.reload() });
+</script></body>
+</html>
