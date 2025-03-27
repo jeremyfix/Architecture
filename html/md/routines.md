@@ -62,13 +62,9 @@ document.getElementById('showTableBtn').onclick = function() {
 
 !!! question
 
-	Testez votre architecture avec le programme [stack.mem](). Si tout se passe bien, vos afficheurs et votre RAM (regardez bien les adresses 0x1e, 0x1f et 0x20) devraient donner : 
+	Testez votre architecture avec le programme [stack.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/stack.mem). Si tout se passe bien, vos afficheurs et votre RAM (regardez bien les adresses 0x1e, 0x1f et 0x20) devraient donner : 
 
 	![Résultat attendu de stack.mem](assets/archi_routines_stack.png)
-
-!!! danger 
-
-	ajouter le prog stack.mem de test
 
 !!! tip
 
@@ -163,11 +159,14 @@ document.getElementById('showTableBtn2').onclick = function() {
 };
 </script>
 
-Une fois que vous êtes assurés que votre architecture est fonctionnelle, je vous propose deux exercices . 
-
 !!! danger
 
-	prévoir de guider pour la vérification que ça marche comme prévu
+	Assurez vous que vos implémentations des instructions `CALL` et `RET` sont
+	fonctionnelles avant de passer à la suite. Par exemple, vous pouvez utiliser le code d'exemple
+	mentionné précédemment mais vous pouvez également écrire votre propre
+	programme à charger en RAM.
+
+Une fois que vous êtes assurés que votre architecture est fonctionnelle, je vous propose deux exercices . 
 
 !!! question
 
