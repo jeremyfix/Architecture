@@ -2,10 +2,6 @@
 
 ## Introduction
 
-!!! danger
-
-	microcode_ordonnanceur.rom
-
 Ce sujet contient deux parties. Dans une première partie nous introduisons un assembleur qui permet d'écrire des programmes en langage d'assemblage, ce qui est beaucoup plus pratique que de les écrire en langage machine. C'est un premier pas vers les langages de haut niveau qui rendent l'utilisation d'ordinateur plus confortable. Dans une seconde partie, nous nous intéresserons à l'utilisation des interruptions pour exécuter "en parallèle" plusieurs programmes. Nous n'avons ici plus de nouvelles instructions ni de modification du chemin de données, l'architecture que nous avons construite jusque là dispose de tout ce qu'il nous faut : [archi_irq.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_irq.circ) et csmetz.jar, [microcode_ordonnanceur.rom](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Microcodes/microcode_ordonnanceur.rom).
 
 L'architecture est représentée ci-dessous et je vous rappelle que vous disposez de la carte de référence de l'architecture.
@@ -20,11 +16,7 @@ La programmation en langage machine est assez fastidieuse pour plusieurs raisons
 - il faut calculer à la main les adresses lors des branchements alors qu'on pourrait baliser un programme d'étiquettes qu'un assembleur réécrirait
 - il faut déterminer à la main les adresses ou stocker la pile, les variables globales, .... alors qu'un programme pourrait déterminer l'agencement de la mémoire automatiquement au regard de la taille du programme.
 
-!!! danger
-
-	assemble.py
-
-Je vous propose d'introduire un langage d'assemblage ainsi qu'un programme python [assemble.py]() qui convertit le langage d'assemblage en image mémoire à charger directement dans la RAM. Le programme en langage d'assemblage est écrit avec les mnémoniques de la façon suivante :
+Je vous propose d'introduire un langage d'assemblage ainsi qu'un programme python [assemble.py](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/ASM/assemble.py) qui convertit le langage d'assemblage en image mémoire à charger directement dans la RAM. Le programme en langage d'assemblage est écrit avec les mnémoniques de la façon suivante :
 
 ```asm
 LDAi 3
@@ -86,12 +78,8 @@ Pour traduire le programme assembleur en code machine, on invoquera le script as
 user@machine:~$ python3 assemble.py monscript.asm monscript.mem
 ```
 
-Le fichier monscript.mem est alors généré et peut être directement chargé en RAM sauf si des erreurs ont été produites pendant l'assemblage. Par exemple, le programme [un_compteur.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/un_compteur.asm) qui incrémente un compteur et l'affiche se réécrit en un_compteur.mem une fois assemblé.
+Le fichier monscript.mem est alors généré et peut être directement chargé en RAM sauf si des erreurs ont été produites pendant l'assemblage. Par exemple, le programme [un_compteur.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/ASM/un_compteur.asm) qui incrémente un compteur et l'affiche se réécrit en un_compteur.mem une fois assemblé.
 
-
-!!! danger
-
-	un_compteur.asm
 
 !!! question
 
@@ -99,7 +87,7 @@ Le fichier monscript.mem est alors généré et peut être directement chargé e
 
 	Pour vous faire la main avec la programmation assembleur, je vous propose d'écrire les programmes ci-dessous en assembleur et les traduire en langage machine avec le script python.
 
-	- étendez [un_compteur.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/un_compteur.asm) pour prendre en compte les interruptions. Appuyer sur le bouton doit incrémenter un second compteur, indépendant du premier, dont la valeur sera affichée sur le troisième afficheur,
+	- étendez [un_compteur.asm](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/ASM/un_compteur.asm) pour prendre en compte les interruptions. Appuyer sur le bouton doit incrémenter un second compteur, indépendant du premier, dont la valeur sera affichée sur le troisième afficheur,
 	- réécrivez en assembleur les programmes qui calculent la suite de syracuse et la factorielle
 
 ## Ordonnanceur
@@ -137,10 +125,14 @@ Le mot mémoire current indique l'identifiant du programme en cours d'exécution
 
 ## Pour aller plus loin
 
+### Programmation assembleur avancée
+
 !!! danger
 
 	proposer quelques exercices de programmation ASM
 
+
+### Extension de l'ordonnanceur à $N$ processus concurrents
 
 !!! question
 
