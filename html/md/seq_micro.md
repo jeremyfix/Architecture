@@ -1,9 +1,5 @@
 # Séquence micro-programmé (TP 2)
 
-!!! danger
-
-	ajouter les fichiers mem de test
-
 ## Introduction
 
 Le but de ce TL est de réaliser un séquenceur micro-programmé pour piloter notre architecture représentée ci-dessous. Nous allons voir qu'un nouveau composant est introduit, une ROM, et votre travail consiste alors à écrire le micro-code de quelques instructions dans cette ROM. Plusieurs programmes vous sont fournis pour tester votre réalisation et vous aurez également à écrire vos propres programmes en code machine. Lancez logisim et chargez l'architecture [archi_sequenceur.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_sequenceur.circ) ainsi que le fichier [csmetz.jar](assets/csmetz.jar) à placer dans le même répertoire que [archi_sequenceur.circ](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/archi_sequenceur.circ). Lisez ensuite la présentation ci-dessous avec l'architecture sous les yeux.
@@ -184,13 +180,13 @@ Comme expliqué dans la partie ci-dessous "Conseils de mise en oeuvre", vous par
 	Je vous propose de coder les instructions dans l'ordre suivant :
 
 	- renseignez les micro-instructions pour la phase de Fetch/Decode en commençant à l'adresse 0x08
-	- renseignez les micro-instructions pour les instructions LDAi et STA et testez votre architecture avec le programme [LDAiSTA.mem](). Vous devriez voir 2015 sur le premier afficheur (pourquoi?),
-	- renseignez les micro-instructions pour l'instructions LDAd et testez votre architecture avec le programme [LDAdSTA.mem](). Vous devriez voir 2015 sur le premier afficheur (pourquoi?),
+	- renseignez les micro-instructions pour les instructions LDAi et STA et testez votre architecture avec le programme [LDAiSTA.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/LDAiSTA.mem). Vous devriez voir 2025 sur le premier afficheur (pourquoi?),
+	- renseignez les micro-instructions pour l'instructions LDAd et testez votre architecture avec le programme [LDAdSTA.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/LDadSTA.mem). Vous devriez voir 2025 sur le premier afficheur (pourquoi?),
 	- renseignez les micro-instructions pour les instructions LDBi, LDBd, STB, ADDA et testez votre architecture en écrivant vous même un fichier mémoire de test,
 	- renseignez les micro-instructions pour les instructions arithmétiques SUB, MUL, .. et logiques AND, OR, .. et adaptez les codes donnés précédemment pour tester votre architecture,
-	- renseignez les micro-instructions pour le saut inconditionnel JMP et testez votre architecture avec le programme [JMP.mem](). Que vous attendez vous à voir ?
-	- renseignez les micro-instructions pour le saut conditionnel JZA et JZB et testez votre architecture avec le programme [JZ.mem](),
-	- renseignez les micro-instructions pour l'instruction DIVA et testez votre architecture avec le programme [DIV.mem]().
+	- renseignez les micro-instructions pour le saut inconditionnel JMP et testez votre architecture avec le programme [JMP.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/JMP.mem). Que vous attendez vous à voir ?
+	- renseignez les micro-instructions pour le saut conditionnel JZA et JZB et testez votre architecture avec le programme [JZ.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/JZ.mem),
+	- renseignez les micro-instructions pour l'instruction DIVA et testez votre architecture avec le programme [DIV.mem](https://raw.githubusercontent.com/jeremyfix/Architecture/refs/heads/main/TP-Evolution/Progs/DIV.mem).
 
 !!! Tip
 
