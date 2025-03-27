@@ -65,16 +65,6 @@ Les étapes de départ en interruption, exécution du programme d'interruption e
 
 ![Schéma de principe de fonctionnement des interruptions](assets/irq.png)
 
-!!! danger
-
-	irq_bouton_simple.asm
-
-	irq_bouton_simple.mem
-
-	irq_bouton.asm
-
-	irq_bouton.mem
-
 !!! question
 	
 	**Travail à réaliser**
@@ -137,8 +127,15 @@ Pour l'écran, chaque fois qu'on écrit un caractère à l'adresse 0x1004, ce ca
 
 ## Gestion de plusieurs interruptions
 
-Voir pour s'inspirer du Intel 8259
 
 !!! danger
 
 	sujet à élaborer
+
+	Voir pour s'inspirer du Intel 8259. Sur le principe de ce composant, on pourrait mettre en place un petit
+	circuit de logique combinatoire pour accepter, par exemple, 8 lignes
+	d'interruptions, avec éventuellement un arbitrage fixé ou tournant (rotating
+	priority) et un masquage 
+
+	Le circuit sortirait l'offset du vecteur d'interruption sur l'étiquette
+	ReadINTADDr plutôt qu'une adresse fixée en dur à 0x0002
